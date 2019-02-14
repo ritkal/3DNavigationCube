@@ -37,6 +37,7 @@
 var container;
 var camera, controls, scene, renderer, INTERSECTEDMOUSEDOWN, INTERSECTEDMOUSEUP;
 var raycaster, mouse = { x : 0, y : 0 };
+colors = ['#81d8d0', '#fff25d', '#3197e0']
 var items = [], flag, animation;
 			init();
 			animate();
@@ -71,7 +72,7 @@ var items = [], flag, animation;
                         new THREE.MeshBasicMaterial( { color: 'black' } ),
                         new THREE.MeshBasicMaterial( { color: 'black' } ),
                         new THREE.MeshBasicMaterial( { map: texture } ),
-                        new THREE.MeshBasicMaterial( { color: 'white' } ),
+                        new THREE.MeshBasicMaterial( { color: colors[j] } ),
                         new THREE.MeshBasicMaterial( { color: 'black' } ),
                         new THREE.MeshBasicMaterial( { color: 'black' } ),
                      ];
@@ -86,6 +87,7 @@ var items = [], flag, animation;
                      mesh.userData.column = i;
                      mesh.userData.layer = j;
                      mesh.userData.row = k;
+                     mesh.userData.type = 'cubeElement';
                      mesh.updateMatrix();
                      mesh.matrixAutoUpdate = false;
                      scene.add( mesh );
@@ -93,7 +95,21 @@ var items = [], flag, animation;
                   }
                }
 				}
-            
+            var geometryC = new THREE.CylinderGeometry( 150, 150, 200, 32 );
+
+            var geometryC = new THREE.CylinderGeometry( 150, 150, 200, 32 );
+            for (var i = 0; i < 3; i++) {
+               var materialC = new THREE.MeshBasicMaterial( { color: colors[i] } );
+               var meshC = new THREE.Mesh( geometryC, materialC, transparent = true, opacity = 0.2 );
+               meshC.position.x = 2000;
+               meshC.position.y = -i*200;
+               meshC.position.z = 500;
+               meshC.userData.type = 'navColumnElement';
+               meshC.userData.layer = i;
+               meshC.updateMatrix();
+               meshC.matrixAutoUpdate = false;
+               scene.add( meshC );
+            }
             // renderer
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
@@ -121,19 +137,50 @@ var items = [], flag, animation;
                   if ( INTERSECTEDMOUSEUP != intersects[ 0 ].object) {
                      console.log( intersects[ 0 ].object ); 
                      INTERSECTEDMOUSEUP = intersects[ 0 ].object;
-                     items.forEach(item => {
-                        if(item.userData.column === INTERSECTEDMOUSEUP.userData.column && item.userData.row === INTERSECTEDMOUSEUP.userData.row) {
-                           item.material.forEach(m => {
-                              m.opacity = 1;
-                           })
-                        } else {
-                           item.material.forEach(m => {
-                              m.opacity = 0.2;
-                           })
-                        }
-                     })
+                     if (INTERSECTEDMOUSEUP.userData.type === 'cubeElement') {
+                        items.forEach(item => {
+                           if(item.userData.column === INTERSECTEDMOUSEUP.userData.column && item.userData.row === INTERSECTEDMOUSEUP.userData.row) {
+                              item.material.forEach(m => {
+                                 m.opacity = 1;
+                              })
+                           } else {
+                              item.material.forEach(m => {
+                                 m.opacity = 0.2;
+                              })
+                           }
+                        })
+                        animateCameraOnClickElement(INTERSECTEDMOUSEUP);
+                     }
+                     if (INTERSECTEDMOUSEUP.userData.type === 'navColumnElement') { 
+                        items.forEach(item => {
+                           if(item.userData.layer === INTERSECTEDMOUSEUP.userData.layer) {
+                              item.material.forEach(m => {
+                                 m.opacity = 1;
+                              })
+                           } else {
+                              item.material.forEach(m => {
+                                 m.opacity = 0.2;
+                              })
+                           }
+                        })
+                        animateCameraToStartPos(INTERSECTEDMOUSEUP.userData.layer);
+                     }
+                  } else {
+                     INTERSECTEDMOUSEUP = null;
+                  }
+               } else {
+                  items.forEach(item => {
+                        item.material.forEach(m => {
+                           m.opacity = 1;
+                      })
+                  })
+                  animateCameraToStartPos(1);
+               }
+            }
+         }
 
-                     var fromControlsTarget = {
+         function animateCameraOnClickElement(INTERSECTEDMOUSEUP) {
+            var fromControlsTarget = {
                         x: controls.target.x,
                         y: controls.target.y,
                         z: controls.target.z
@@ -171,55 +218,46 @@ var items = [], flag, animation;
                            camera.position.set(this._object.x, this._object.y, this._object.z);
                         })
                         .start() 
-                  } else {
-                     INTERSECTEDMOUSEUP = null;
-                  }
-               } else {
-                  items.forEach(item => {
-                        item.material.forEach(m => {
-                           m.opacity = 1;
-                      })
+         }
+
+         function animateCameraToStartPos(k) {
+            var fromControlsTarget = {
+               x: controls.target.x,
+               y: controls.target.y,
+               z: controls.target.z
+            };
+
+            var toControlsTarget = {
+               x: 600,
+               y: k*-150,
+               z: 450
+            };
+            var fromCameraPosition = {
+               x: camera.position.x,
+               y: camera.position.y,
+               z: camera.position.z
+            };
+
+            var toCameraPosition = {
+               x: 600,
+               y: 400 - k*150,
+               z: 2200
+            };
+            controls.reset();
+            var tweenControlsTarget = new TWEEN.Tween(fromControlsTarget)
+                  .to(toControlsTarget, 1000)
+                  .easing(TWEEN.Easing.Linear.None)
+                  .onUpdate(function () {
+                     controls.target.set(this._object.x, this._object.y, this._object.z);
                   })
-                  
-                  var fromControlsTarget = {
-                     x: controls.target.x,
-                     y: controls.target.y,
-                     z: controls.target.z
-                  };
-
-                  var toControlsTarget = {
-                     x: 600,
-                     y: -150,
-                     z: 450
-                  };
-                  var fromCameraPosition = {
-                     x: camera.position.x,
-                     y: camera.position.y,
-                     z: camera.position.z
-                  };
-
-                  var toCameraPosition = {
-                     x: 600,
-                     y: 10,
-                     z: 2200
-                  };
-                  controls.reset();
-                  var tweenControlsTarget = new TWEEN.Tween(fromControlsTarget)
-                        .to(toControlsTarget, 1000)
-                        .easing(TWEEN.Easing.Linear.None)
-                        .onUpdate(function () {
-                           controls.target.set(this._object.x, this._object.y, this._object.z);
-                        })
-                        .start()
-                  var tweenCameraPosition = new TWEEN.Tween(fromCameraPosition)
-                     .to(toCameraPosition, 1000)
-                     .easing(TWEEN.Easing.Linear.None)
-                     .onUpdate(function () {
-                        camera.position.set(this._object.x, this._object.y, this._object.z);
-                     })
-                     .start()
-               }
-            }
+                  .start()
+            var tweenCameraPosition = new TWEEN.Tween(fromCameraPosition)
+               .to(toCameraPosition, 1000)
+               .easing(TWEEN.Easing.Linear.None)
+               .onUpdate(function () {
+                  camera.position.set(this._object.x, this._object.y, this._object.z);
+               })
+               .start()
          }
 
 			function onWindowResize() {
