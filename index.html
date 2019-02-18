@@ -30,9 +30,10 @@
          <p></p>
                MOVE mouse &amp; press A: rotate, S: zoom, D: pan
             </div>
-      <script src="js/three.js"></script>
-      <script src="js/TrackballControls.js"></script>
-      <script src="js/Tween.js"></script>
+      <script src="js/libs/three.js"></script>
+      <script src="js/libs/TrackballControls.js"></script>
+      <script src="js/libs/Tween.js"></script>
+      <script src="js/libs/ObjectControls.js"></script>
 		<script>
 var container;
 var camera, controls, scene, renderer, INTERSECTEDMOUSEDOWN, INTERSECTEDMOUSEUP;
@@ -44,7 +45,7 @@ var items = [], flag, animation;
 			function init() {
             camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
             camera.position.set(600, 10, 2200);
-				controls = new THREE.TrackballControls( camera );
+				controls = new THREE.TrackballControls( camera, scene );
 				controls.rotateSpeed = 1.2;
 				controls.zoomSpeed = 1.5;
 				controls.panSpeed = 0.8;
@@ -110,18 +111,48 @@ var items = [], flag, animation;
                meshC.matrixAutoUpdate = false;
                scene.add( meshC );
             }
+
+            
+            var geometryT = new THREE.BoxGeometry( 400, 300, 300 );
+            var materialT = [
+               new THREE.MeshBasicMaterial( { color: 'green', side: THREE.DoubleSide } ),
+               new THREE.MeshBasicMaterial( { color: 'red',side: THREE.DoubleSide } ),
+               new THREE.MeshBasicMaterial( { color: 'white', transparent:true, opacity: 0,side: THREE.DoubleSide }),
+               new THREE.MeshBasicMaterial( { color: 'white', transparent:true, opacity: 0, side: THREE.DoubleSide } ),
+               new THREE.MeshBasicMaterial( { color: 'blue',side: THREE.DoubleSide } ),
+                new THREE.MeshBasicMaterial( { color: 'yellow',side: THREE.DoubleSide } ),
+            ];
+
             // renderer
 				renderer = new THREE.WebGLRenderer( { antialias: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
             renderer.setSize( window.innerWidth, window.innerHeight );
             renderer.domElement.addEventListener( 'mouseup', onDocumentMouseUp, false );
+            renderer.domElement.addEventListener( 'dblclick', onDblClick, false );
             renderer.domElement.addEventListener("mousemove", () => flag = 1, false);
             document.addEventListener( 'mousedown', () => flag = 0, false );  
-				document.body.appendChild( renderer.domElement );
+            document.body.appendChild( renderer.domElement );
+            
+            var meshT = new THREE.Mesh( geometryT, materialT );
+            meshT.position.x = 2000;
+            meshT.position.y = -200;
+            meshT.position.z = 1000;
+            meshT.userData.type = 'infoCube';
+            meshT.userData.layer = 1;
+            meshT.updateMatrix();
+            meshT.matrixAutoUpdate = false;
+            scene.add( meshT );
+            controlsT = new THREE.ObjectControls(camera, renderer.domElement, meshT);
+            controlsT.setDistance(8, 200); // set min - max distance for zoom
+            controlsT.setZoomSpeed(1); // set zoom speed
 				//
 				window.addEventListener( 'resize', onWindowResize, false );
 				//
 				render();
+         }
+
+         function onDblClick() {
+            console.log('a');
          }
 
          function onDocumentMouseUp( e ) {
@@ -135,7 +166,7 @@ var items = [], flag, animation;
 
                if ( intersects.length > 0 ) {
                   if ( INTERSECTEDMOUSEUP != intersects[ 0 ].object) {
-                     console.log( intersects[ 0 ].object ); 
+                     // console.log( intersects[ 0 ].object ); 
                      INTERSECTEDMOUSEUP = intersects[ 0 ].object;
                      if (INTERSECTEDMOUSEUP.userData.type === 'cubeElement') {
                         items.forEach(item => {

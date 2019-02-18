@@ -17,6 +17,8 @@ THREE.TrackballControls = function ( object, domElement ) {
 
 	this.enabled = true;
 
+	var raycaster = new THREE.Raycaster();
+
 	this.screen = { left: 0, top: 0, width: 0, height: 0 };
 
 	this.rotateSpeed = 1.0;
@@ -413,6 +415,25 @@ THREE.TrackballControls = function ( object, domElement ) {
 		document.addEventListener( 'mousemove', mousemove, false );
 		document.addEventListener( 'mouseup', mouseup, false );
 
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+		mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+		
+		raycaster.setFromCamera( mouse, camera );    
+
+        var intersects = raycaster.intersectObjects( scene.children );
+
+        if ( intersects.length > 0 ) {
+            console.log( intersects[ 0 ].object ); 
+            // INTERSECTEDMOUSEUP = intersects[ 0 ].object;
+            if (intersects[ 0 ].object.userData.type === 'infoCube') {
+            	this.objectToMove = intersects[ 0 ].object;
+            } else {
+				this.objectToMove = null;
+			}
+        } else {
+            this.objectToMove = null;
+        }  
+
 		_this.dispatchEvent( startEvent );
 
 	}
@@ -420,7 +441,7 @@ THREE.TrackballControls = function ( object, domElement ) {
 	function mousemove( event ) {
 
 		if ( _this.enabled === false ) return;
-
+		if (this.objectToMove) return;
 		event.preventDefault();
 		event.stopPropagation();
 
