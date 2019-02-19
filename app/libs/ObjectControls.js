@@ -14,20 +14,19 @@ license: MIT
  * @param domElement - the renderer's dom element
  * @param objectToMove - the object to control.
  */
+var THREE = window.THREE || require('three');
 
-THREE.ObjectControls = function (camera, domElement) {
+var ObjectControls;
+export default ObjectControls = function (camera, domElement, objectToMove) {
 
 	this.camera = camera;
-    this.domElement = (domElement !== undefined) ? domElement : document;
-    this.raycaster = new THREE.Raycaster();
-
+	this.objectToMove = objectToMove;
+	this.domElement = (domElement !== undefined) ? domElement : document;
 
 	var maxDistance = 15,
 		minDistance = 6,
 		zoomSpeed = 0.5,
-        rotationSpeed = 1;
-        
-    var objectToMove = null;
+		rotationSpeed = 1;
 
 	this.setDistance = function (min, max) {
 		minDistance = min;
@@ -45,8 +44,7 @@ THREE.ObjectControls = function (camera, domElement) {
 	var mouseFlags = {
 		MOUSEDOWN: 0,
 		MOUSEMOVE: 1
-    };
-    var prevAngle;
+	};
 
 	var flag;
 	var isDragging = false;
@@ -76,24 +74,7 @@ THREE.ObjectControls = function (camera, domElement) {
 
 	function mouseDown(e) {
 		isDragging = true;
-        flag = mouseFlags.MOUSEDOWN;
-
-        mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
-        mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
-
-        raycaster.setFromCamera( mouse, camera );    
-
-        var intersects = raycaster.intersectObjects( scene.children );
-
-        if ( intersects.length > 0 ) {
-            // INTERSECTEDMOUSEUP = intersects[ 0 ].object;
-          if (intersects[ 0 ].object.userData.type === 'infoCube') {
-            objectToMove = intersects[ 0 ].object;
-            prevAngle = objectToMove.rotation.y
-          }
-        } else {
-            objectToMove = null;
-        }     
+		flag = mouseFlags.MOUSEDOWN;
 	}
 
 	function mouseMove(e) {
@@ -102,13 +83,11 @@ THREE.ObjectControls = function (camera, domElement) {
 			y: e.offsetY - previousMousePosition.y
 		};
 
-		if (isDragging && objectToMove) {
+		if (isDragging) {
 			if (deltaMove.x != 0) {
-				console.log(deltaMove.x);
-                objectToMove.rotation.y += deltaMove.x / 200;
-                // console.log(THREE.Math.radToDeg(prevAngle - objectToMove.rotation.y));
-                // if (prevAngle - objectToMove.rotation.y > THREE.Math.PI/4 && prevAngle - objectToMove.rotation.y > THREE.Math.PI*3/4)
-                objectToMove.updateMatrix();
+				// console.log(deltaMove.x);
+				objectToMove.rotation.y += deltaMove.x / 280;
+				// objectToMove.position.x += deltaMove.x / 280;
 				flag = mouseFlags.MOUSEMOVE;
 			}
 		}
@@ -231,4 +210,7 @@ THREE.ObjectControls = function (camera, domElement) {
 		camera.position.z += zoomSpeed;
 	}
 
+	return this;
 };
+
+function preventEvent( event ) { event.preventDefault(); }
