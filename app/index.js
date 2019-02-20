@@ -97,59 +97,63 @@ var items = [], flag, timer = 0, delay = 200, prevent = false, animation;
                z: 500
             }; 
             
-				// Complex control listeners
-               window.addEventListener( 'resize', onWindowResize, false );
-               window.addEventListener( 'keydown', function ( event ) {
-					switch ( event.keyCode ) {
-						case 81: // Q
-                        controlsElement.setSpace( controlsElement.space === "local" ? "world" : "local" );
-							break;
-						case 17: // Ctrl
-                        controlsElement.setTranslationSnap( 100 );
-							controlsElement.setRotationSnap( THREE.Math.degToRad( 15 ) );
-							break;
-						case 87: // W
-                        controlsElement.setMode( "translate" );
-							break;
-						case 69: // E
-                        controlsElement.setMode( "rotate" );
-							break;
-						case 82: // R
-                        controlsElement.setMode( "scale" );
-							break;
-						case 187:
-						case 107: // +, =, num+
-                        controlsElement.setSize( controlsElement.size + 0.1 );
-							break;
-						case 189:
-						case 109: // -, _, num-
-                        controlsElement.setSize( Math.max( controlsElement.size - 0.1, 0.1 ) );
-							break;
-						case 88: // X
-                        controlsElement.showX = ! controlsElement.showX;
-							break;
-						case 89: // Y
-                        controlsElement.showY = ! controlsElement.showY;
-							break;
-						case 90: // Z
-                        controlsElement.showZ = ! controlsElement.showZ;
-							break;
-						case 32: // Spacebar
-                        controlsElement.enabled = ! controlsElement.enabled;
-							break;
-					}
-				} );
-				window.addEventListener( 'keyup', function ( event ) {
-					switch ( event.keyCode ) {
-						case 17: // Ctrl
-                        controlsElement.setTranslationSnap( null );
-							contcontrolsElementrol.setRotationSnap( null );
-							break;
-					}
-				} );
+            addWindowListeners();
 				//
 				render();
-         }      
+         }
+         
+         function addWindowListeners() {
+				// Complex control listeners
+            window.addEventListener( 'resize', onWindowResize, false );
+            window.addEventListener( 'keydown', function ( event ) {
+            switch ( event.keyCode ) {
+               case 81: // Q
+                     controlsElement.setSpace( controlsElement.space === "local" ? "world" : "local" );
+                  break;
+               case 17: // Ctrl
+                     controlsElement.setTranslationSnap( 100 );
+                  controlsElement.setRotationSnap( THREE.Math.degToRad( 15 ) );
+                  break;
+               case 87: // W
+                     controlsElement.setMode( "translate" );
+                  break;
+               case 69: // E
+                     controlsElement.setMode( "rotate" );
+                  break;
+               case 82: // R
+                     controlsElement.setMode( "scale" );
+                  break;
+               case 187:
+               case 107: // +, =, num+
+                     controlsElement.setSize( controlsElement.size + 0.1 );
+                  break;
+               case 189:
+               case 109: // -, _, num-
+                     controlsElement.setSize( Math.max( controlsElement.size - 0.1, 0.1 ) );
+                  break;
+               case 88: // X
+                     controlsElement.showX = ! controlsElement.showX;
+                  break;
+               case 89: // Y
+                     controlsElement.showY = ! controlsElement.showY;
+                  break;
+               case 90: // Z
+                     controlsElement.showZ = ! controlsElement.showZ;
+                  break;
+               case 32: // Spacebar
+                     controlsElement.enabled = ! controlsElement.enabled;
+                  break;
+            }
+         } );
+         window.addEventListener( 'keyup', function ( event ) {
+            switch ( event.keyCode ) {
+               case 17: // Ctrl
+                  controlsElement.setTranslationSnap( null );
+                  contcontrolsElementrol.setRotationSnap( null );
+                  break;
+            }
+         } );
+         }
 
          function onDblClick(e) {
             clearTimeout(timer);
@@ -182,6 +186,8 @@ var items = [], flag, timer = 0, delay = 200, prevent = false, animation;
                   }
                } else {
                   INTERSECTEDMOUSEDBL = null;
+                  cameraAnimate.animateToLayer(camera, controls, diagramCenter, 1);
+
                }
             }
          }
