@@ -1,0 +1,400 @@
+<?xml version="1.0" standalone="no"?>  <svg xmlns="http://www.w3.org/2000/svg" width="2035" height="1125"><style type='text/css'>tspan, text {font: normal 12px/1.4 "OpenSans", sans-serif;}.svg-text-editor-text { font-size: 12px; font-weight: 500; }.no-select { user-select: none; }.svg-resizer.svg-north-west-resizer, .svg-resizer.svg-south-east-resizer { cursor: nw-resize; }.svg-resizer.svg-north-east-resizer, .svg-resizer.svg-south-west-resizer { cursor: ne-resize; }.svg-resizer { opacity: 0; }body.null-space { min-width: 0px; }g.activity-task rect.activity-shape { stroke-width: 2; fill: rgb(255, 255, 255); stroke: rgb(2, 94, 151); }rect.pd-task__body { stroke-width: 2; fill: rgb(255, 255, 255); stroke: rgb(136, 136, 136); }rect.pd-task__body { stroke-width: 2; fill: rgb(255, 255, 255); stroke: rgb(136, 136, 136); }g.activity-g path.pd-casetask__icon { fill: rgb(136, 136, 136); }g.activity-g path.pd-casetask__icon { fill: rgb(136, 136, 136); }path.pd-task-icon { fill: rgb(113, 119, 123); fill-rule: evenodd; }path.pd-task-icon { fill: rgb(113, 119, 123); fill-rule: evenodd; }.g-text-activity .pd-task__body { fill: rgb(242, 242, 242); stroke: rgb(178, 178, 178); }.g-text-activity .pd-task__body { fill: rgb(242, 242, 242); stroke: rgb(178, 178, 178); }.pd-task__title { font-size: 14px; font-weight: 500; color: rgb(24, 32, 38); fill: rgb(24, 32, 38); cursor: default; }g.dev-activity .resizer { opacity: 0; }g.dev-activity-StartEvent circle.dev-event-outer-circle { fill: rgb(255, 255, 255); stroke: rgb(14, 177, 118); stroke-width: 2; }g.dev-activity-StartEvent circle.dev-event-outer-circle { fill: rgb(255, 255, 255); stroke: rgb(14, 177, 118); stroke-width: 2; }g.dev-activity-StartEvent circle.dev-event-outer-circle { fill: rgb(255, 255, 255); stroke: rgb(14, 177, 118); stroke-width: 2; }g.dev-activity-StartEvent circle.dev-event-inner-circle { display: none; }g.dev-activity-StartEvent circle.dev-event-inner-circle { display: none; }g.dev-activity-StartEvent circle.dev-event-inner-circle { display: none; }g.dev-activity-IntermediateEvent circle.dev-event-outer-circle { fill: rgb(255, 255, 255); stroke: rgb(186, 184, 7); stroke-width: 1.5px; }g.dev-activity-IntermediateEvent circle.dev-event-outer-circle { fill: rgb(255, 255, 255); stroke: rgb(186, 184, 7); stroke-width: 1.5px; }g.dev-activity-IntermediateEvent circle.dev-event-outer-circle { fill: rgb(255, 255, 255); stroke: rgb(186, 184, 7); stroke-width: 1.5px; }g.dev-activity-event-mounted circle.dev-event-outer-circle { stroke-dasharray: 4, 4; }g.dev-activity-event-mounted circle.dev-event-outer-circle { stroke-dasharray: 4, 4; }g.dev-activity-event-mounted circle.dev-event-outer-circle { stroke-dasharray: 4, 4; }g.dev-activity-IntermediateEvent circle.dev-event-inner-circle { fill: rgb(255, 255, 255); stroke: rgb(186, 184, 7); stroke-width: 1.5px; }g.dev-activity-IntermediateEvent circle.dev-event-inner-circle { fill: rgb(255, 255, 255); stroke: rgb(186, 184, 7); stroke-width: 1.5px; }g.dev-activity-IntermediateEvent circle.dev-event-inner-circle { fill: rgb(255, 255, 255); stroke: rgb(186, 184, 7); stroke-width: 1.5px; }g.dev-activity-event-mounted circle.dev-event-inner-circle { stroke-dasharray: 4, 4; }g.dev-activity-event-mounted circle.dev-event-inner-circle { stroke-dasharray: 4, 4; }g.dev-activity-event-mounted circle.dev-event-inner-circle { stroke-dasharray: 4, 4; }.dev-activity-icon-event-Signal { fill: rgb(197, 196, 48); }g.dev-activity-IntermediateEvent circle.dev-activity-event-None { stroke: rgb(255, 255, 255); }g.dev-activity-IntermediateEvent circle.dev-activity-event-None { stroke: rgb(255, 255, 255); }g.dev-activity-IntermediateEvent circle.dev-activity-event-None { stroke: rgb(255, 255, 255); }g.dev-activity-IntermediateEvent circle.dev-activity-event-None { stroke: rgb(255, 255, 255); }g.dev-activity-event-mounted-interrupting.dev-activity-event-mounted circle, g.dev-activity-event-mounted circle { stroke-dasharray: none; stroke-width: 1.5px; }g.dev-activity-event-mounted-interrupting.dev-activity-event-mounted circle, g.dev-activity-event-mounted circle { stroke-dasharray: none; stroke-width: 1.5px; }g.dev-activity-EndEvent circle.dev-event-outer-circle { fill: rgb(255, 255, 255); stroke: rgb(234, 103, 72); stroke-width: 4; }g.dev-activity-EndEvent circle.dev-event-outer-circle { fill: rgb(255, 255, 255); stroke: rgb(234, 103, 72); stroke-width: 4; }g.dev-activity-EndEvent circle.dev-event-outer-circle { fill: rgb(255, 255, 255); stroke: rgb(234, 103, 72); stroke-width: 4; }g.dev-activity-EndEvent circle.dev-event-inner-circle { display: none; }g.dev-activity-EndEvent circle.dev-event-inner-circle { display: none; }g.dev-activity-EndEvent circle.dev-event-inner-circle { display: none; }g.dev-activity-EndEvent circle.dev-event-terminate-circle { fill: rgb(234, 103, 72); stroke: rgb(234, 103, 72); }g.dev-activity-EndEvent circle.dev-event-terminate-circle { fill: rgb(234, 103, 72); stroke: rgb(234, 103, 72); }circle.dev-diagram-connector { fill: rgb(255, 255, 255); stroke: rgb(100, 170, 208); stroke-width: 1px; opacity: 0; }circle.dev-diagram-connector.dev-diagram-flow-visible { opacity: 1; }circle.dev-diagram-connector.js-diagram-connector-visible.js-diagram-connector-highlighted { fill: rgb(100, 170, 208); opacity: 1; }circle.dev-diagram-connector.js-diagram-connector-visible.js-diagram-connector-highlighted { fill: rgb(100, 170, 208); opacity: 1; }circle.dev-diagram-connector.js-diagram-connector-visible.js-diagram-connector-highlighted { fill: rgb(100, 170, 208); opacity: 1; }g.dev-activity-IntermediateEvent .pd-icon-message { fill: rgb(186, 184, 7); }g.dev-activity-IntermediateEvent .pd-icon-message { fill: rgb(186, 184, 7); }g.dev-activity-IntermediateEvent .pd-icon-message { fill: rgb(186, 184, 7); }g.dev-activity-StartEvent .pd-icon-message { fill: rgb(14, 177, 118); }g.dev-activity-StartEvent .pd-icon-message { fill: rgb(14, 177, 118); }g.dev-activity-StartEvent .pd-icon-message { fill: rgb(14, 177, 118); }g.dev-activity-EndEvent .pd-icon-message { fill: rgb(234, 103, 72); }g.dev-activity-EndEvent .pd-icon-message { fill: rgb(234, 103, 72); }g.dev-activity-EndEvent .pd-icon-message { fill: rgb(234, 103, 72); }g.g-selected .pd-icon-message { fill: rgb(11, 122, 193); }.dev-activity-icon-event-Message { fill: red; }.dev-activity-custom path { stroke: rgb(153, 153, 153); }g.g-selected .dev-activity-custom path { stroke: rgb(0, 0, 0); }.dev-activity-body-container { stroke: rgb(5, 117, 189) !important; }.dev-activity-line { fill: none; stroke: rgb(178, 178, 178); }.connectors-g {display: none}.select-g {display: none}</style><g class='pool-g'><g transform='translate(60,10)' class='activity' id='43b1e43f-7dd5-47b5-83ec-754ee403f681'><g class='activity-g'><g class='dev-activity dev-activity-pool js-activity-resize-root-y' transform='scale(1, 10.4)'>
+        <line vector-effect='non-scaling-stroke' stroke='#a2a2a2' stroke-width='1px' fill-opacity='0' fill='#FFF' x1='100' y1='0' x2='100' y2='100'/>
+</g>
+
+<g class='dev-activity dev-activity-lane'>
+
+    <rect vector-effect='non-scaling-stroke' stroke='#a2a2a2' stroke-width='1' fill-opacity='0' fill='#FFF' width='1900' height='1040' class='null-space js-activity-resize-pool'>
+    </rect>
+
+    <rect class='js-activity-resizers svg-resizer svg-east-resizer js-east-resizer js-east-resizer-pool js-resizer' x='1885' y='0' width='30' height='1040'>
+    </rect>
+
+    <rect class='js-activity-resizers svg-resizer svg-south-resizer js-south-resizer js-south-resizer-pool js-resizer' x='0' y='1025' width='1900' height='30'>
+    </rect>
+</g>
+<text fill='#333' class='svg-text-editor-text no-select' cursor='default' style='white-space: pre;' x='10' y='15' text-anchor='start'><tspan dy='13' x='10' class='js-activity-shape'>Пул</tspan></text></g><g class='connectors-g'/><g class='resizers-g'/><g class='error-g'/></g></g><g class='lane-g'/><g class='object-g'><g transform='translate(1180,340)' class='activity' id='2a13e357-6397-4833-aae7-5724841cbc29'><g class='activity-g'><g class='dev-activity-event dev-activity-EndEvent'>
+    <circle class='diagram-activity-background' cx='0' cy='0' r='22'>
+    </circle>
+
+    <circle class='dev-event-outer-circle js-activity-shape' cx='0' cy='0' r='22'>
+    </circle>
+
+    <circle class='dev-activity-event-None dev-event-inner-circle js-activity-shape' cx='0' cy='0' r='18'>
+    </circle>
+
+    <g class='js-title-content'><text fill='#333' class='svg-text-editor-text no-select' cursor='default' style='white-space: pre;' x='2' y='25' text-anchor='middle'><tspan dy='13' x='2' class=''>Изменения выполнены</tspan></text><title>Изменения выполнены</title></g>
+
+
+
+
+
+    <g class='js-activity-connectors'>
+
+        <circle r='4' cx='0' cy='22' index='40' alignment='bottom' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='0' cy='22' index='40' alignment='bottom' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='0' cy='-22' index='0' alignment='top' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+            <circle r='7' cx='0' cy='-22' index='0' alignment='top' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+            <circle r='4' cx='22' cy='0' index='10' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+            <circle r='7' cx='22' cy='0' index='10' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+            <circle r='4' cx='-22' cy='0' index='30' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible js-diagram-connector-linked'/>
+            <circle r='7' cx='-22' cy='0' index='30' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+    </g>
+
+</g>
+
+</g><g class='connectors-g'/><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(1060,340)' class='activity' id='1df5cfe0-acc1-4687-be86-335542a83eef'><g class='activity-g'><g class='dev-activity-event dev-activity-IntermediateEvent'>
+    <circle class='diagram-activity-background' cx='0' cy='0' r='22'>
+    </circle>
+
+    <circle class='dev-event-outer-circle js-activity-shape' cx='0' cy='0' r='22'>
+    </circle>
+
+    <circle class='dev-activity-event-ThrowingMessage dev-event-inner-circle js-activity-shape' cx='0' cy='0' r='18'>
+    </circle>
+
+    <g class='js-title-content'><text fill='#333' class='svg-text-editor-text no-select' cursor='default' style='white-space: pre;' x='2' y='25' text-anchor='middle'><tspan dy='13' x='2' class=''>Отправка сообщения о </tspan><tspan dy='13' x='2' class=''>перезапуске работы</tspan></text><title>Отправка сообщения о перезапуске работы</title></g>
+
+
+    <path class='pd-icon-message dev-event-icon js-activity-shape' transform='translate(-12, -12)' d='M12,16l-1-1L2,7v12h20V7l-9,8L12,16z M2,5l1,1l9,8l9-8l1-1H2z'>
+    </path>
+
+
+
+    <g class='js-activity-connectors'>
+
+        <circle r='4' cx='0' cy='22' index='40' alignment='bottom' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='0' cy='22' index='40' alignment='bottom' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='0' cy='-22' index='0' alignment='top' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+            <circle r='7' cx='0' cy='-22' index='0' alignment='top' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+            <circle r='4' cx='22' cy='0' index='10' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+            <circle r='7' cx='22' cy='0' index='10' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+            <circle r='4' cx='-22' cy='0' index='30' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible js-diagram-connector-linked'/>
+            <circle r='7' cx='-22' cy='0' index='30' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+    </g>
+
+</g>
+
+</g><g class='connectors-g'/><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(940,320)' class='activity' id='9b7a7d13-7139-4491-8ec2-de51329c603a'><g class='activity-g'><g class='dev-activity-gate dev-activity-gate-Exclusive'>
+    <path d='M20,-4L44,20L20,44L-4,20 Z' fill='#fff' stroke='rgb(197,196,48)' class='dev-diagram-gate diagram-activity-background'/>
+
+    <path d='M20,-4L44,20L20,44L-4,20 Z' fill='#fff' stroke='rgb(197,196,48)' stroke-width='2.5px' class='dev-activity-gate-outer js-activity-shape'/>
+
+    <path d='M20,0L40,20L20,40L0,20L20,0' fill='white' class='dev-activity-gate-inner js-activity-shape'/>
+
+    <g class='js-title-content'><text fill='#333' class='svg-text-editor-text no-select' cursor='default' style='white-space: pre;' x='15' y='45' text-anchor='middle'><tspan dy='13' x='15' class=''> </tspan></text><title> </title></g>
+
+
+    <g class='js-activity-connectors'>
+        <circle r='4' cx='20' cy='-3' index='0' alignment='top' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='20' cy='-3' index='0' alignment='top' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='43' cy='20' index='10' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='43' cy='20' index='10' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='20' cy='43' index='20' alignment='bottom' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='20' cy='43' index='20' alignment='bottom' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='-3' cy='20' index='30' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='-3' cy='20' index='30' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='31.5' cy='8.5' index='5' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='31.5' cy='8.5' index='5' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='31.5' cy='31.5' index='15' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='31.5' cy='31.5' index='15' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='8.5' cy='31.5' index='25' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='8.5' cy='31.5' index='25' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='8.5' cy='8.5' index='35' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='8.5' cy='8.5' index='35' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+    </g>
+</g></g><g class='connectors-g'/><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(1180,220)' class='activity' id='5b2ec997-c052-42fb-bb7b-972cfaccedf6'><g class='activity-g'><g class='dev-activity-event dev-activity-EndEvent'>
+    <circle class='diagram-activity-background' cx='0' cy='0' r='22'>
+    </circle>
+
+    <circle class='dev-event-outer-circle js-activity-shape' cx='0' cy='0' r='22'>
+    </circle>
+
+    <circle class='dev-activity-event-None dev-event-inner-circle js-activity-shape' cx='0' cy='0' r='18'>
+    </circle>
+
+    <g class='js-title-content'><text fill='#333' class='svg-text-editor-text no-select' cursor='default' style='white-space: pre;' x='2' y='25' text-anchor='middle'><tspan dy='13' x='2' class=''>Изменений не было</tspan></text><title>Изменений не было</title></g>
+
+
+
+
+
+    <g class='js-activity-connectors'>
+
+        <circle r='4' cx='0' cy='22' index='40' alignment='bottom' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='0' cy='22' index='40' alignment='bottom' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='0' cy='-22' index='0' alignment='top' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+            <circle r='7' cx='0' cy='-22' index='0' alignment='top' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+            <circle r='4' cx='22' cy='0' index='10' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+            <circle r='7' cx='22' cy='0' index='10' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+            <circle r='4' cx='-22' cy='0' index='30' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible js-diagram-connector-linked'/>
+            <circle r='7' cx='-22' cy='0' index='30' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+    </g>
+
+</g>
+
+</g><g class='connectors-g'/><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(940,200)' class='activity' id='dd90ee6b-291d-40e0-80f6-3e4681c109cc'><g class='activity-g'><g class='dev-activity-gate dev-activity-gate-Exclusive'>
+    <path d='M20,-4L44,20L20,44L-4,20 Z' fill='#fff' stroke='rgb(197,196,48)' class='dev-diagram-gate diagram-activity-background'/>
+
+    <path d='M20,-4L44,20L20,44L-4,20 Z' fill='#fff' stroke='rgb(197,196,48)' stroke-width='2.5px' class='dev-activity-gate-outer js-activity-shape'/>
+
+    <path d='M20,0L40,20L20,40L0,20L20,0' fill='white' class='dev-activity-gate-inner js-activity-shape'/>
+
+    <g class='js-title-content' transform='translate(0, -103)'><text fill='#333' class='svg-text-editor-text no-select' cursor='default' style='white-space: pre;' x='15' y='45' text-anchor='middle'><tspan dy='13' x='15' class=''>Ответственный, </tspan><tspan dy='13' x='15' class=''>Исполнители </tspan><tspan dy='13' x='15' class=''>изменены?</tspan></text><title>Ответственный, Исполнители изменены?</title></g>
+
+
+    <g class='js-activity-connectors'>
+        <circle r='4' cx='20' cy='-3' index='0' alignment='top' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='20' cy='-3' index='0' alignment='top' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='43' cy='20' index='10' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='43' cy='20' index='10' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='20' cy='43' index='20' alignment='bottom' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='20' cy='43' index='20' alignment='bottom' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='-3' cy='20' index='30' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='-3' cy='20' index='30' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='31.5' cy='8.5' index='5' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='31.5' cy='8.5' index='5' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='31.5' cy='31.5' index='15' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='31.5' cy='31.5' index='15' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='8.5' cy='31.5' index='25' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='8.5' cy='31.5' index='25' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='8.5' cy='8.5' index='35' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='8.5' cy='8.5' index='35' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+    </g>
+</g></g><g class='connectors-g'/><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(840,200)' class='activity' id='f397af18-d92f-4182-8e60-6fe1f2570b05'><g class='activity-g'><g class='dev-activity-gate dev-activity-gate-Exclusive'>
+    <path d='M20,-4L44,20L20,44L-4,20 Z' fill='#fff' stroke='rgb(197,196,48)' class='dev-diagram-gate diagram-activity-background'/>
+
+    <path d='M20,-4L44,20L20,44L-4,20 Z' fill='#fff' stroke='rgb(197,196,48)' stroke-width='2.5px' class='dev-activity-gate-outer js-activity-shape'/>
+
+    <path d='M20,0L40,20L20,40L0,20L20,0' fill='white' class='dev-activity-gate-inner js-activity-shape'/>
+
+    <g class='js-title-content' transform='translate(0, -90)'><text fill='#333' class='svg-text-editor-text no-select' cursor='default' style='white-space: pre;' x='15' y='45' text-anchor='middle'><tspan dy='13' x='15' class=''>Плановый срок </tspan><tspan dy='13' x='15' class=''>изменен?</tspan></text><title>Плановый срок изменен?</title></g>
+
+
+    <g class='js-activity-connectors'>
+        <circle r='4' cx='20' cy='-3' index='0' alignment='top' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='20' cy='-3' index='0' alignment='top' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='43' cy='20' index='10' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='43' cy='20' index='10' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='20' cy='43' index='20' alignment='bottom' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='20' cy='43' index='20' alignment='bottom' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='-3' cy='20' index='30' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='-3' cy='20' index='30' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='31.5' cy='8.5' index='5' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='31.5' cy='8.5' index='5' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='31.5' cy='31.5' index='15' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='31.5' cy='31.5' index='15' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='8.5' cy='31.5' index='25' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='8.5' cy='31.5' index='25' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='8.5' cy='8.5' index='35' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='8.5' cy='8.5' index='35' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+    </g>
+</g></g><g class='connectors-g'/><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(740,200)' class='activity' id='656d4e55-7d39-4d9b-83fc-cccdb6794c28'><g class='activity-g'><g class='dev-activity-gate dev-activity-gate-Exclusive'>
+    <path d='M20,-4L44,20L20,44L-4,20 Z' fill='#fff' stroke='rgb(197,196,48)' class='dev-diagram-gate diagram-activity-background'/>
+
+    <path d='M20,-4L44,20L20,44L-4,20 Z' fill='#fff' stroke='rgb(197,196,48)' stroke-width='2.5px' class='dev-activity-gate-outer js-activity-shape'/>
+
+    <path d='M20,0L40,20L20,40L0,20L20,0' fill='white' class='dev-activity-gate-inner js-activity-shape'/>
+
+    <g class='js-title-content' transform='translate(0, -90)'><text fill='#333' class='svg-text-editor-text no-select' cursor='default' style='white-space: pre;' x='15' y='45' text-anchor='middle'><tspan dy='13' x='15' class=''>Перенос сроков </tspan><tspan dy='13' x='15' class=''>согласован?</tspan></text><title>Перенос сроков согласован?</title></g>
+
+
+    <g class='js-activity-connectors'>
+        <circle r='4' cx='20' cy='-3' index='0' alignment='top' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='20' cy='-3' index='0' alignment='top' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='43' cy='20' index='10' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='43' cy='20' index='10' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='20' cy='43' index='20' alignment='bottom' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='20' cy='43' index='20' alignment='bottom' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='-3' cy='20' index='30' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='-3' cy='20' index='30' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='31.5' cy='8.5' index='5' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='31.5' cy='8.5' index='5' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='31.5' cy='31.5' index='15' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='31.5' cy='31.5' index='15' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='8.5' cy='31.5' index='25' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='8.5' cy='31.5' index='25' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='8.5' cy='8.5' index='35' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='8.5' cy='8.5' index='35' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+    </g>
+</g></g><g class='connectors-g'/><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(574,185)' class='activity' id='3b385709-f5bb-4f51-97c9-c9fc127cdb80'><g class='activity-g'><g class='dev-activity pd-task pd-task_user'>
+    <rect width='132' height='70' x='0' y='0' rx='4' ry='4' class='js-activity-body diagram-activity-background'>
+    </rect>
+
+     <rect width='132' height='70' x='0' y='0' rx='4' ry='4' class='js-activity-body js-activity-shape pd-task__body'>
+    </rect>
+
+    <g transform='scale(1.32, 0.7)' class='js-activity-resize-root'>
+        <g class='js-activity-resizers'>
+            <rect class='svg-resizer svg-north-resizer js-north-resizer js-resizer' x='0' y='-5' width='100' height='10'>
+            </rect>
+            <rect class='svg-resizer svg-south-resizer js-south-resizer js-resizer' x='0' y='95' width='100' height='10'>
+            </rect>
+            <rect class='svg-resizer svg-east-resizer js-east-resizer js-resizer' x='95' y='0' width='10' height='100'>
+            </rect>
+            <rect class='svg-resizer svg-west-resizer js-west-resizer js-resizer' x='-5' y='0' width='10' height='100'>
+            </rect>
+        </g>
+    </g>
+</g>
+
+<g class='js-activity-shape js-activity-icon'>
+    <path transform='scale(1.2) translate(3, 3)' class='js-activity-icon pd-task-icon pd-task-icon__user' d='M8.3,1.2c-0.4,0-0.5,0.2-0.7,0.2C7.3,1.4,7.7,1.3,7,1.4c-0.7,0.1-1,1-1,1.4c0,0.4,0,1.7,0,1.7L5.5,5.1v1.2             c0,0,0,0.6,0.6,0.6c0.3,0.8,1.2,1.2,1.2,1.2v1.2c0,0,0,0.6-1.8,0.6C2.7,9.9,3,12.3,3,12.2C3,12.9,3,14,3,14             h11c0,0,0-0.5,0-1.2c0-0.7,0-3-2.4-3c-1.8,0-1.8-0.1-1.8-0.6c0-0.4,0-1.2,0-1.2s0.9-0.4,1.2-1.2             c0.6,0,0.6-0.6,0.6-0.6V5.1L11,4.5c0,0,0-0.8,0-1.2c0-1.2-0.1-1.8-1.2-1.8c0,0,0-0.6-0.6-0.6L8.3,1.2z'>
+    </path>
+</g>
+
+<text fill='#333' class='svg-text-editor-text no-select' cursor='default' style='white-space: pre;' x='68.5' y='22' text-anchor='middle'><tspan dy='13' x='68.5' class='js-activity-shape'>Согласование </tspan><tspan dy='13' x='68.5' class='js-activity-shape'>переноса срока</tspan></text></g><g class='connectors-g'><circle r='4' cx='66' cy='0' index='10' alignment='top' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='66' cy='0' index='10' alignment='top' charge='-1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='132' cy='35' index='40' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='132' cy='35' index='40' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='66' cy='70' index='70' alignment='bottom' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='66' cy='70' index='70' alignment='bottom' charge='-1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='0' cy='35' index='100' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='0' cy='35' index='100' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(500,100)' class='activity' id='ca4c60e9-1b7c-4337-b517-c34375fdff9c'><g class='activity-g'><g class='dev-activity-event dev-activity-EndEvent'>
+    <circle class='diagram-activity-background' cx='0' cy='0' r='22'>
+    </circle>
+
+    <circle class='dev-event-outer-circle js-activity-shape' cx='0' cy='0' r='22'>
+    </circle>
+
+    <circle class='dev-activity-event-None dev-event-inner-circle js-activity-shape' cx='0' cy='0' r='18'>
+    </circle>
+
+    <g class='js-title-content' transform='translate(0, -90)'><text fill='#333' class='svg-text-editor-text no-select' cursor='default' style='white-space: pre;' x='2' y='25' text-anchor='middle'><tspan dy='13' x='2' class=''>Согласование </tspan><tspan dy='13' x='2' class=''>прекращено</tspan></text><title>Согласование прекращено</title></g>
+
+
+
+
+
+    <g class='js-activity-connectors'>
+
+        <circle r='4' cx='0' cy='22' index='40' alignment='bottom' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='0' cy='22' index='40' alignment='bottom' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='0' cy='-22' index='0' alignment='top' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+            <circle r='7' cx='0' cy='-22' index='0' alignment='top' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+            <circle r='4' cx='22' cy='0' index='10' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+            <circle r='7' cx='22' cy='0' index='10' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+            <circle r='4' cx='-22' cy='0' index='30' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible js-diagram-connector-linked'/>
+            <circle r='7' cx='-22' cy='0' index='30' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+    </g>
+
+</g>
+
+</g><g class='connectors-g'/><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(480,200)' class='activity' id='5382159b-e28b-4b2a-8d55-2a2092f1e9d7'><g class='activity-g'><g class='dev-activity-gate dev-activity-gate-Exclusive'>
+    <path d='M20,-4L44,20L20,44L-4,20 Z' fill='#fff' stroke='rgb(197,196,48)' class='dev-diagram-gate diagram-activity-background'/>
+
+    <path d='M20,-4L44,20L20,44L-4,20 Z' fill='#fff' stroke='rgb(197,196,48)' stroke-width='2.5px' class='dev-activity-gate-outer js-activity-shape'/>
+
+    <path d='M20,0L40,20L20,40L0,20L20,0' fill='white' class='dev-activity-gate-inner js-activity-shape'/>
+
+    <g class='js-title-content'><text fill='#333' class='svg-text-editor-text no-select' cursor='default' style='white-space: pre;' x='15' y='45' text-anchor='middle'><tspan dy='13' x='15' class=''>Требуется </tspan><tspan dy='13' x='15' class=''>согласование?</tspan></text><title>Требуется согласование?</title></g>
+
+
+    <g class='js-activity-connectors'>
+        <circle r='4' cx='20' cy='-3' index='0' alignment='top' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='20' cy='-3' index='0' alignment='top' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='43' cy='20' index='10' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='43' cy='20' index='10' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='20' cy='43' index='20' alignment='bottom' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='20' cy='43' index='20' alignment='bottom' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='-3' cy='20' index='30' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='-3' cy='20' index='30' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='31.5' cy='8.5' index='5' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='31.5' cy='8.5' index='5' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='31.5' cy='31.5' index='15' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='31.5' cy='31.5' index='15' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='8.5' cy='31.5' index='25' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='8.5' cy='31.5' index='25' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='8.5' cy='8.5' index='35' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='8.5' cy='8.5' index='35' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+    </g>
+</g></g><g class='connectors-g'/><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(316.5,185)' class='activity' id='809032a5-78e1-4a92-bb62-3aa6e95474eb'><g class='activity-g'><g class='dev-activity pd-task pd-task_user'>
+    <rect width='127' height='70' x='0' y='0' rx='4' ry='4' class='js-activity-body diagram-activity-background'>
+    </rect>
+
+     <rect width='127' height='70' x='0' y='0' rx='4' ry='4' class='js-activity-body js-activity-shape pd-task__body'>
+    </rect>
+
+    <g transform='scale(1.27, 0.7)' class='js-activity-resize-root'>
+        <g class='js-activity-resizers'>
+            <rect class='svg-resizer svg-north-resizer js-north-resizer js-resizer' x='0' y='-5' width='100' height='10'>
+            </rect>
+            <rect class='svg-resizer svg-south-resizer js-south-resizer js-resizer' x='0' y='95' width='100' height='10'>
+            </rect>
+            <rect class='svg-resizer svg-east-resizer js-east-resizer js-resizer' x='95' y='0' width='10' height='100'>
+            </rect>
+            <rect class='svg-resizer svg-west-resizer js-west-resizer js-resizer' x='-5' y='0' width='10' height='100'>
+            </rect>
+        </g>
+    </g>
+</g>
+
+<g class='js-activity-shape js-activity-icon'>
+    <path transform='scale(1.2) translate(3, 3)' class='js-activity-icon pd-task-icon pd-task-icon__user' d='M8.3,1.2c-0.4,0-0.5,0.2-0.7,0.2C7.3,1.4,7.7,1.3,7,1.4c-0.7,0.1-1,1-1,1.4c0,0.4,0,1.7,0,1.7L5.5,5.1v1.2             c0,0,0,0.6,0.6,0.6c0.3,0.8,1.2,1.2,1.2,1.2v1.2c0,0,0,0.6-1.8,0.6C2.7,9.9,3,12.3,3,12.2C3,12.9,3,14,3,14             h11c0,0,0-0.5,0-1.2c0-0.7,0-3-2.4-3c-1.8,0-1.8-0.1-1.8-0.6c0-0.4,0-1.2,0-1.2s0.9-0.4,1.2-1.2             c0.6,0,0.6-0.6,0.6-0.6V5.1L11,4.5c0,0,0-0.8,0-1.2c0-1.2-0.1-1.8-1.2-1.8c0,0,0-0.6-0.6-0.6L8.3,1.2z'>
+    </path>
+</g>
+
+<text fill='#333' class='svg-text-editor-text no-select' cursor='default' style='white-space: pre;' x='66' y='22' text-anchor='middle'><tspan dy='13' x='66' class='js-activity-shape'>Корректировка </tspan><tspan dy='13' x='66' class='js-activity-shape'>работы</tspan></text></g><g class='connectors-g'><circle r='4' cx='63.5' cy='0' index='10' alignment='top' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='63.5' cy='0' index='10' alignment='top' charge='-1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='127' cy='35' index='40' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='127' cy='35' index='40' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='63.5' cy='70' index='70' alignment='bottom' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='63.5' cy='70' index='70' alignment='bottom' charge='-1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='0' cy='35' index='100' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='0' cy='35' index='100' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(240,220)' class='activity' id='787f78b9-ba46-4d5f-860c-20681e507bcc'><g class='activity-g'><g class='dev-activity-event dev-activity-StartEvent'>
+    <circle class='diagram-activity-background' cx='0' cy='0' r='22'>
+    </circle>
+
+    <circle class='dev-event-outer-circle js-activity-shape' cx='0' cy='0' r='22'>
+    </circle>
+
+    <circle class='dev-activity-event-None dev-event-inner-circle js-activity-shape' cx='0' cy='0' r='18'>
+    </circle>
+
+    <g class='js-title-content'><text fill='#333' class='svg-text-editor-text no-select' cursor='default' style='white-space: pre;' x='2' y='25' text-anchor='middle'><tspan dy='13' x='2' class=''>Стартовое событие</tspan></text><title>Стартовое событие</title></g>
+
+
+
+
+
+    <g class='js-activity-connectors'>
+
+        <circle r='4' cx='0' cy='22' index='40' alignment='bottom' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+        <circle r='7' cx='0' cy='22' index='40' alignment='bottom' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+
+        <circle r='4' cx='0' cy='-22' index='0' alignment='top' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+            <circle r='7' cx='0' cy='-22' index='0' alignment='top' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+            <circle r='4' cx='22' cy='0' index='10' alignment='right' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/>
+            <circle r='7' cx='22' cy='0' index='10' alignment='right' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+            <circle r='4' cx='-22' cy='0' index='30' alignment='left' charge='-1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible js-diagram-connector-linked'/>
+            <circle r='7' cx='-22' cy='0' index='30' alignment='left' charge='-1' class='js-diagram-connector dev-diagram-connector'/>
+    </g>
+
+</g>
+
+</g><g class='connectors-g'/><g class='resizers-g'/><g class='error-g'/></g></g><g class='select-g'><rect width='1900' height='1040' x='0' y='0' stroke='#009bfe' fill='#009bfe' fill-opacity='0.03' stroke-width='2' rx='4' ry='4' class='when-selected' transform='translate(60,10)' style='display: none; pointer-events: none;'/></g><g class='mounted-g'/><g class='flow-g'><marker refX='3' refY='2' markerWidth='4' markerHeight='4' orient='auto' id='arrowPath' fill='#888' stroke='none'><path d='M 0,0 V 4 L4,2 Z'/></marker><marker refX='3' refY='2' markerWidth='4' markerHeight='4' orient='auto' id='selectedArrowPath' fill='black' stroke='none'><path d='M 0,0 V 4 L4,2 Z'/></marker><g transform='translate(562,220)' class='activity' id='92dd2ab0-53f9-4252-803f-bb165eb8bd7b'><g class='activity-g'><path d='M-300,0 L-280,0 L-265.5,0 L-249.5,0' stroke-linejoin='round' fill='none' class='diagram-activity-background'/><path flow-line='true' d='M-300,0 L-280,0 L-265.5,0 L-249.5,0' stroke-linejoin='round' fill='none' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' marker-end='url(#arrowPath)' islast='1' class='js-diagram-flow-path js-activity-shape user-visible'/><rect x='-306' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect x='-286' y='-6' width='14.5' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-260' y='-20' width='0' height='40' class='flow-line-dragPoint drag-point-horizontal'/><rect x='-271.5' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect x='-300' y='-10' width='54.5' height='20' opacity='0' class='js-activity-shape flow-line-enterZone'/></g><g class='connectors-g'><circle r='4' cx='-300' cy='0' index='0' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-300' cy='0' index='0' charge='1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='-245.5' cy='0' index='10' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-245.5' cy='0' index='10' charge='1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(1522,340)' class='activity' id='00c754fd-b5ae-4cc2-a92a-ad422494135c'><g class='activity-g'><path d='M-440,0 L-420,0 L-384,0 L-368,0' stroke-linejoin='round' fill='none' class='diagram-activity-background'/><path flow-line='true' d='M-440,0 L-420,0 L-384,0 L-368,0' stroke-linejoin='round' fill='none' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' marker-end='url(#arrowPath)' islast='1' class='js-diagram-flow-path js-activity-shape user-visible'/><rect x='-446' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect x='-426' y='-6' width='36' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-400' y='-20' width='0' height='40' class='flow-line-dragPoint drag-point-horizontal'/><rect x='-390' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect x='-440' y='-10' width='76' height='20' opacity='0' class='js-activity-shape flow-line-enterZone'/></g><g class='connectors-g'><circle r='4' cx='-440' cy='0' index='0' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-440' cy='0' index='0' charge='1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='-364' cy='0' index='10' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-364' cy='0' index='10' charge='1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(1383,340)' class='activity' id='c6f5d6f2-2362-4d40-9ff3-bff31b65f428'><g class='activity-g'><path d='M-400,0 L-380,0 L-365,0 L-349,0' stroke-linejoin='round' fill='none' class='diagram-activity-background'/><path flow-line='true' d='M-400,0 L-380,0 L-365,0 L-349,0' stroke-linejoin='round' fill='none' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' marker-end='url(#arrowPath)' islast='1' class='js-diagram-flow-path js-activity-shape user-visible'/><rect x='-406' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><line x1='-397.0710678118655' y1='7.071067811865475' x2='-382.9289321881345' y2='-7.071067811865475' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' class='flow-line js-activity-shape user-visible'/><rect x='-386' y='-6' width='15' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-360' y='-20' width='0' height='40' class='flow-line-dragPoint drag-point-horizontal'/><rect x='-371' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect x='-400' y='-10' width='55' height='20' opacity='0' class='js-activity-shape flow-line-enterZone'/></g><g class='connectors-g'><circle r='4' cx='-400' cy='0' index='0' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-400' cy='0' index='0' charge='1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='-345' cy='0' index='10' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-345' cy='0' index='10' charge='1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(1360,243)' class='activity' id='147816e4-71ae-47ce-ad6f-a5449d26d7e6'><g class='activity-g'><path d='M-400,0 L-400,20  L-400,54  L-400,70 ' stroke-linejoin='round' fill='none' class='diagram-activity-background'/><path flow-line='true' d='M-400,0 L-400,20  L-400,54  L-400,70 ' stroke-linejoin='round' fill='none' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' marker-end='url(#arrowPath)' islast='1' class='js-diagram-flow-path js-activity-shape user-visible'/><rect x='-406' y='-6' width='12' height='20' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><text x='-390' y='25' stroke-width='1px' stroke='black' class='no-select js-activity-shape'>Да</text><rect x='-406' y='14' width='12' height='34' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-420' y='40' width='40' height='0' class='flow-line-dragPoint drag-point-vertical'/><rect x='-406' y='48' width='12' height='20' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect x='-410' y='0' width='20' height='74' opacity='0' class='js-activity-shape flow-line-enterZone'/></g><g class='connectors-g'><circle r='4' cx='-400' cy='0' index='0' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-400' cy='0' index='0' charge='1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='-400' cy='74' index='10' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-400' cy='74' index='10' charge='1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(1263,220)' class='activity' id='e58eb624-bc51-44ff-82cc-ce43a40e9d55'><g class='activity-g'><path d='M-403,23 L-403,43  L-403,112  A8,8 0 0,0 -395,120 L-346,120 L-330,120' stroke-linejoin='round' fill='none' class='diagram-activity-background'/><path flow-line='true' d='M-403,23 L-403,43  L-403,112  A8,8 0 0,0 -395,120 L-346,120 L-330,120' stroke-linejoin='round' fill='none' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' marker-end='url(#arrowPath)' islast='1' class='js-diagram-flow-path js-activity-shape user-visible'/><rect x='-409' y='17' width='12' height='20' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><text x='-393' y='48' stroke-width='1px' stroke='black' class='no-select js-activity-shape'>Да</text><rect x='-409' y='37' width='12' height='77' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-423' y='63' width='40' height='37' class='flow-line-dragPoint drag-point-vertical'/><rect x='-409' y='114' width='57' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-383' y='100' width='17' height='40' class='flow-line-dragPoint drag-point-horizontal'/><rect x='-352' y='114' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/></g><g class='connectors-g'><circle r='4' cx='-403' cy='23' index='0' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-403' cy='23' index='0' charge='1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='-326' cy='120' index='10' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-326' cy='120' index='10' charge='1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(1383,220)' class='activity' id='1e71e04f-f5d5-409e-9479-379a4219bd3b'><g class='activity-g'><path d='M-400,0 L-380,0 L-245,0 L-229,0' stroke-linejoin='round' fill='none' class='diagram-activity-background'/><path flow-line='true' d='M-400,0 L-380,0 L-245,0 L-229,0' stroke-linejoin='round' fill='none' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' marker-end='url(#arrowPath)' islast='1' class='js-diagram-flow-path js-activity-shape user-visible'/><rect x='-406' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><line x1='-397.0710678118655' y1='7.071067811865475' x2='-382.9289321881345' y2='-7.071067811865475' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' class='flow-line js-activity-shape user-visible'/><text x='-380' y='-10' stroke-width='1px' stroke='black' class='no-select js-activity-shape'>Нет</text><rect x='-386' y='-6' width='135' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-360' y='-20' width='95' height='40' class='flow-line-dragPoint drag-point-horizontal'/><rect x='-251' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/></g><g class='connectors-g'><circle r='4' cx='-400' cy='0' index='0' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-400' cy='0' index='0' charge='1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='-225' cy='0' index='10' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-225' cy='0' index='10' charge='1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(1263,220)' class='activity' id='36e1f994-3892-4525-9f3e-76426e9a3067'><g class='activity-g'><path d='M-380,0 L-360,0 L-346,0 L-330,0' stroke-linejoin='round' fill='none' class='diagram-activity-background'/><path flow-line='true' d='M-380,0 L-360,0 L-346,0 L-330,0' stroke-linejoin='round' fill='none' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' marker-end='url(#arrowPath)' islast='1' class='js-diagram-flow-path js-activity-shape user-visible'/><rect x='-386' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><line x1='-377.0710678118655' y1='7.071067811865475' x2='-362.9289321881345' y2='-7.071067811865475' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' class='flow-line js-activity-shape user-visible'/><text x='-360' y='-10' stroke-width='1px' stroke='black' class='no-select js-activity-shape'>Нет</text><rect x='-366' y='-6' width='14' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-340' y='-20' width='0' height='40' class='flow-line-dragPoint drag-point-horizontal'/><rect x='-352' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect x='-380' y='-10' width='54' height='20' opacity='0' class='js-activity-shape flow-line-enterZone'/></g><g class='connectors-g'><circle r='4' cx='-380' cy='0' index='0' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-380' cy='0' index='0' charge='1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='-326' cy='0' index='10' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-326' cy='0' index='10' charge='1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(1183,220)' class='activity' id='1deee766-3d3e-4812-9087-7aaa7e048a5a'><g class='activity-g'><path d='M-400,0 L-380,0 L-366,0 L-350,0' stroke-linejoin='round' fill='none' class='diagram-activity-background'/><path flow-line='true' d='M-400,0 L-380,0 L-366,0 L-350,0' stroke-linejoin='round' fill='none' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' marker-end='url(#arrowPath)' islast='1' class='js-diagram-flow-path js-activity-shape user-visible'/><rect x='-406' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><text x='-380' y='-10' stroke-width='1px' stroke='black' class='no-select js-activity-shape'>Да</text><rect x='-386' y='-6' width='14' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-360' y='-20' width='0' height='40' class='flow-line-dragPoint drag-point-horizontal'/><rect x='-372' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect x='-400' y='-10' width='54' height='20' opacity='0' class='js-activity-shape flow-line-enterZone'/></g><g class='connectors-g'><circle r='4' cx='-400' cy='0' index='0' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-400' cy='0' index='0' charge='1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='-346' cy='0' index='10' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-346' cy='0' index='10' charge='1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(1183,220)' class='activity' id='e9d49baf-869f-4d4d-86db-0ec4afa6c0e1'><g class='activity-g'><path d='M-423,23 L-423,43  L-423,75  A8,8 0 0,1 -431,83 L-795,83 A8,8 0 0,1 -803,75 L-803,55  L-803,39 ' stroke-linejoin='round' fill='none' class='diagram-activity-background'/><path flow-line='true' d='M-423,23 L-423,43  L-423,75  A8,8 0 0,1 -431,83 L-795,83 A8,8 0 0,1 -803,75 L-803,55  L-803,39 ' stroke-linejoin='round' fill='none' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' marker-end='url(#arrowPath)' islast='1' class='js-diagram-flow-path js-activity-shape user-visible'/><rect x='-429' y='17' width='12' height='20' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><line x1='-430.0710678118655' y1='25.928932188134524' x2='-415.9289321881345' y2='40.071067811865476' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' class='flow-line js-activity-shape user-visible'/><rect x='-429' y='37' width='12' height='40' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-443' y='63' width='40' height='0' class='flow-line-dragPoint drag-point-vertical'/><rect x='-803' y='77' width='380' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-783' y='63' width='340' height='40' class='flow-line-dragPoint drag-point-horizontal'/><rect x='-809' y='55' width='12' height='28' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-823' y='75' width='40' height='0' class='flow-line-dragPoint drag-point-vertical'/><rect x='-809' y='35' width='12' height='20' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/></g><g class='connectors-g'><circle r='4' cx='-423' cy='23' index='0' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-423' cy='23' index='0' charge='1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='-803' cy='35' index='10' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-803' cy='35' index='10' charge='1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(1092,220)' class='activity' id='ab4b4c27-fce7-4a17-a356-750931c7b4ec'><g class='activity-g'><path d='M-386,0 L-366,0 L-375,0 L-359,0' stroke-linejoin='round' fill='none' class='diagram-activity-background'/><path flow-line='true' d='M-386,0 L-366,0 L-375,0 L-359,0' stroke-linejoin='round' fill='none' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' marker-end='url(#arrowPath)' islast='1' class='js-diagram-flow-path js-activity-shape user-visible'/><rect x='-392' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect x='-375' y='-6' width='9' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-355' y='-20' width='0' height='40' class='flow-line-dragPoint drag-point-horizontal'/><rect x='-381' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect x='-386' y='-10' width='31' height='20' opacity='0' class='js-activity-shape flow-line-enterZone'/></g><g class='connectors-g'><circle r='4' cx='-386' cy='0' index='0' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-386' cy='0' index='0' charge='1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='-355' cy='0' index='10' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-355' cy='0' index='10' charge='1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(843,220)' class='activity' id='351fe378-24bf-4823-8886-3207f1dd0e4f'><g class='activity-g'><path d='M-343,23 L-343,43  L-343,52  A8,8 0 0,0 -335,60 L9,60 A8,8 0 0,0 17,52 L17,43  L17,27 ' stroke-linejoin='round' fill='none' class='diagram-activity-background'/><path flow-line='true' d='M-343,23 L-343,43  L-343,52  A8,8 0 0,0 -335,60 L9,60 A8,8 0 0,0 17,52 L17,43  L17,27 ' stroke-linejoin='round' fill='none' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' marker-end='url(#arrowPath)' islast='1' class='js-diagram-flow-path js-activity-shape user-visible'/><rect x='-349' y='17' width='12' height='20' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><line x1='-350.0710678118655' y1='25.928932188134524' x2='-335.9289321881345' y2='40.071067811865476' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' class='flow-line js-activity-shape user-visible'/><rect x='-349' y='37' width='12' height='17' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-363' y='63' width='40' height='0' class='flow-line-dragPoint drag-point-vertical'/><rect x='-349' y='54' width='360' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-323' y='40' width='320' height='40' class='flow-line-dragPoint drag-point-horizontal'/><rect x='11' y='43' width='12' height='17' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-3' y='63' width='40' height='0' class='flow-line-dragPoint drag-point-vertical'/><rect x='11' y='23' width='12' height='20' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/></g><g class='connectors-g'><circle r='4' cx='-343' cy='23' index='0' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-343' cy='23' index='0' charge='1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='17' cy='23' index='10' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='17' cy='23' index='10' charge='1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(883,220)' class='activity' id='92a2a077-d693-4191-8c29-0308a9af35b8'><g class='activity-g'><path d='M-360,0 L-340,0 L-329,0 L-313,0' stroke-linejoin='round' fill='none' class='diagram-activity-background'/><path flow-line='true' d='M-360,0 L-340,0 L-329,0 L-313,0' stroke-linejoin='round' fill='none' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' marker-end='url(#arrowPath)' islast='1' class='js-diagram-flow-path js-activity-shape user-visible'/><rect x='-366' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><text x='-340' y='-10' stroke-width='1px' stroke='black' class='no-select js-activity-shape'>Да</text><rect x='-346' y='-6' width='11' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-320' y='-20' width='0' height='40' class='flow-line-dragPoint drag-point-horizontal'/><rect x='-335' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect x='-360' y='-10' width='51' height='20' opacity='0' class='js-activity-shape flow-line-enterZone'/></g><g class='connectors-g'><circle r='4' cx='-360' cy='0' index='0' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-360' cy='0' index='0' charge='1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='-309' cy='0' index='10' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-309' cy='0' index='10' charge='1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(860,197)' class='activity' id='46322791-354d-4ce5-8fcc-3b8f6596054e'><g class='activity-g'><path d='M-360,0 L-360,-20  L-360,-55  L-360,-71 ' stroke-linejoin='round' fill='none' class='diagram-activity-background'/><path flow-line='true' d='M-360,0 L-360,-20  L-360,-55  L-360,-71 ' stroke-linejoin='round' fill='none' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' marker-end='url(#arrowPath)' islast='1' class='js-diagram-flow-path js-activity-shape user-visible'/><rect x='-366' y='-20' width='12' height='20' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect x='-366' y='-55' width='12' height='35' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-380' y='-35' width='40' height='0' class='flow-line-dragPoint drag-point-vertical'/><rect x='-366' y='-75' width='12' height='20' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect x='-370' y='-75' width='20' height='75' opacity='0' class='js-activity-shape flow-line-enterZone'/></g><g class='connectors-g'><circle r='4' cx='-360' cy='0' index='0' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-360' cy='0' index='0' charge='1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='-360' cy='-75' index='10' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-360' cy='-75' index='10' charge='1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g><g transform='translate(787,220)' class='activity' id='1c536e09-3583-49f1-a562-a7ff47b455a4'><g class='activity-g'><path d='M-343.5,0 L-323.5,0 L-330,0 L-314,0' stroke-linejoin='round' fill='none' class='diagram-activity-background'/><path flow-line='true' d='M-343.5,0 L-323.5,0 L-330,0 L-314,0' stroke-linejoin='round' fill='none' stroke-width='2' stroke='#888' selected='[object Object]' invalid='[object Object]' marker-end='url(#arrowPath)' islast='1' class='js-diagram-flow-path js-activity-shape user-visible'/><rect x='-349.5' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect x='-330' y='-6' width='6.5' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect ry='5' fill='#BFBEBE' stroke='#fff' stroke-width='2' opacity='0' x='-310' y='-20' width='0' height='40' class='flow-line-dragPoint drag-point-horizontal'/><rect x='-336' y='-6' width='20' height='12' fill='#BFBEBE' opacity='0' class='flow-line-dragContainer js-activity-shape'/><rect x='-343.5' y='-10' width='33.5' height='20' opacity='0' class='js-activity-shape flow-line-enterZone'/></g><g class='connectors-g'><circle r='4' cx='-343.5' cy='0' index='0' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-343.5' cy='0' index='0' charge='1' class='js-diagram-connector dev-diagram-connector'/><circle r='4' cx='-310' cy='0' index='10' charge='1' class='when-flow-drag dev-diagram-connector js-diagram-connector-visible'/><circle r='11' cx='-310' cy='0' index='10' charge='1' class='js-diagram-connector dev-diagram-connector'/></g><g class='resizers-g'/><g class='error-g'/></g></g><g class='toolbar-g'/><g class='error-panel-g'/><g class='global-object-overlay-g'/></svg>

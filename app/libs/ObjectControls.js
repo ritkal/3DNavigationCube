@@ -14,10 +14,8 @@ license: MIT
  * @param domElement - the renderer's dom element
  * @param objectToMove - the object to control.
  */
-var THREE = window.THREE || require('three');
 
-var ObjectControls;
-export default ObjectControls = function (camera, domElement, objectToMove) {
+export default function (camera, domElement, objectToMove) {
 
 	this.camera = camera;
 	this.objectToMove = objectToMove;
@@ -212,5 +210,3 @@ export default ObjectControls = function (camera, domElement, objectToMove) {
 
 	return this;
 };
-
-function preventEvent( event ) { event.preventDefault(); }
