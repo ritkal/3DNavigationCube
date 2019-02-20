@@ -10,7 +10,7 @@ var camera, controls, controlsElement, scene, renderer, INTERSECTEDMOUSEDOWN, IN
 var raycaster, mouse = { x : 0, y : 0 }, info;
 var colors = ['#81d8d0', '#fff25d', '#3197e0']
 const changeDuration = 700;
-var items = [], flag, timer = 0, delay = 200, prevent = false, animation;
+var items = [], flag, timer = 0, delay = 200, prevent = false, animation, mode = 'main';
 			init();
 			animate();
 			function init() {
@@ -151,141 +151,151 @@ var items = [], flag, timer = 0, delay = 200, prevent = false, animation;
                   controlsElement.setTranslationSnap( null );
                   contcontrolsElementrol.setRotationSnap( null );
                   break;
+               case 27:
+                  mode = 'main';
+                  controls.enabled = true;
+                  scene.remove(CURRENTINFOCUBE);
+                  cameraAnimate.animateToLayer(camera, controls, diagramCenter, 1);
+                  break;
             }
          } );
          }
 
          function onDblClick(e) {
             clearTimeout(timer);
-            prevent = true;
-            if (flag === 0) {
-               mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
-               mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+            if (mode === 'main') {
+               controls.enabled = false;
+               prevent = true;
+               if (flag === 0) {
+                  mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+                  mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
 
-               raycaster.setFromCamera( mouse, camera );    
+                  raycaster.setFromCamera( mouse, camera );    
 
-               var intersects = raycaster.intersectObjects( scene.children );
+                  var intersects = raycaster.intersectObjects( scene.children );
 
-               if ( intersects.length > 0 ) {
-                  INTERSECTEDMOUSEDBL = intersects[ 0 ].object;
-                  if (INTERSECTEDMOUSEDBL.userData.type === 'cubeElement') {
-                     if (CURRENTINFOCUBE) {
-                        scene.remove(CURRENTINFOCUBE);
+                  if ( intersects.length > 0 ) {
+                     INTERSECTEDMOUSEDBL = intersects[ 0 ].object;
+                     if (INTERSECTEDMOUSEDBL.userData.type === 'cubeElement') {
+                        var size = {
+                           lenght: 400,
+                           height: 300,
+                           width: 400
+                        };
+                        CURRENTINFOCUBE = diagramBuilder.createMesh(size, INTERSECTEDMOUSEDBL.position, 'infoCube');
+
+                        // Basic element controls (rotating around Y)
+                        var controlsT = new ObjectControls(camera, renderer.domElement, CURRENTINFOCUBE);
+                        controlsT.setDistance(8, 15000); // set min - max distance for zoom
+                        controlsT.setZoomSpeed(1); // set zoom speed
+                        cameraAnimate.animateToInfoCube(camera, controls, INTERSECTEDMOUSEDBL);
+                        mode = 'infoCube';
+                        CURRENTINFOCUBE.matrixAutoUpdate = true
                      }
-                     var size = {
-                        lenght: 400,
-                        height: 300,
-                        width: 400
-                     };
-                     CURRENTINFOCUBE = diagramBuilder.createMesh(size, INTERSECTEDMOUSEDBL.position, 'infoCube');
-                     // Basic element controls (rotating around Y)
-                     var controlsT = new ObjectControls(camera, renderer.domElement, CURRENTINFOCUBE);
-                     controlsT.setDistance(8, 15000); // set min - max distance for zoom
-                     controlsT.setZoomSpeed(1); // set zoom speed
-                     cameraAnimate.animateToInfoCube(camera, controls, INTERSECTEDMOUSEDBL);
-                  }
-               } else {
-                  INTERSECTEDMOUSEDBL = null;
-                  cameraAnimate.animateToLayer(camera, controls, diagramCenter, 1);
+                  } else {
+                     INTERSECTEDMOUSEDBL = null;
+                     cameraAnimate.animateToLayer(camera, controls, diagramCenter, 1);
 
+                  }
                }
             }
          }
 
          function onMouseDown( e ) {
-            flag = 0;
-            mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
-            mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+            if (mode === 'main') {
+               flag = 0;
+               mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+               mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
 
-            raycaster.setFromCamera( mouse, camera );    
+               raycaster.setFromCamera( mouse, camera );    
 
-            var intersectsonMouseDown = raycaster.intersectObjects( scene.children );
+               var intersectsonMouseDown = raycaster.intersectObjects( scene.children );
 
-            if ( intersectsonMouseDown.length > 0 ) {
-               if (intersectsonMouseDown[ 0 ].object.userData.type === 'infoCube') {
-                  intersectsonMouseDown[ 0 ].object.matrixAutoUpdate = true;
-                  info = intersectsonMouseDown[ 0 ].object;
-                  controls.enabled = false;
+               if ( intersectsonMouseDown.length > 0 ) {
+                  // if (intersectsonMouseDown[ 0 ].object.userData.type === 'infoCube') {
+                  //    intersectsonMouseDown[ 0 ].object.matrixAutoUpdate = true;
+                  //    info = intersectsonMouseDown[ 0 ].object;
+                  //    controls.enabled = false;
+                  // } else {
+                  //    scene.remove(CURRENTINFOCUBE);
+                  // }
+                  if (intersectsonMouseDown[ 0 ].object.userData.type === 'fullControlled') {
+                     controlsElement.attach( intersectsonMouseDown[ 0 ].object );
+                     if (INTERSECTEDMOUSEDOWN !== intersectsonMouseDown[ 0 ].object) {
+                           cameraAnimation(camera, controls, intersectsonMouseDown[ 0 ].object)
+                           INTERSECTEDMOUSEDOWN = intersectsonMouseDown[ 0 ].object;
+                     }
+                  }
                } else {
-                  scene.remove(CURRENTINFOCUBE);
-               }
-               if (intersectsonMouseDown[ 0 ].object.userData.type === 'fullControlled') {
-                    controlsElement.attach( intersectsonMouseDown[ 0 ].object );
-                    if (INTERSECTEDMOUSEDOWN !== intersectsonMouseDown[ 0 ].object) {
-                        cameraAnimation(camera, controls, intersectsonMouseDown[ 0 ].object)
-                        INTERSECTEDMOUSEDOWN = intersectsonMouseDown[ 0 ].object;
-                    }
-                // intersectsonMouseDown[ 0 ].object.matrixAutoUpdate = true;
-                // info = intersectsonMouseDown[ 0 ].object;
-                // controls.enabled = false;
-             }
-            } else {
-                  info = null;
-                  scene.remove(CURRENTINFOCUBE);
-            }     
+                     info = null;
+                     // scene.remove(CURRENTINFOCUBE);
+               }   
+            }  
          }
 
          function onMouseUp( e ) {
-            controls.enabled = true;
-            timer = setTimeout(function() {
-               if (!prevent) {
-                  if (info) {
-                     info.matrixAutoUpdate = false;
-                 }
-                 if (flag === 0) {
-                    mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
-                    mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
-     
-                    raycaster.setFromCamera( mouse, camera );    
-     
-                    var intersects = raycaster.intersectObjects( scene.children );
-     
-                    if ( intersects.length > 0 ) {
-                       if ( INTERSECTEDMOUSEUP != intersects[ 0 ].object) {
-                          INTERSECTEDMOUSEUP = intersects[ 0 ].object;
-                          if (INTERSECTEDMOUSEUP.userData.type === 'cubeElement') {
-                             items.forEach(item => {
-                                if(item.userData.column === INTERSECTEDMOUSEUP.userData.column && item.userData.row === INTERSECTEDMOUSEUP.userData.row) {
-                                   item.material.forEach(m => {
-                                      m.opacity = 1;
-                                   })
-                                } else {
-                                   item.material.forEach(m => {
-                                      m.opacity = 0.2;
-                                   })
-                                }
-                             })
-                             cameraAnimate.animateCameraOnClickElement(camera, controls, INTERSECTEDMOUSEUP);
-                          }
-                          if (INTERSECTEDMOUSEUP.userData.type === 'navColumnElement') { 
-                             items.forEach(item => {
-                                if(item.userData.layer === INTERSECTEDMOUSEUP.userData.layer) {
-                                   item.material.forEach(m => {
-                                      m.opacity = 1;
-                                   })
-                                } else {
-                                   item.material.forEach(m => {
-                                      m.opacity = 0.2;
-                                   })
-                                }
-                             })
-                             cameraAnimate.animateToLayer(camera, controls, diagramCenter, INTERSECTEDMOUSEUP.userData.layer);
-                          }
-                       } else {
-                          INTERSECTEDMOUSEUP = null;
-                       }
-                    } else {
-                       items.forEach(item => {
-                             item.material.forEach(m => {
-                                m.opacity = 1;
-                           })
-                       })
-                       cameraAnimate.animateToLayer(camera, controls, diagramCenter, 1);
-                    }
-                 }
-               }
-               prevent = false;
-            }, delay);
+            if (mode === 'main') {
+               controls.enabled = true;
+               timer = setTimeout(function() {
+                  if (!prevent) {
+                     if (info) {
+                        info.matrixAutoUpdate = false;
+                  }
+                  if (flag === 0) {
+                     mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+                     mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+      
+                     raycaster.setFromCamera( mouse, camera );    
+      
+                     var intersects = raycaster.intersectObjects( scene.children );
+      
+                     if ( intersects.length > 0 ) {
+                        if ( INTERSECTEDMOUSEUP != intersects[ 0 ].object) {
+                           INTERSECTEDMOUSEUP = intersects[ 0 ].object;
+                           if (INTERSECTEDMOUSEUP.userData.type === 'cubeElement') {
+                              items.forEach(item => {
+                                 if(item.userData.column === INTERSECTEDMOUSEUP.userData.column && item.userData.row === INTERSECTEDMOUSEUP.userData.row) {
+                                    item.material.forEach(m => {
+                                       m.opacity = 1;
+                                    })
+                                 } else {
+                                    item.material.forEach(m => {
+                                       m.opacity = 0.2;
+                                    })
+                                 }
+                              })
+                              cameraAnimate.animateCameraOnClickElement(camera, controls, INTERSECTEDMOUSEUP);
+                           }
+                           if (INTERSECTEDMOUSEUP.userData.type === 'navColumnElement') { 
+                              items.forEach(item => {
+                                 if(item.userData.layer === INTERSECTEDMOUSEUP.userData.layer) {
+                                    item.material.forEach(m => {
+                                       m.opacity = 1;
+                                    })
+                                 } else {
+                                    item.material.forEach(m => {
+                                       m.opacity = 0.2;
+                                    })
+                                 }
+                              })
+                              cameraAnimate.animateToLayer(camera, controls, diagramCenter, INTERSECTEDMOUSEUP.userData.layer);
+                           }
+                        } else {
+                           INTERSECTEDMOUSEUP = null;
+                        }
+                     } else {
+                        items.forEach(item => {
+                              item.material.forEach(m => {
+                                 m.opacity = 1;
+                              })
+                        })
+                        cameraAnimate.animateToLayer(camera, controls, diagramCenter, 1);
+                     }
+                  }
+                  }
+                  prevent = false;
+               }, delay);
+            }
          }
 
 			function onWindowResize() {
