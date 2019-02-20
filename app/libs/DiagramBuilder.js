@@ -107,15 +107,16 @@ export default function (scene, cubeElements) {
 
     this.createMesh = function(size, pos, type) {
         var geometryT = new THREE.BoxGeometry( size.lenght, size.height, size.width );
-        var texture = new THREE.TextureLoader().load( 'textures/carts.jpg' );
+        var texture1 = new THREE.TextureLoader().load( 'textures/carts.jpg' );
+        var texture2 = new THREE.TextureLoader().load( 'textures/column-charts.jpg' );
         var materialT = [
            new THREE.MeshBasicMaterial( { color: 'gray',side: THREE.DoubleSide } ),
            new THREE.MeshBasicMaterial( { color: 'gray',side: THREE.DoubleSide } ),
 
            new THREE.MeshBasicMaterial( { color: 'white', transparent: type==='infoCube'?true:false, opacity: 0,side: THREE.DoubleSide }),
            new THREE.MeshBasicMaterial( { color: 'white', transparent: type==='infoCube'?true:false, opacity: 0, side: THREE.DoubleSide } ),
-           new THREE.MeshBasicMaterial( { map: texture , side: THREE.DoubleSide} ),
-           new THREE.MeshBasicMaterial( { color: 'white',side: THREE.DoubleSide } ),
+           new THREE.MeshBasicMaterial( { map: texture1 , side: THREE.DoubleSide} ),
+           new THREE.MeshBasicMaterial( { map: texture2 , side: THREE.DoubleSide} ),
         ];
         var meshT = new THREE.Mesh( geometryT, materialT );
         meshT.position.set(pos.x, pos.y - 200, pos.z);
