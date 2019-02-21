@@ -4,7 +4,8 @@ import * as TrackballControls from 'three-trackballcontrols';
 import meta from '../meta';
 
 const defaultCubeData = meta.data;
-const colors = ['#81d8d0', '#fff25d', '#3197e0'];
+const colors = ['#63a884', '#fa8072', '#ffcc5c'];
+const infoColors = ['#bae0cc', '#ffd8d3', '#fcebc4'];
 export default function (scene, cubeElements) {
     this.scene = scene;
     this.cubeElements = cubeElements || defaultCubeData;
@@ -91,9 +92,12 @@ export default function (scene, cubeElements) {
     this.createNavColumn = function () {
         var layersCount = getMaxLayer();
         var geometryC = new THREE.CylinderGeometry( offset.y/3, offset.y/3, offset.y, 32 );
+        var items= [];
         for (var i = 0; i < layersCount + 1; i++) {
            var materialC = new THREE.MeshBasicMaterial( { color: colors[i] } );
            var meshC = new THREE.Mesh( geometryC, materialC );
+           meshC.material.transparent = true;
+           meshC.material.opacity = 1;
            meshC.position.x = 2000;
            meshC.position.y = -i*offset.y;
            meshC.position.z = 500;
@@ -101,16 +105,18 @@ export default function (scene, cubeElements) {
            meshC.userData.layer = i;
            meshC.updateMatrix();
            scene.add( meshC );
+           items.push(meshC);
         }
+        return items;
     };
 
-    this.createMesh = function(size, pos, type) {
+    this.createMesh = function(size, obj, type) {
         var geometryT = new THREE.BoxGeometry( size.lenght, size.height, size.width );
         var texture1 = new THREE.TextureLoader().load( 'textures/carts.jpg' );
         var texture2 = new THREE.TextureLoader().load( 'textures/column-charts.jpg' );
         var materialT = [
-           new THREE.MeshBasicMaterial( { color: 'gray',side: THREE.DoubleSide } ),
-           new THREE.MeshBasicMaterial( { color: 'gray',side: THREE.DoubleSide } ),
+           new THREE.MeshBasicMaterial( { color: infoColors[obj.userData.layer],side: THREE.DoubleSide } ),
+           new THREE.MeshBasicMaterial( { color: infoColors[obj.userData.layer],side: THREE.DoubleSide } ),
 
            new THREE.MeshBasicMaterial( { color: 'white', transparent: type==='infoCube'?true:false, opacity: 0,side: THREE.DoubleSide }),
            new THREE.MeshBasicMaterial( { color: 'white', transparent: type==='infoCube'?true:false, opacity: 0, side: THREE.DoubleSide } ),
@@ -118,7 +124,7 @@ export default function (scene, cubeElements) {
            new THREE.MeshBasicMaterial( { map: texture2 , side: THREE.DoubleSide} ),
         ];
         var meshT = new THREE.Mesh( geometryT, materialT );
-        meshT.position.set(pos.x, pos.y - 200, pos.z);
+        meshT.position.set(obj.position.x, obj.position.y - 200, obj.position.z);
         meshT.userData.type = 'infoCube';
         meshT.userData.layer = 1;
         meshT.updateMatrix();

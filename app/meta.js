@@ -66,7 +66,13 @@ const modes = {
     infoMode: 'Info'
 };
 
+const animateOn = {
+    click: 'elClick',
+    dblClick: 'elDblClic'
+};
+
 export default {
     data,
-    modes
+    modes,
+    animateOn
 };

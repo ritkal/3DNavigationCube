@@ -7,269 +7,291 @@ import cameraAnimation from '../../libs/animateCameraService';
 import ObjectControls from '../../libs/ObjectControls';
 import * as TransformControls from 'three-transformcontrols';
 
-export default function () {
-    let mode = meta.modes.mainMode;
-    let controls, camera, renderer, scene, raycaster, diagramBuilder, diagramCenter, flag, INTERSECTEDMOUSEDBL, INTERSECTEDMOUSEDOWN, INTERSECTEDMOUSEUP, CURRENTINFOCUBE,
-        timer, cameraAnimate, info, controlsElement;
-    let items = [];
-    let mouse = {
-        x: 0,
-        y: 0
-    };
-    const delay = 150;
-    let prevent = false;
+export default class Diagram {
+    constructor() {
+        this.mode = meta.modes.mainMode;
 
-    function init() {
-        camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
-        cameraAnimate = new cameraAnimation();
+        this.items = [];
+        this.mouse = {
+            x: 0,
+            y: 0
+        };
+        this.delay = 150;
+        this.prevent = false;
+    }
+
+    __init() {
+        this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
 
         // Camera controls            
-        controls = new TrackballControls(camera, scene);
-        controls.rotateSpeed = 1.0;
-        controls.zoomSpeed = 1.5;
-        controls.panSpeed = 1.0;
-        controls.noZoom = false;
-        controls.noPan = false;
-        controls.staticMoving = true;
-        controls.dynamicDampingFactor = 0.3;
-        controls.keys = [65, 83, 68];
-        controls.addEventListener('change', render);
+        this.controls = new TrackballControls(this.camera, this.scene);
+        this.controls.rotateSpeed = 1.0;
+        this.controls.zoomSpeed = 1.5;
+        this.controls.panSpeed = 1.0;
+        this.controls.noZoom = false;
+        this.controls.noPan = false;
+        this.controls.staticMoving = true;
+        this.controls.dynamicDampingFactor = 0.3;
+        this.controls.keys = [65, 83, 68];
+        this.controls.addEventListener('change',() => this.__render());
 
         // renderer
-        renderer = new THREE.WebGLRenderer({
+        this.renderer = new THREE.WebGLRenderer({
             antialias: true
         });
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.domElement.addEventListener('mouseup', onMouseUp, false);
-        renderer.domElement.addEventListener('dblclick', onDblClick, false);
-        renderer.domElement.addEventListener("mousemove", () => flag = 1, false);
-        renderer.domElement.addEventListener('mousedown', onMouseDown, false);
-        document.body.appendChild(renderer.domElement);
+        this.renderer.setPixelRatio(window.devicePixelRatio);
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.domElement.addEventListener('mouseup',(e) => this.__onMouseUp(e), false);
+        this.renderer.domElement.addEventListener('dblclick',(e) => this.__onDblClick(e), false);
+        this.renderer.domElement.addEventListener("mousemove", (e) => this.flag = 1, false);
+        this.renderer.domElement.addEventListener('mousedown',(e) => this.__onMouseDown(e), false);
+        document.body.appendChild(this.renderer.domElement);
 
         // world
-        scene = new THREE.Scene();
-        raycaster = new THREE.Raycaster();
-        scene.background = new THREE.Color('#54455C');
+        this.scene = new THREE.Scene();
+        this.raycaster = new THREE.Raycaster();
+        this.scene.background = new THREE.Color('#54455C');
 
         // Build diagram
-        diagramBuilder = new DiagramBuilder(scene);
-        diagramBuilder.setElemntLength(600);
-        diagramBuilder.setOffset({
+        this.diagramBuilder = new DiagramBuilder(this.scene);
+        this.diagramBuilder.setElemntLength(600);
+        this.diagramBuilder.setOffset({
             x: 400,
             y: 500,
             z: 200
         });
-        items = diagramBuilder.createCubeElements();
-        diagramCenter = diagramBuilder.getDiagramCenter();
+        this.items = this.diagramBuilder.createCubeElements();
+        this.diagramCenter = this.diagramBuilder.getDiagramCenter();
 
-        controls.target.set(diagramCenter.x, diagramCenter.y, diagramCenter.z);
-        camera.position.set(diagramCenter.x, 100, 2200);
-        diagramBuilder.createNavColumn();
-        addWindowListeners();
-        render();
+        this.controls.target.set(this.diagramCenter.x, this.diagramCenter.y, this.diagramCenter.z);
+        this.camera.position.set(this.diagramCenter.x, 100, 2200);
+        this.columnItems = this.diagramBuilder.createNavColumn();
+        this.__addWindowListeners();
 
-           // Complex element controls
-   controlsElement = new TransformControls(camera, renderer.domElement);
-   controlsElement.addEventListener('change', render);
-   controlsElement.addEventListener('dragging-changed', function (event) {
-      control.enabled = !event.value;
-   });
+        this.__render();
 
-   // controlsElement.attach( meshT );
-   // scene.add( controlsElement );
+        // Complex element controls
+        this.cameraAnimate = new cameraAnimation(this.camera, this.controls);
 
-   // var fullControlledMesh = new THREE.Mesh( geometryT, materialT );
-   // fullControlledMesh.position.x = 2000;
-   // fullControlledMesh.position.y = 300;
-   // fullControlledMesh.position.z = 500;
-   // fullControlledMesh.userData.type = 'fullControlled';
-   // fullControlledMesh.userData.layer = 1;
-   // fullControlledMesh.updateMatrix();
-   // scene.add( fullControlledMesh );
-   // var fullControlledMesh = new THREE.Mesh( geometryT, materialT );
-   // fullControlledMesh.position.x = 1000;
-   // fullControlledMesh.position.y = 300;
-   // fullControlledMesh.position.z = 500;
-   // fullControlledMesh.userData.type = 'fullControlled';
-   // fullControlledMesh.userData.layer = 1;
-   // fullControlledMesh.updateMatrix();
-   // scene.add( fullControlledMesh );
-   // controlsElement.attach( fullControlledMesh );
+        this.controlsElement = new TransformControls(this.camera, this.renderer.domElement);
+        this.controlsElement.addEventListener('change', this.__render);
+        this.controlsElement.addEventListener('dragging-changed', function (event) {
+            this.control.enabled = !event.value;
+        });
+
+        // controlsElement.attach( meshT );
+        // scene.add( controlsElement );
+
+        // var fullControlledMesh = new THREE.Mesh( geometryT, materialT );
+        // fullControlledMesh.position.x = 2000;
+        // fullControlledMesh.position.y = 300;
+        // fullControlledMesh.position.z = 500;
+        // fullControlledMesh.userData.type = 'fullControlled';
+        // fullControlledMesh.userData.layer = 1;
+        // fullControlledMesh.updateMatrix();
+        // scene.add( fullControlledMesh );
+        // var fullControlledMesh = new THREE.Mesh( geometryT, materialT );
+        // fullControlledMesh.position.x = 1000;
+        // fullControlledMesh.position.y = 300;
+        // fullControlledMesh.position.z = 500;
+        // fullControlledMesh.userData.type = 'fullControlled';
+        // fullControlledMesh.userData.layer = 1;
+        // fullControlledMesh.updateMatrix();
+        // scene.add( fullControlledMesh );
+        // controlsElement.attach( fullControlledMesh );
     }
 
-    function animate() {
-        render();
-        requestAnimationFrame(animate);
+    __animate() {
+        this.__render();
+        requestAnimationFrame(() => this.__animate());
         TWEEN.update();
-        controls.update();
+        this.controls.update();
     }
 
-    function addWindowListeners() {
+    __addWindowListeners() {
         // Complex control listeners
-        window.addEventListener('resize', onWindowResize, false);
-        window.addEventListener('keydown', function (event) {
+        window.addEventListener('resize', () => this.__onWindowResize(), false);
+        window.addEventListener('keydown', (event) => {
             switch (event.keyCode) {
                 case 81: // Q
-                    controlsElement.setSpace(controlsElemenct.space === "local" ? "world" : "local");
+                this.controlsElement.setSpace(this.controlsElemenct.space === "local" ? "world" : "local");
                     break;
                 case 17: // Ctrl
-                    controlsElement.setTranslationSnap(100);
-                    controlsElement.setRotationSnap(THREE.Math.degToRad(15));
+                this.controlsElement.setTranslationSnap(100);
+                this.controlsElement.setRotationSnap(THREE.Math.degToRad(15));
                     break;
                 case 87: // W
-                    controlsElement.setMode("translate");
+                this.controlsElement.setMode("translate");
                     break;
                 case 69: // E
-                    controlsElement.setMode("rotate");
+                this.controlsElement.setMode("rotate");
                     break;
                 case 82: // R
-                    controlsElement.setMode("scale");
+                this.controlsElement.setMode("scale");
                     break;
                 case 187:
                 case 107: // +, =, num+
-                    controlsElement.setSize(controlsElement.size + 0.1);
+                this.controlsElement.setSize(controlsElement.size + 0.1);
                     break;
                 case 189:
                 case 109: // -, _, num-
-                    controlsElement.setSize(Math.max(controlsElement.size - 0.1, 0.1));
+                this.controlsElement.setSize(Math.max(controlsElement.size - 0.1, 0.1));
                     break;
                 case 88: // X
-                    controlsElement.showX = !controlsElement.showX;
+                this.controlsElement.showX = !controlsElement.showX;
                     break;
                 case 89: // Y
-                    controlsElement.showY = !controlsElement.showY;
+                this.controlsElement.showY = !controlsElement.showY;
                     break;
                 case 90: // Z
-                    controlsElement.showZ = !controlsElement.showZ;
+                this.controlsElement.showZ = !controlsElement.showZ;
                     break;
                 case 32: // Spacebar
-                    controlsElement.enabled = !controlsElement.enabled;
+                this.controlsElement.enabled = !controlsElement.enabled;
                     break;
             }
         });
-        window.addEventListener('keyup', function (event) {
+        window.addEventListener('keyup', (event) => {
             switch (event.keyCode) {
                 case 17: // Ctrl
-                    controlsElement.setTranslationSnap(null);
-                    contcontrolsElementrol.setRotationSnap(null);
+                this.controlsElement.setTranslationSnap(null);
+                this.contcontrolsElementrol.setRotationSnap(null);
                     break;
-                case 27:
-                    mode = 'main';
-                    controls.enabled = true;
-                    scene.remove(CURRENTINFOCUBE);
-                    cameraAnimate.animateToLayer(camera, controls, diagramCenter, 1);
+                case 27: // ESC
+                this.mode = 'main';
+                this.controls.enabled = true;
+                this.scene.remove(this.CURRENTINFOCUBE);
+                if (this.INTERSECTEDMOUSEDBL) {
+                    this.cameraAnimate.animateCameraOnClickElement( this.INTERSECTEDMOUSEDBL, meta.animateOn.click );
+                    this.INTERSECTEDMOUSEDBL = null;
+                } else {
+                    this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
+                }
                     break;
             }
         });
     }
 
-    function render() {
-        renderer.render(scene, camera);
+    __render() {
+        this.renderer.render(this.scene, this.camera);
     }
 
-    function onWindowResize() {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        controls.handleResize();
-        render();
+    __onWindowResize() {
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.controls.handleResize();
+        this.__render();
     }
 
-    function onDblClick(e) {
-        clearTimeout(timer);
-        if (mode === 'main') {
-            controls.enabled = false;
-            prevent = true;
-            if (flag === 0) {
-                mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-                mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    __onDblClick(e) {
+        clearTimeout(this.timer);
+        if (this.mode === 'main') {
+            this.controls.enabled = false;
+            this.prevent = true;
+            if (this.flag === 0) {
+                this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+                this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
-                raycaster.setFromCamera(mouse, camera);
+                this.raycaster.setFromCamera(this.mouse, this.camera);
 
-                var intersects = raycaster.intersectObjects(scene.children);
+                var intersects = this.raycaster.intersectObjects(this.scene.children);
 
                 if (intersects.length > 0) {
-                    INTERSECTEDMOUSEDBL = intersects[0].object;
-                    if (INTERSECTEDMOUSEDBL.userData.type === 'cubeElement') {
+                    this.INTERSECTEDMOUSEDBL = intersects[0].object;
+                    if (this.INTERSECTEDMOUSEDBL.userData.type === 'cubeElement') {
+                        this.items.forEach(item => {
+                            if (item.userData.column === this.INTERSECTEDMOUSEDBL.userData.column && item.userData.row === this.INTERSECTEDMOUSEDBL.userData.row) {
+                                item.material.forEach(m => {
+                                    m.opacity = 1;
+                                });
+                            } else {
+                                item.material.forEach(m => {
+                                    m.opacity = 0.2;
+                                });
+                            }
+                            this.columnItems.forEach(item => {
+                                item.material.opacity = 1;
+                            });
+                        });
                         var size = {
                             lenght: 400,
                             height: 300,
                             width: 400
                         };
-                        CURRENTINFOCUBE = diagramBuilder.createMesh(size, INTERSECTEDMOUSEDBL.position, 'infoCube');
+                        this.CURRENTINFOCUBE = this.diagramBuilder.createMesh(size, this.INTERSECTEDMOUSEDBL, 'infoCube');
 
                         // Basic element controls (rotating around Y)
-                        var controlsT = new ObjectControls(camera, renderer.domElement, CURRENTINFOCUBE);
-                        controlsT.setDistance(8, 15000); // set min - max distance for zoom
+                        var controlsT = new ObjectControls(this.camera, this.renderer.domElement, this.CURRENTINFOCUBE);
+                        controlsT.setDistance(0, 15000); // set min - max distance for zoom
                         controlsT.setZoomSpeed(1); // set zoom speed
-                        cameraAnimate.animateToInfoCube(camera, controls, INTERSECTEDMOUSEDBL);
-                        mode = 'infoCube';
-                        CURRENTINFOCUBE.matrixAutoUpdate = true;
+                        this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEDBL, meta.animateOn.dblClick);
+                        this.mode = meta.modes.infoMode;
+                        this.CURRENTINFOCUBE.matrixAutoUpdate = true;
                     }
                 } else {
-                    INTERSECTEDMOUSEDBL = null;
-                    cameraAnimate.animateToLayer(camera, controls, diagramCenter, 1);
-
+                    this.INTERSECTEDMOUSEDBL = null;
+                    this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
+                    this.items.forEach(item => {
+                        item.material.forEach(m => {
+                            m.opacity = 1;
+                        });
+                    });
+                    this.columnItems.forEach(item => {
+                        item.material.opacity = 1;
+                    });
                 }
             }
         }
     }
 
-    function onMouseDown(e) {
-        if (mode === 'main') {
-            flag = 0;
-            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    __onMouseDown(e) {
+        if (this.mode === 'main') {
+            this.INTERSECTEDMOUSEDBL = null;
+            this.flag = 0;
+            this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
-            raycaster.setFromCamera(mouse, camera);
+            this.raycaster.setFromCamera(this.mouse, this.camera);
 
-            var intersectsonMouseDown = raycaster.intersectObjects(scene.children);
+            var intersectsonMouseDown = this.raycaster.intersectObjects(this.scene.children);
 
             if (intersectsonMouseDown.length > 0) {
-                // if (intersectsonMouseDown[ 0 ].object.userData.type === 'infoCube') {
-                //    intersectsonMouseDown[ 0 ].object.matrixAutoUpdate = true;
-                //    info = intersectsonMouseDown[ 0 ].object;
-                //    controls.enabled = false;
-                // } else {
-                //    scene.remove(CURRENTINFOCUBE);
-                // }
                 if (intersectsonMouseDown[0].object.userData.type === 'fullControlled') {
-                    controlsElement.attach(intersectsonMouseDown[0].object);
-                    if (INTERSECTEDMOUSEDOWN !== intersectsonMouseDown[0].object) {
-                        cameraAnimation(camera, controls, intersectsonMouseDown[0].object);
-                        INTERSECTEDMOUSEDOWN = intersectsonMouseDown[0].object;
+                    this.controlsElement.attach(intersectsonMouseDown[0].object);
+                    if (this.INTERSECTEDMOUSEDOWN !== intersectsonMouseDown[0].object) {
+                        cameraAnimation(intersectsonMouseDown[0].object);
+                        this.INTERSECTEDMOUSEDOWN = intersectsonMouseDown[0].object;
                     }
                 }
             } else {
-                info = null;
-                // scene.remove(CURRENTINFOCUBE);
+                this.info = null;
             }
         }
     }
 
-    function onMouseUp(e) {
-        if (mode === 'main') {
-            controls.enabled = true;
-            timer = setTimeout(function () {
-                if (!prevent) {
-                    if (info) {
-                        info.matrixAutoUpdate = false;
+    __onMouseUp(e) {
+        if (this.mode === 'main') {
+            this.controls.enabled = true;
+            this.timer = setTimeout(() => {
+                if (!this.prevent) {
+                    if (this.info) {
+                        this.info.matrixAutoUpdate = false;
                     }
-                    if (flag === 0) {
-                        mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-                        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+                    if (this.flag === 0) {
+                        this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+                        this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
-                        raycaster.setFromCamera(mouse, camera);
+                        this.raycaster.setFromCamera(this.mouse, this.camera);
 
-                        var intersects = raycaster.intersectObjects(scene.children);
+                        var intersects = this.raycaster.intersectObjects(this.scene.children);
 
                         if (intersects.length > 0) {
-                            if (INTERSECTEDMOUSEUP != intersects[0].object) {
-                                INTERSECTEDMOUSEUP = intersects[0].object;
-                                if (INTERSECTEDMOUSEUP.userData.type === 'cubeElement') {
-                                    items.forEach(item => {
-                                        if (item.userData.column === INTERSECTEDMOUSEUP.userData.column && item.userData.row === INTERSECTEDMOUSEUP.userData.row) {
+                            if (this.INTERSECTEDMOUSEUP != intersects[0].object) {
+                                this.INTERSECTEDMOUSEUP = intersects[0].object;
+                                if (this.INTERSECTEDMOUSEUP.userData.type === 'cubeElement') {
+                                    this.items.forEach(item => {
+                                        if (item.userData.column === this.INTERSECTEDMOUSEUP.userData.column && item.userData.row === this.INTERSECTEDMOUSEUP.userData.row) {
                                             item.material.forEach(m => {
                                                 m.opacity = 1;
                                             });
@@ -279,11 +301,21 @@ export default function () {
                                             });
                                         }
                                     });
-                                    cameraAnimate.animateCameraOnClickElement(camera, controls, INTERSECTEDMOUSEUP);
+                                    this.columnItems.forEach(item => {
+                                        item.material.opacity = 1;
+                                    });
+                                    this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEUP, meta.animateOn.click);
                                 }
-                                if (INTERSECTEDMOUSEUP.userData.type === 'navColumnElement') {
-                                    items.forEach(item => {
-                                        if (item.userData.layer === INTERSECTEDMOUSEUP.userData.layer) {
+                                if (this.INTERSECTEDMOUSEUP.userData.type === 'navColumnElement') {
+                                    this.columnItems.forEach(item => {
+                                        if (item === this.INTERSECTEDMOUSEUP) {
+                                            item.material.opacity = 1;
+                                        } else {
+                                            item.material.opacity = 0.6;
+                                        }
+                                    });
+                                    this.items.forEach(item => {
+                                        if (item.userData.layer === this.INTERSECTEDMOUSEUP.userData.layer) {
                                             item.material.forEach(m => {
                                                 m.opacity = 1;
                                             });
@@ -293,36 +325,37 @@ export default function () {
                                             });
                                         }
                                     });
-                                    cameraAnimate.animateToLayer(camera, controls, diagramCenter, INTERSECTEDMOUSEUP.userData.layer);
+                                    this.cameraAnimate.animateToLayer(this.diagramCenter, this.INTERSECTEDMOUSEUP.userData.layer);
                                 }
                             } else {
-                                INTERSECTEDMOUSEUP = null;
+                                this.INTERSECTEDMOUSEUP = null;
                             }
                         } else {
-                            items.forEach(item => {
+                            this.items.forEach(item => {
                                 item.material.forEach(m => {
                                     m.opacity = 1;
                                 });
                             });
-                            cameraAnimate.animateToLayer(camera, controls, diagramCenter, 1);
+                            this.columnItems.forEach(item => {
+                                item.material.opacity = 1;
+                            });
+                            this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
                         }
                     }
                 }
-                prevent = false;
-            }, delay);
+                this.prevent = false;
+            }, this.delay);
         }
     }
+    setMode(targetMode) {
+        this.mode = targetMode;
+    }
+    getMode() {
+        return mode;
+    }
 
-    return {
-        setMode: function (targetMode) {
-            mode = targetMode;
-        },
-        getMode: function () {
-            return mode;
-        },
-        createDiagram: function () {
-            init();
-            animate();
-        }
-    };
+    createDiagram() {
+        this.__init();
+        this.__animate();
+    }
 }
