@@ -1,15 +1,14 @@
-import * as THREE from 'three'
-import * as TrackballControls from 'three-trackballcontrols'
+import * as THREE from 'three';
+import * as TrackballControls from 'three-trackballcontrols';
 
-import meta from '../meta'
-import { inherits } from 'util';
+import meta from '../meta';
 
 const defaultCubeData = meta.data;
 const colors = ['#81d8d0', '#fff25d', '#3197e0'];
 export default function (scene, cubeElements) {
     this.scene = scene;
     this.cubeElements = cubeElements || defaultCubeData;
-    this.currentInfoCube;
+    this.currentInfoCube = null;
     var items = [];
     var elemntSize = {
         length: 400,
@@ -27,20 +26,20 @@ export default function (scene, cubeElements) {
         var obj = defaultCubeData.reduce(function(prev,cur) {
             return cur.layer>prev.layer?cur:prev;
         },{layer:-Infinity});
-        return obj.layer
+        return obj.layer;
     };
 
     var getMaxRow = function() {
         var obj = defaultCubeData.reduce(function(prev,cur) {
             return cur.row>prev.row?cur:prev;
         },{row:-Infinity});
-        return obj.row
+        return obj.row;
     };
     var getMaxColumn = function() {
         var obj = defaultCubeData.reduce(function(prev,cur) {
             return cur.column>prev.column?cur:prev;
         },{column:-Infinity});
-        return obj.column
+        return obj.column;
     };
 
     this.setElemntLength = function ( lenght ) {
@@ -73,7 +72,7 @@ export default function (scene, cubeElements) {
             mesh.material.forEach(m => {
                m.transparent = true;
                m.opacity = 1;
-            })
+            });
             mesh.position.x = el.column * ( elemntSize.length + offset.x );
             mesh.position.y = - el.layer * offset.y;
             mesh.position.z = el.row * ( elemntSize.width + offset.z);
@@ -85,9 +84,9 @@ export default function (scene, cubeElements) {
             mesh.matrixAutoUpdate = true;
             this.scene.add( mesh );
             items.push(mesh);
-        })
+        });
         return items;
-    }
+    };
 
     this.createNavColumn = function () {
         var layersCount = getMaxLayer();
@@ -103,7 +102,7 @@ export default function (scene, cubeElements) {
            meshC.updateMatrix();
            scene.add( meshC );
         }
-    }
+    };
 
     this.createMesh = function(size, pos, type) {
         var geometryT = new THREE.BoxGeometry( size.lenght, size.height, size.width );
@@ -127,7 +126,7 @@ export default function (scene, cubeElements) {
         this.currentInfoCube = meshT;
         this.scene.add(this.currentInfoCube);
         return this.currentInfoCube;
-     }
+     };
 
      this.getDiagramCenter = function() {
         if ( items.length ) {
@@ -141,12 +140,12 @@ export default function (scene, cubeElements) {
                 x: (diagramLength - elemntSize.length)/2,
                 y: -diagramHeight/2,
                 z: (diagramWidth - elemntSize.width)/2
-            }
+            };
         }
         return {
             x: 0,
             y: 0,
             z: 0
-        }
-     }
+        };
+     };
 }

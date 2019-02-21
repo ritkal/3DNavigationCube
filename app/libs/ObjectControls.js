@@ -84,7 +84,7 @@ export default function (camera, domElement, objectToMove) {
 		if (isDragging) {
 			if (deltaMove.x != 0) {
 				// console.log(deltaMove.x);
-				objectToMove.rotation.y += deltaMove.x / 280;
+				objectToMove.rotation.y += deltaMove.x / 450;
 				// objectToMove.position.x += deltaMove.x / 280;
 				flag = mouseFlags.MOUSEMOVE;
 			}
@@ -145,8 +145,7 @@ export default function (camera, domElement, objectToMove) {
 		if (flag === mouseFlags.MOUSEDOWN) {
 			// console.log("touchClick");
 			// you can invoke more other functions for animations and so on...
-		}
-		else if (flag === mouseFlags.MOUSEMOVE) {
+		} else if (flag === mouseFlags.MOUSEMOVE) {
 			// console.log("touch drag");
 			// you can invoke more other functions for animations and so on...
 		}
@@ -209,4 +208,4 @@ export default function (camera, domElement, objectToMove) {
 	}
 
 	return this;
-};
+}

@@ -61,6 +61,12 @@ const data = [
     }
 ];
 
+const modes = {
+    mainMode: 'main',
+    infoMode: 'Info'
+};
+
 export default {
-    data
-}
+    data,
+    modes
+};

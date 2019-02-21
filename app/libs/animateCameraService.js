@@ -1,4 +1,4 @@
-import * as TWEEN from '@tweenjs/tween.js'
+import * as TWEEN from '@tweenjs/tween.js';
 const changeDuration = 700;
 
 export default function(){
@@ -32,7 +32,7 @@ export default function(){
             .onUpdate(function () {
                 controls.target.set(this._object.x, this._object.y, this._object.z);
             })
-            .start()
+            .start();
 
         new TWEEN.Tween(fromCameraPosition)
             .to(toCameraPosition, changeDuration)
@@ -40,7 +40,7 @@ export default function(){
             .onUpdate(function () {
                 camera.position.set(this._object.x, this._object.y, this._object.z);
             })
-            .start() 
+            .start(); 
     };
 
     this.animateToInfoCube = function(camera, controls, object) {
@@ -73,7 +73,7 @@ export default function(){
             .onUpdate(function () {
                 controls.target.set(this._object.x, this._object.y, this._object.z);
             })
-            .start()
+            .start();
 
         new TWEEN.Tween(fromCameraPosition)
             .to(toCameraPosition, changeDuration)
@@ -81,7 +81,7 @@ export default function(){
             .onUpdate(function () {
                 camera.position.set(this._object.x, this._object.y, this._object.z);
             })
-            .start() 
+            .start(); 
     };
 
     this.animateToLayer = function(camera, controls, diagramCenter, k) {
@@ -114,13 +114,13 @@ export default function(){
                .onUpdate(function () {
                   controls.target.set(this._object.x, this._object.y, this._object.z);
                })
-               .start()
+               .start();
          new TWEEN.Tween(fromCameraPosition)
             .to(toCameraPosition, changeDuration)
             .easing(TWEEN.Easing.Linear.None)
             .onUpdate(function () {
                camera.position.set(this._object.x, this._object.y, this._object.z);
             })
-            .start()
-    }
+            .start();
+    };
 }
