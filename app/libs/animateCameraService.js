@@ -49,12 +49,12 @@ export default function( camera, controls ){
             y: object.position.y + cameraPositionOffsets[type].y,
             z: object.position.z + cameraPositionOffsets[type].z
         };
-        controls.reset();
+        // controls.reset();
         new TWEEN.Tween(fromControlsTarget)
             .to(toControlsTarget, changeDuration )
             .easing(TWEEN.Easing.Linear.None)
             .onUpdate(function () {
-                controls.target.set(fromControlsTarget.x, fromControlsTarget.y, fromControlsTarget.z);
+                controls.target.set(this._object.x, this._object.y, this._object.z);
             })
             .start();
 
@@ -62,7 +62,7 @@ export default function( camera, controls ){
             .to(toCameraPosition, changeDuration)
             .easing(TWEEN.Easing.Linear.None)
             .onUpdate(function () {
-                camera.position.set(fromCameraPosition.x, fromCameraPosition.y, fromCameraPosition.z);
+                camera.position.set(this._object.x, this._object.y, this._object.z);
             })
             .start(); 
     };
@@ -90,24 +90,36 @@ export default function( camera, controls ){
             y: 100 - diagramCenter.y - k*500,
             z: 2200
          };
-         controls.reset();
+        //  controls.reset();
          new TWEEN.Tween(fromControlsTarget)
                .to(toControlsTarget, changeDuration )
                .easing(TWEEN.Easing.Linear.None)
                .onUpdate(function () {
-                  controls.target.set(fromControlsTarget.x, fromControlsTarget.y, fromControlsTarget.z);
+                  controls.target.set(this._object.x, this._object.y, this._object.z);
                })
                .start();
          new TWEEN.Tween(fromCameraPosition)
             .to(toCameraPosition, changeDuration)
             .easing(TWEEN.Easing.Linear.None)
             .onUpdate(function () {
-               camera.position.set(fromCameraPosition.x, fromCameraPosition.y, fromCameraPosition.z);
+               camera.position.set(this._object.x, this._object.y, this._object.z);
             })
             .start();
     };
 
     this.animateOpacity = function(items, obj) {
-
+        new TWEEN.Tween(fromCameraPosition)
+        .to(toCameraPosition, changeDuration)
+        .easing(TWEEN.Easing.Linear.None)
+        .onUpdate(function () {
+            items.forEach(item => {
+                if (item === obj) {
+                    item.material.opacity = 1;
+                } else {
+                    item.material.opacity = 0.6;
+                }
+            });
+        })
+        .start();
     };
 }

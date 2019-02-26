@@ -6,6 +6,8 @@ import DiagramBuilder from '../../libs/DiagramBuilder';
 import cameraAnimation from '../../libs/animateCameraService';
 import ObjectControls from '../../libs/ObjectControls';
 import * as TransformControls from 'three-transformcontrols';
+import OrbitControls from 'three-orbitcontrols'
+
 
 export default class Diagram {
     constructor() {
@@ -24,8 +26,9 @@ export default class Diagram {
         this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
 
         // Camera controls            
-        this.controls = new TrackballControls(this.camera, this.scene);
-        this.controls.rotateSpeed = 1.0;
+        // this.controls = new TrackballControls(this.camera, this.scene);
+        this.controls = new OrbitControls(this.camera);
+        this.controls.rotateSpeed = 0.5;
         this.controls.zoomSpeed = 1.5;
         this.controls.panSpeed = 1.0;
         this.controls.noZoom = false;
@@ -129,7 +132,6 @@ export default class Diagram {
         this.controls.update();
     }
 
-
     __addWindowListeners() {
         // Complex control listeners
         window.addEventListener('resize', () => this.__onWindowResize(), false);
@@ -208,7 +210,7 @@ export default class Diagram {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.controls.handleResize();
+        // this.controls.handleResize();
         this.__render();
     }
 
