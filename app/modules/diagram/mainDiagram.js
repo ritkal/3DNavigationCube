@@ -199,7 +199,7 @@ export default class Diagram {
             this.textLabels[i].updatePosition();
           }
           if (this.meshLabel) {
-            this.meshLabel.lookAt(this.camera.position);
+            this.meshLabel.quaternion.copy( this.camera.quaternion );
           }
         this.renderer.render(this.scene, this.camera);
     }
