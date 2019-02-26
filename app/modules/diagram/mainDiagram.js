@@ -30,11 +30,13 @@ export default class Diagram {
         this.controls = new OrbitControls(this.camera);
         this.controls.rotateSpeed = 0.5;
         this.controls.zoomSpeed = 1.5;
-        this.controls.panSpeed = 1.0;
-        this.controls.noZoom = false;
-        this.controls.noPan = false;
-        this.controls.staticMoving = true;
-        this.controls.dynamicDampingFactor = 0.3;
+        // this.controls.panSpeed = 1.0;
+        // this.controls.noZoom = false;
+        // this.controls.noPan = false;
+        this.controls.enablePan = true;
+	    this.controls.panSpeed = 1.0;
+        // this.controls.staticMoving = true;
+        // this.controls.dynamicDampingFactor = 0.3;
         this.controls.keys = [65, 83, 68];
         this.controls.addEventListener('change',() => this.__render());
 
@@ -53,7 +55,7 @@ export default class Diagram {
         // world
         this.scene = new THREE.Scene();
         this.raycaster = new THREE.Raycaster();
-        this.scene.background = new THREE.Color('#e6e6fa');
+        this.scene.background = new THREE.Color('#1E90FF');
 
         var loader = new THREE.FontLoader();
         const font  = loader.load('fonts/font.json', (font) => {
@@ -67,7 +69,7 @@ export default class Diagram {
                 bevelSize: 1,
                 bevelSegments: 1
             } );
-            var material = new THREE.MeshBasicMaterial( { color: '#ff32c8' } );
+            var material = new THREE.MeshBasicMaterial( { color: 'white' } );
             this.meshLabel = new THREE.Mesh(geometry, material);
             this.meshLabel.position.x = 300;
             this.meshLabel.position.y = 300;
@@ -237,7 +239,7 @@ export default class Diagram {
                                 });
                             } else {
                                 item.material.forEach(m => {
-                                    m.opacity = 0.2;
+                                    m.opacity = 0.3;
                                 });
                             }
                             this.columnItems.forEach(item => {
@@ -327,7 +329,7 @@ export default class Diagram {
                                             });
                                         } else {
                                             item.material.forEach(m => {
-                                                m.opacity = 0.2;
+                                                m.opacity = 0.3;
                                             });
                                         }
                                     });
@@ -341,7 +343,7 @@ export default class Diagram {
                                         if (item === this.INTERSECTEDMOUSEUP) {
                                             item.material.opacity = 1;
                                         } else {
-                                            item.material.opacity = 0.6;
+                                            item.material.opacity = 0.3;
                                         }
                                     });
                                     this.items.forEach(item => {
@@ -351,7 +353,7 @@ export default class Diagram {
                                             });
                                         } else {
                                             item.material.forEach(m => {
-                                                m.opacity = 0.2;
+                                                m.opacity = 0.3;
                                             });
                                         }
                                     });
