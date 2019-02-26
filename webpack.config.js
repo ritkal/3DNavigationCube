@@ -73,6 +73,10 @@ module.exports = {
                 from: path.resolve(__dirname, 'app/textures'),
                 to: path.resolve(__dirname, 'dist/textures')
             },
+            {
+                from: path.resolve(__dirname, 'app/fonts'),
+                to: path.resolve(__dirname, 'dist/fonts')
+            },
         ])
     ],
     resolve: {

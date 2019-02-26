@@ -6,7 +6,9 @@ import meta from '../meta';
 const defaultCubeData = meta.data;
 const colors = ['#63a884', '#fa8072', '#ffcc5c'];
 const infoColors = ['#bae0cc', '#ffd8d3', '#fcebc4'];
-export default function (scene, cubeElements) {
+export default function (scene, camera, cubeElements) {
+    this.textlabels = [];
+    this.camera = camera;
     this.scene = scene;
     this.cubeElements = cubeElements || defaultCubeData;
     this.currentInfoCube = null;
@@ -83,10 +85,18 @@ export default function (scene, cubeElements) {
             mesh.userData.type = 'cubeElement';
             mesh.updateMatrix();
             mesh.matrixAutoUpdate = true;
+            var text = this.__createTextLabel();
+            text.setHTML(el.name);
+            text.setParent(mesh);
+            this.textlabels.push(text);
+            document.body.appendChild(text.element);
             this.scene.add( mesh );
             items.push(mesh);
         });
-        return items;
+        return {
+            items: items,
+            texts: this.textlabels
+        };
     };
 
     this.createNavColumn = function () {
@@ -133,6 +143,46 @@ export default function (scene, cubeElements) {
         this.scene.add(this.currentInfoCube);
         return this.currentInfoCube;
      };
+
+     this.__createTextLabel = function() {
+        var div = document.createElement('div');
+        div.className = 'text-label';
+        div.style.position = 'absolute';
+        div.style.width = 100;
+        div.style.height = 100;
+        div.innerHTML = "hi there!";
+        div.style.top = -1000;
+        div.style.left = -1000;
+        
+        var _this = this;
+        
+        return {
+          element: div,
+          parent: false,
+          position: new THREE.Vector3(0,0,0),
+          setHTML: function(html) {
+            this.element.innerHTML = html;
+          },
+          setParent: function(threejsobj) {
+            this.parent = threejsobj;
+          },
+          updatePosition: function() {
+            if(parent) {
+              this.position.copy(this.parent.position);
+            }
+            
+            var coords2d = this.get2DCoords(this.position, _this.camera);
+            this.element.style.left = coords2d.x + 'px';
+            this.element.style.top = coords2d.y - 20 + 'px';
+          },
+          get2DCoords: function(position, camera) {
+            var vector = position.project(camera);
+            vector.x = (vector.x + 1)/2 * window.innerWidth;
+            vector.y = -(vector.y - 1)/2 * window.innerHeight;
+            return vector;
+          }
+        };
+      };
 
      this.getDiagramCenter = function() {
         if ( items.length ) {

@@ -50,17 +50,38 @@ export default class Diagram {
         // world
         this.scene = new THREE.Scene();
         this.raycaster = new THREE.Raycaster();
-        this.scene.background = new THREE.Color('#54455C');
+        this.scene.background = new THREE.Color('#e6e6fa');
 
+        var loader = new THREE.FontLoader();
+        const font  = loader.load('fonts/font.json', (font) => {
+            var geometry = new THREE.TextGeometry( '3Diagram', {
+                font: font,
+                size: 80,
+                height: 5,
+                curveSegments: 12,
+                bevelEnabled: true,
+                bevelThickness: 1,
+                bevelSize: 1,
+                bevelSegments: 1
+            } );
+            var material = new THREE.MeshBasicMaterial( { color: '#ff32c8' } );
+            this.meshLabel = new THREE.Mesh(geometry, material);
+            this.meshLabel.position.x = 300;
+            this.meshLabel.position.y = 300;
+            this.meshLabel.position.z = 0;
+            this.scene.add(this.meshLabel);
+        });
         // Build diagram
-        this.diagramBuilder = new DiagramBuilder(this.scene);
+        this.diagramBuilder = new DiagramBuilder(this.scene, this.camera);
         this.diagramBuilder.setElemntLength(600);
         this.diagramBuilder.setOffset({
             x: 400,
             y: 500,
             z: 200
         });
-        this.items = this.diagramBuilder.createCubeElements();
+        const out = this.diagramBuilder.createCubeElements();
+        this.items = out.items;
+        this.textLabels = out.texts;
         this.diagramCenter = this.diagramBuilder.getDiagramCenter();
 
         this.controls.target.set(this.diagramCenter.x, this.diagramCenter.y, this.diagramCenter.z);
@@ -107,6 +128,7 @@ export default class Diagram {
         TWEEN.update();
         this.controls.update();
     }
+
 
     __addWindowListeners() {
         // Complex control listeners
@@ -173,6 +195,12 @@ export default class Diagram {
     }
 
     __render() {
+        for(var i=0; i<this.textLabels.length; i++) {
+            this.textLabels[i].updatePosition();
+          }
+          if (this.meshLabel) {
+            this.meshLabel.lookAt(this.camera.position);
+          }
         this.renderer.render(this.scene, this.camera);
     }
 
