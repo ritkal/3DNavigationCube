@@ -54,7 +54,7 @@ export default function( camera, controls ){
             .to(toControlsTarget, changeDuration )
             .easing(TWEEN.Easing.Linear.None)
             .onUpdate(function () {
-                controls.target.set(this._object.x, this._object.y, this._object.z);
+                controls.target.set(fromControlsTarget.x, fromControlsTarget.y, fromControlsTarget.z);
             })
             .start();
 
@@ -62,7 +62,7 @@ export default function( camera, controls ){
             .to(toCameraPosition, changeDuration)
             .easing(TWEEN.Easing.Linear.None)
             .onUpdate(function () {
-                camera.position.set(this._object.x, this._object.y, this._object.z);
+                camera.position.set(fromCameraPosition.x, fromCameraPosition.y, fromCameraPosition.z);
             })
             .start(); 
     };
@@ -95,14 +95,14 @@ export default function( camera, controls ){
                .to(toControlsTarget, changeDuration )
                .easing(TWEEN.Easing.Linear.None)
                .onUpdate(function () {
-                  controls.target.set(this._object.x, this._object.y, this._object.z);
+                  controls.target.set(fromControlsTarget.x, fromControlsTarget.y, fromControlsTarget.z);
                })
                .start();
          new TWEEN.Tween(fromCameraPosition)
             .to(toCameraPosition, changeDuration)
             .easing(TWEEN.Easing.Linear.None)
             .onUpdate(function () {
-               camera.position.set(this._object.x, this._object.y, this._object.z);
+               camera.position.set(fromCameraPosition.x, fromCameraPosition.y, fromCameraPosition.z);
             })
             .start();
     };

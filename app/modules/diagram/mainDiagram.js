@@ -197,10 +197,10 @@ export default class Diagram {
     __render() {
         for(var i=0; i<this.textLabels.length; i++) {
             this.textLabels[i].updatePosition();
-          }
-          if (this.meshLabel) {
+        }
+        if (this.meshLabel) {
             this.meshLabel.quaternion.copy( this.camera.quaternion );
-          }
+        }
         this.renderer.render(this.scene, this.camera);
     }
 
