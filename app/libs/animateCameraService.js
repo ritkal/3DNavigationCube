@@ -49,10 +49,9 @@ export default function( camera, controls ){
             y: object.position.y + cameraPositionOffsets[type].y,
             z: object.position.z + cameraPositionOffsets[type].z
         };
-        // controls.reset();
         new TWEEN.Tween(fromControlsTarget)
             .to(toControlsTarget, changeDuration )
-            .easing(TWEEN.Easing.Linear.None)
+            .easing(TWEEN.Easing. Quadratic.Out)
             .onUpdate(function () {
                 controls.target.set(this._object.x, this._object.y, this._object.z);
             })
@@ -60,7 +59,7 @@ export default function( camera, controls ){
 
         new TWEEN.Tween(fromCameraPosition)
             .to(toCameraPosition, changeDuration)
-            .easing(TWEEN.Easing.Linear.None)
+            .easing(TWEEN.Easing. Quadratic.Out)
             .onUpdate(function () {
                 camera.position.set(this._object.x, this._object.y, this._object.z);
             })
@@ -90,17 +89,16 @@ export default function( camera, controls ){
             y: 100 - diagramCenter.y - k*500,
             z: 2200
          };
-        //  controls.reset();
          new TWEEN.Tween(fromControlsTarget)
                .to(toControlsTarget, changeDuration )
-               .easing(TWEEN.Easing.Linear.None)
+               .easing(TWEEN.Easing. Quadratic.Out)
                .onUpdate(function () {
                   controls.target.set(this._object.x, this._object.y, this._object.z);
                })
                .start();
          new TWEEN.Tween(fromCameraPosition)
             .to(toCameraPosition, changeDuration)
-            .easing(TWEEN.Easing.Linear.None)
+            .easing(TWEEN.Easing. Quadratic.Out)
             .onUpdate(function () {
                camera.position.set(this._object.x, this._object.y, this._object.z);
             })
@@ -110,7 +108,7 @@ export default function( camera, controls ){
     this.animateOpacity = function(items, obj) {
         new TWEEN.Tween(fromCameraPosition)
         .to(toCameraPosition, changeDuration)
-        .easing(TWEEN.Easing.Linear.None)
+        .easing(TWEEN.Easing. Quadratic.Out)
         .onUpdate(function () {
             items.forEach(item => {
                 if (item === obj) {

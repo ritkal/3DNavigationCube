@@ -150,7 +150,6 @@ export default function (scene, camera, cubeElements) {
         div.style.position = 'absolute';
         div.style.width = 100;
         div.style.height = 100;
-        div.innerHTML = "hi there!";
         div.style.top = -1000;
         div.style.left = -1000;
         
@@ -168,7 +167,9 @@ export default function (scene, camera, cubeElements) {
           },
           updatePosition: function() {
             if(parent) {
-              this.position.copy(this.parent.position);
+                var vec = new THREE.Vector3();
+                vec.addVectors(this.parent.parent.position, this.parent.position);
+                this.position.copy(vec);
             }
             
             var coords2d = this.get2DCoords(this.position, _this.camera);

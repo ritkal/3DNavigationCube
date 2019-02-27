@@ -18,7 +18,7 @@ export default class Diagram {
             x: 0,
             y: 0
         };
-        this.delay = 150;
+        this.delay = 200;
         this.prevent = false;
     }
 
@@ -26,18 +26,13 @@ export default class Diagram {
         this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
 
         // Camera controls            
-        // this.controls = new TrackballControls(this.camera, this.scene);
         this.controls = new OrbitControls(this.camera);
         this.controls.rotateSpeed = 0.5;
         this.controls.zoomSpeed = 1.5;
-        // this.controls.panSpeed = 1.0;
-        // this.controls.noZoom = false;
-        // this.controls.noPan = false;
+
         this.controls.enablePan = true;
 	    this.controls.panSpeed = 1.0;
-        // this.controls.staticMoving = true;
-        // this.controls.dynamicDampingFactor = 0.3;
-        this.controls.keys = [65, 83, 68];
+
         this.controls.addEventListener('change',() => this.__render());
 
         // renderer
@@ -56,9 +51,9 @@ export default class Diagram {
         this.scene = new THREE.Scene();
         this.raycaster = new THREE.Raycaster();
         this.scene.background = new THREE.Color('#1E90FF');
-
+        this.navGroup = new THREE.Group();
         var loader = new THREE.FontLoader();
-        const font  = loader.load('fonts/font.json', (font) => {
+        loader.load('fonts/font.json', (font) => {
             var geometry = new THREE.TextGeometry( '3Diagram', {
                 font: font,
                 size: 80,
@@ -74,10 +69,10 @@ export default class Diagram {
             this.meshLabel.position.x = 300;
             this.meshLabel.position.y = 300;
             this.meshLabel.position.z = 0;
-            this.scene.add(this.meshLabel);
+            this.navGroup.add(this.meshLabel);
         });
         // Build diagram
-        this.diagramBuilder = new DiagramBuilder(this.scene, this.camera);
+        this.diagramBuilder = new DiagramBuilder(this.navGroup, this.camera);
         this.diagramBuilder.setElemntLength(600);
         this.diagramBuilder.setOffset({
             x: 400,
@@ -93,7 +88,7 @@ export default class Diagram {
         this.camera.position.set(this.diagramCenter.x, 100, 2200);
         this.columnItems = this.diagramBuilder.createNavColumn();
         this.__addWindowListeners();
-
+        this.scene.add(this.navGroup);
         this.__render();
 
         // Complex element controls
@@ -179,20 +174,38 @@ export default class Diagram {
         });
         window.addEventListener('keyup', (event) => {
             switch (event.keyCode) {
-                case 17: // Ctrl
-                this.controlsElement.setTranslationSnap(null);
-                this.contcontrolsElementrol.setRotationSnap(null);
-                    break;
                 case 27: // ESC
-                this.mode = 'main';
-                this.controls.enabled = true;
-                this.scene.remove(this.CURRENTINFOCUBE);
-                if (this.INTERSECTEDMOUSEDBL) {
-                    this.cameraAnimate.animateCameraOnClickElement( this.INTERSECTEDMOUSEDBL, meta.animateOn.click );
-                    this.INTERSECTEDMOUSEDBL = null;
-                } else {
-                    this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
-                }
+                    this.mode = 'main';
+                    this.controls.enabled = true;
+                    this.navGroup.remove(this.CURRENTINFOCUBE);
+                    if (this.INTERSECTEDMOUSEDBL) {
+                        this.cameraAnimate.animateCameraOnClickElement( this.INTERSECTEDMOUSEDBL, meta.animateOn.click );
+                        this.INTERSECTEDMOUSEDBL = null;
+                        for(var i=0; i<this.textLabels.length; i++) {
+                            this.textLabels[i].element.hidden = false;
+                        }
+                    } else {
+                        this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
+                    }
+                    break;
+                case 8: // Back
+                    // this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
+                    var newNavPos = {
+                        x: 5000,
+                        y: 200,
+                        z: -3000,
+                    };
+                    var navPos = this.navGroup.position;
+                    new TWEEN.Tween(navPos)
+                        .to(newNavPos, 1000)
+                        .easing(TWEEN.Easing. Quadratic.Out)
+                        .onUpdate(() => {
+                            this.navGroup.position.x = navPos.x;
+                            this.navGroup.position.y = navPos.y;
+                            // navGroup.position.z = navPos.z;
+                        })
+                        .start(); 
+                    // this.navGroup.po
                     break;
             }
         });
@@ -227,11 +240,14 @@ export default class Diagram {
 
                 this.raycaster.setFromCamera(this.mouse, this.camera);
 
-                var intersects = this.raycaster.intersectObjects(this.scene.children);
+                var intersects = this.raycaster.intersectObjects(this.navGroup.children);
 
                 if (intersects.length > 0) {
                     this.INTERSECTEDMOUSEDBL = intersects[0].object;
                     if (this.INTERSECTEDMOUSEDBL.userData.type === 'cubeElement') {
+                        for(var i=0; i<this.textLabels.length; i++) {
+                            this.textLabels[i].element.hidden = true;
+                        }
                         this.items.forEach(item => {
                             if (item.userData.column === this.INTERSECTEDMOUSEDBL.userData.column && item.userData.row === this.INTERSECTEDMOUSEDBL.userData.row) {
                                 item.material.forEach(m => {
@@ -286,7 +302,8 @@ export default class Diagram {
 
             this.raycaster.setFromCamera(this.mouse, this.camera);
 
-            var intersectsonMouseDown = this.raycaster.intersectObjects(this.scene.children);
+            var intersectsonMouseDown = this.raycaster.intersectObjects(this.navGroup.children);
+
 
             if (intersectsonMouseDown.length > 0) {
                 if (intersectsonMouseDown[0].object.userData.type === 'fullControlled') {
@@ -316,7 +333,7 @@ export default class Diagram {
 
                         this.raycaster.setFromCamera(this.mouse, this.camera);
 
-                        var intersects = this.raycaster.intersectObjects(this.scene.children);
+                        var intersects = this.raycaster.intersectObjects(this.navGroup.children);
 
                         if (intersects.length > 0) {
                             if (this.INTERSECTEDMOUSEUP != intersects[0].object) {
