@@ -11,7 +11,7 @@ import OrbitControls from 'three-orbitcontrols';
 
 export default class Diagram {
     constructor() {
-        this.mode = meta.modes.mainMode;
+        this.mode = meta.modes.globalObserver;
 
         this.items = [];
         this.mouse = {
@@ -20,10 +20,11 @@ export default class Diagram {
         };
         this.delay = 200;
         this.prevent = false;
+        this.groups = [];
     }
 
     __init() {
-        this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
+        this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 100000);
 
         // Camera controls            
         this.controls = new OrbitControls(this.camera);
@@ -52,6 +53,10 @@ export default class Diagram {
         this.raycaster = new THREE.Raycaster();
         this.scene.background = new THREE.Color('#1E90FF');
         this.navGroup = new THREE.Group();
+        this.groups.push(this.navGroup);
+        this.cubeGroup = new THREE.Group();
+        this.groups.push(this.cubeGroup);
+
         var loader = new THREE.FontLoader();
         loader.load('fonts/font.json', (font) => {
             var geometry = new THREE.TextGeometry( '3Diagram', {
@@ -175,7 +180,7 @@ export default class Diagram {
         window.addEventListener('keyup', (event) => {
             switch (event.keyCode) {
                 case 27: // ESC
-                    this.mode = 'main';
+                    this.mode = meta.modes.globalObserver;
                     this.controls.enabled = true;
                     this.navGroup.remove(this.CURRENTINFOCUBE);
                     if (this.INTERSECTEDMOUSEDBL) {
@@ -188,13 +193,36 @@ export default class Diagram {
                         this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
                     }
                     break;
-                case 8: // Back
-                    // this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
-                    var newNavPos = {
-                        x: 5000,
-                        y: 200,
-                        z: -3000,
-                    };
+                case 8: // Backspace
+                    
+                    if (this.mode === meta.modes.infoMode) {
+                        return;
+                    }
+                    this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
+
+                    this.mode === meta.modes.globalObserver? this.mode = meta.modes.groupObserver : this.mode = meta.modes.globalObserver;
+                    let newNavPos;
+                    if (this.mode === meta.modes.groupObserver) {
+                        newNavPos = {
+                            x: 5000,
+                            y: 200,
+                            z: -3000,
+                        };
+                        for(var j=0; j<this.textLabels.length; j++) {
+                            this.textLabels[j].element.hidden = true;
+                        }
+
+                    } else {
+                        newNavPos = {
+                            x: 0,
+                            y: 0,
+                            z: 0,
+                        };
+                        for(var j=0; j<this.textLabels.length; j++) {
+                            this.textLabels[j].element.hidden = false;
+                        }
+                    }
+
                     var navPos = this.navGroup.position;
                     new TWEEN.Tween(navPos)
                         .to(newNavPos, 1000)
@@ -202,10 +230,9 @@ export default class Diagram {
                         .onUpdate(() => {
                             this.navGroup.position.x = navPos.x;
                             this.navGroup.position.y = navPos.y;
-                            // navGroup.position.z = navPos.z;
+                            this.navGroup.position.z = navPos.z;
                         })
                         .start(); 
-                    // this.navGroup.po
                     break;
             }
         });
@@ -231,7 +258,7 @@ export default class Diagram {
 
     __onDblClick(e) {
         clearTimeout(this.timer);
-        if (this.mode === 'main') {
+        if (this.mode === meta.modes.globalObserver) {
             this.controls.enabled = false;
             this.prevent = true;
             if (this.flag === 0) {
@@ -294,7 +321,7 @@ export default class Diagram {
     }
 
     __onMouseDown(e) {
-        if (this.mode === 'main') {
+        if (this.mode === meta.modes.globalObserver) {
             this.INTERSECTEDMOUSEDBL = null;
             this.flag = 0;
             this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -320,7 +347,7 @@ export default class Diagram {
     }
 
     __onMouseUp(e) {
-        if (this.mode === 'main') {
+        if (this.mode === meta.modes.globalObserver) {
             this.controls.enabled = true;
             this.timer = setTimeout(() => {
                 if (!this.prevent) {

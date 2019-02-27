@@ -93,6 +93,47 @@ export default function (scene, camera, cubeElements) {
             this.scene.add( mesh );
             items.push(mesh);
         });
+        var planeGeo = new THREE.PlaneBufferGeometry( 4000.1, 4000.1 );
+        // walls
+				var planeTop = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.2 } ) );
+                planeTop.position.y = 1000;
+                planeTop.position.x = 1000;
+				planeTop.rotateX( Math.PI / 2 );
+                this.scene.add( planeTop );
+                
+                var planeBottom = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.2 } ) );
+                planeBottom.position.y = -3000;
+                planeBottom.position.x = 1000;
+
+				planeBottom.rotateX( - Math.PI / 2 );
+                this.scene.add( planeBottom );
+                
+                var planeFront = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.2 } ) );
+                planeFront.position.x = 1000;
+				planeFront.position.z = 2000;
+				planeFront.position.y = -1000;
+				planeFront.rotateY( Math.PI );
+                this.scene.add( planeFront );
+
+                // var geometryy = new THREE.PlaneBufferGeometry( 4000, 4000 );
+                // var planeBack = new THREE.Mesh( geometryy, new THREE.MeshBasicMaterial( { color: 'white' } ) );
+                // planeBack.position.x = 1000;
+				// planeBack.position.z = -2000;
+				// planeBack.position.y = -1000;
+				// planeBack.rotateY( Math.PI );
+                // this.scene.add( planeBack );
+                
+                var planeRightt = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.2 } ) );
+				planeRightt.position.x = 3000;
+				planeRightt.position.y = -1000;
+				planeRightt.rotateY( - Math.PI / 2 );
+                this.scene.add( planeRightt );
+                
+                var planeLeft = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.2 } ) );
+				planeLeft.position.x = - 1000;
+				planeLeft.position.y = -1000;
+				planeLeft.rotateY( Math.PI / 2 );
+				this.scene.add( planeLeft );
         return {
             items: items,
             texts: this.textlabels
@@ -168,7 +209,7 @@ export default function (scene, camera, cubeElements) {
           updatePosition: function() {
             if(parent) {
                 var vec = new THREE.Vector3();
-                vec.addVectors(this.parent.parent.position, this.parent.position);
+                vec.addVectors(this.parent.parent.position, this.parent.position)
                 this.position.copy(vec);
             }
             
