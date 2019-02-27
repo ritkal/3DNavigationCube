@@ -6,7 +6,7 @@ import DiagramBuilder from '../../libs/DiagramBuilder';
 import cameraAnimation from '../../libs/animateCameraService';
 import ObjectControls from '../../libs/ObjectControls';
 import * as TransformControls from 'three-transformcontrols';
-import OrbitControls from 'three-orbitcontrols'
+import OrbitControls from 'three-orbitcontrols';
 
 
 export default class Diagram {
