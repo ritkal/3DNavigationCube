@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import * as TrackballControls from 'three-trackballcontrols';
 
 import meta from '../meta';
 
@@ -95,45 +94,43 @@ export default function (scene, camera, cubeElements) {
         });
         var planeGeo = new THREE.PlaneBufferGeometry( 4000.1, 4000.1 );
         // walls
-				var planeTop = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.2 } ) );
+				var planeTop = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'red', transparent: true, opacity: 0.7 } ) );
                 planeTop.position.y = 1000;
                 planeTop.position.x = 1000;
 				planeTop.rotateX( Math.PI / 2 );
                 this.scene.add( planeTop );
                 
-                var planeBottom = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.2 } ) );
+                var planeBottom = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'yellow', transparent: true, opacity: 0.7 } ) );
                 planeBottom.position.y = -3000;
                 planeBottom.position.x = 1000;
-
 				planeBottom.rotateX( - Math.PI / 2 );
                 this.scene.add( planeBottom );
                 
-                var planeFront = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.2 } ) );
+                var planeFront = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'blue', transparent: true, opacity: 0.7 } ) );
                 planeFront.position.x = 1000;
 				planeFront.position.z = 2000;
 				planeFront.position.y = -1000;
 				planeFront.rotateY( Math.PI );
                 this.scene.add( planeFront );
-
-                // var geometryy = new THREE.PlaneBufferGeometry( 4000, 4000 );
-                // var planeBack = new THREE.Mesh( geometryy, new THREE.MeshBasicMaterial( { color: 'white' } ) );
-                // planeBack.position.x = 1000;
-				// planeBack.position.z = -2000;
-				// planeBack.position.y = -1000;
-				// planeBack.rotateY( Math.PI );
-                // this.scene.add( planeBack );
                 
-                var planeRightt = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.2 } ) );
-				planeRightt.position.x = 3000;
-				planeRightt.position.y = -1000;
-				planeRightt.rotateY( - Math.PI / 2 );
-                this.scene.add( planeRightt );
+                var planeRight = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'green', transparent: true, opacity: 0.7 } ) );
+				planeRight.position.x = 3000;
+				planeRight.position.y = -1000;
+				planeRight.rotateY( - Math.PI / 2 );
+                this.scene.add( planeRight );
                 
-                var planeLeft = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.2 } ) );
+                var planeLeft = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.7 } ) );
 				planeLeft.position.x = - 1000;
 				planeLeft.position.y = -1000;
 				planeLeft.rotateY( Math.PI / 2 );
-				this.scene.add( planeLeft );
+                this.scene.add( planeLeft );
+
+                var planeBack = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'pink', transparent: true, opacity: 0.7 } ) );
+                planeBack.position.x = 1000;
+                planeBack.position.z = -2000;
+                planeBack.position.y = -1000;
+                this.scene.add( planeBack );
+                
         return {
             items: items,
             texts: this.textlabels
