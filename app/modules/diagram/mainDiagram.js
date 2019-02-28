@@ -73,7 +73,7 @@ export default class Diagram {
             x: 5000,
             y: 800,
             z: -6000,
-        });
+        }, 'THREE');
         this.currentModule = builderOut;
         this.items = builderOut.items;
         this.textLabels = builderOut.texts;
@@ -96,7 +96,7 @@ export default class Diagram {
             x: -5000,
             y: 800,
             z: -6000,
-        });
+        }, 'ONE');
         builderOut.builder = this.diagramBuilder2;
         this.names.push(builderOut.name);
         this.modules.push(builderOut);
@@ -115,7 +115,7 @@ export default class Diagram {
             x: 0,
             y: 800,
             z: -6000,
-        });
+        }, 'TWO');
         builderOut.builder = this.diagramBuilder3;
         this.names.push(builderOut.name);
         this.modules.push(builderOut);

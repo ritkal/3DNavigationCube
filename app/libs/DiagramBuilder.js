@@ -15,7 +15,7 @@ export default function (group, camera, cubeElements) {
     var elemntSize = {
         length: 400,
         width: 300,
-        height: 1
+        height: 5
     };
 
     var offset = {
@@ -58,17 +58,17 @@ export default function (group, camera, cubeElements) {
         offset.z = newOffset.z;
     };
 
-    this.createCubeElements = function (pos) {
+    this.createCubeElements = function (pos, name) {
         const geometry = new THREE.BoxGeometry( elemntSize.length, elemntSize.height, elemntSize.width );
         var texture = new THREE.TextureLoader().load( 'textures/trash.jpg' );
         this.cubeElements.forEach(el => {
             var materials = [
-                new THREE.MeshBasicMaterial( { color: 'black' } ),
-                new THREE.MeshBasicMaterial( { color: 'black' } ),
+                new THREE.MeshBasicMaterial( { color: '' } ),
+                new THREE.MeshBasicMaterial( { color: 'white' } ),
                 new THREE.MeshBasicMaterial( { map: texture } ),
                 new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
-                new THREE.MeshBasicMaterial( { color: 'black' } ),
-                new THREE.MeshBasicMaterial( { color: 'black' } ),
+                new THREE.MeshBasicMaterial( { color: 'white' } ),
+                new THREE.MeshBasicMaterial( { color: 'white' } ),
              ];
             var mesh = new THREE.Mesh( geometry, materials );
             mesh.material.forEach(m => {
@@ -95,7 +95,7 @@ export default function (group, camera, cubeElements) {
         });
         var planeGeo = new THREE.PlaneBufferGeometry( 3000.1, 3000.1 );
         // walls
-				var planeTop = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'red', transparent: true, opacity: 0.2 } ) );
+				var planeTop = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'black', transparent: true, opacity: 0.1 } ) );
                 planeTop.position.y = 1000;
                 planeTop.position.x = 1000;
                 planeTop.rotateX( Math.PI / 2 );
@@ -103,7 +103,7 @@ export default function (group, camera, cubeElements) {
                 planeTop.userData.groupUuid = this.group.uuid;
                 this.group.add( planeTop );
                 
-                var planeBottom = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'yellow', transparent: true, opacity: 0.2 } ) );
+                var planeBottom = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'black', transparent: true, opacity: 0.1 } ) );
                 planeBottom.position.y = -2000;
                 planeBottom.position.x = 1000;
                 planeBottom.rotateX( - Math.PI / 2 );
@@ -111,7 +111,7 @@ export default function (group, camera, cubeElements) {
                 planeBottom.userData.groupUuid = this.group.uuid;
                 this.group.add( planeBottom );
                 
-                var planeFront = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'red', transparent: true, opacity: 0.2 } ) );
+                var planeFront = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'gray', transparent: true, opacity: 0.1 } ) );
                 planeFront.position.x = 1000;
 				planeFront.position.z = 1500;
 				planeFront.position.y = -500;
@@ -120,7 +120,7 @@ export default function (group, camera, cubeElements) {
                 planeFront.userData.groupUuid = this.group.uuid;
                 this.group.add( planeFront );
                 
-                var planeRight = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'green', transparent: true, opacity: 0.2 } ) );
+                var planeRight = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.1 } ) );
 				planeRight.position.x = 2500;
 				planeRight.position.y = -500;
 				planeRight.rotateY( - Math.PI / 2 );
@@ -128,7 +128,7 @@ export default function (group, camera, cubeElements) {
                 planeRight.userData.groupUuid = this.group.uuid;
                 this.group.add( planeRight );
                 
-                var planeLeft = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.2 } ) );
+                var planeLeft = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.1 } ) );
 				planeLeft.position.x = - 500;
 				planeLeft.position.y = -500;
 				planeLeft.rotateY( Math.PI / 2 );
@@ -136,7 +136,7 @@ export default function (group, camera, cubeElements) {
                 planeLeft.userData.groupUuid = this.group.uuid;
                 this.group.add( planeLeft );
 
-                var planeBack = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'pink', transparent: true, opacity: 0.2 } ) );
+                var planeBack = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'gray', transparent: true, opacity: 0.1 } ) );
                 planeBack.position.x = 1000;
                 planeBack.position.z = -1500;
                 planeBack.position.y = -500;
@@ -144,7 +144,7 @@ export default function (group, camera, cubeElements) {
                 planeBack.userData.groupUuid = this.group.uuid;
                 this.group.add( planeBack );
                 const columnItems = this.createNavColumn();
-                this.createName();
+                this.createName(name);
                 
         return {
             items: items,
@@ -185,8 +185,8 @@ export default function (group, camera, cubeElements) {
            new THREE.MeshBasicMaterial( { color: infoColors[obj.userData.layer],side: THREE.DoubleSide } ),
            new THREE.MeshBasicMaterial( { color: infoColors[obj.userData.layer],side: THREE.DoubleSide } ),
 
-           new THREE.MeshBasicMaterial( { color: 'white', transparent: type==='infoCube'?true:false, opacity: 0,side: THREE.DoubleSide }),
-           new THREE.MeshBasicMaterial( { color: 'white', transparent: type==='infoCube'?true:false, opacity: 0, side: THREE.DoubleSide } ),
+           new THREE.MeshBasicMaterial( { color: 'white', transparent: type==='infoCube'?true:false, opacity: 0.1,side: THREE.DoubleSide }),
+           new THREE.MeshBasicMaterial( { color: 'white', transparent: type==='infoCube'?true:false, opacity: 0.1, side: THREE.DoubleSide } ),
            new THREE.MeshBasicMaterial( { map: texture1 , side: THREE.DoubleSide} ),
            new THREE.MeshBasicMaterial( { map: texture2 , side: THREE.DoubleSide} ),
         ];
@@ -242,10 +242,10 @@ export default function (group, camera, cubeElements) {
         };
       };
 
-      this.createName = async  function() {
+      this.createName = function(name) {
         var loader = new THREE.FontLoader();
-        await loader.load('fonts/font.json', (font) => {
-            var geometry = new THREE.TextGeometry( '3Diagram', {
+        loader.load('fonts/font.json', (font) => {
+            var geometry = new THREE.TextGeometry( '3Diagram '+name, {
                 font: font,
                 size: 80,
                 height: 5,
