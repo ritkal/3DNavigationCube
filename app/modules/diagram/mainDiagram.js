@@ -11,7 +11,7 @@ import OrbitControls from 'three-orbitcontrols';
 
 export default class Diagram {
     constructor() {
-        this.mode = meta.modes.globalObserver;
+        this.mode = meta.modes.groupObserver;
 
         this.items = [];
         this.mouse = {
@@ -21,6 +21,8 @@ export default class Diagram {
         this.delay = 200;
         this.prevent = false;
         this.groups = [];
+        this.modules = [];
+        this.names = [];
     }
 
     __init() {
@@ -42,7 +44,7 @@ export default class Diagram {
         });
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.domElement.addEventListener('mouseup',(e) => this.__onMouseUp(e), false);
+        this.renderer.domElement.addEventListener('mouseup',(e) => this.__onMouseUpDispatecher(e), false);
         this.renderer.domElement.addEventListener('dblclick',(e) => this.__onDblClick(e), false);
         this.renderer.domElement.addEventListener("mousemove", (e) => this.flag = 1, false);
         this.renderer.domElement.addEventListener('mousedown',(e) => this.__onMouseDown(e), false);
@@ -57,25 +59,6 @@ export default class Diagram {
         this.cubeGroup = new THREE.Group();
         this.groups.push(this.cubeGroup);
 
-        var loader = new THREE.FontLoader();
-        loader.load('fonts/font.json', (font) => {
-            var geometry = new THREE.TextGeometry( '3Diagram', {
-                font: font,
-                size: 80,
-                height: 5,
-                curveSegments: 12,
-                bevelEnabled: true,
-                bevelThickness: 1,
-                bevelSize: 1,
-                bevelSegments: 1
-            } );
-            var material = new THREE.MeshBasicMaterial( { color: 'white' } );
-            this.meshLabel = new THREE.Mesh(geometry, material);
-            this.meshLabel.position.x = 300;
-            this.meshLabel.position.y = 300;
-            this.meshLabel.position.z = 0;
-            this.navGroup.add(this.meshLabel);
-        });
         // Build diagram
         this.diagramBuilder = new DiagramBuilder(this.navGroup, this.camera);
         this.diagramBuilder.setElemntLength(600);
@@ -84,16 +67,47 @@ export default class Diagram {
             y: 500,
             z: 200
         });
-        const out = this.diagramBuilder.createCubeElements();
-        this.items = out.items;
-        this.textLabels = out.texts;
+        let builderOut = this.diagramBuilder.createCubeElements({
+            x: 5000,
+            y: 200,
+            z: -6000,
+        });
+        this.currentModule = builderOut;
+        this.items = builderOut.items;
+        this.textLabels = builderOut.texts;
+        this.columnItems = builderOut.columnItems;
+        builderOut.builder = this.diagramBuilder;
+        this.names.push(builderOut.name);
+        this.modules.push(builderOut);
+
+
+        this.diagramBuilder2 = new DiagramBuilder(this.cubeGroup, this.camera);
+        this.diagramBuilder2.setElemntLength(600);
+        this.diagramBuilder2.setOffset({
+            x: 400,
+            y: 500,
+            z: 200
+        });
+        this.cubeGroup.position.x = -5000;
+        this.cubeGroup.position.y = 200;
+        this.cubeGroup.position.z = -6000;
+        builderOut = this.diagramBuilder2.createCubeElements({
+            x: -5000,
+            y: 200,
+            z: -6000,
+        });
+        builderOut.builder = this.diagramBuilder2;
+        this.names.push(builderOut.name);
+        this.modules.push(builderOut);
+
         this.diagramCenter = this.diagramBuilder.getDiagramCenter();
 
         this.controls.target.set(this.diagramCenter.x, this.diagramCenter.y, this.diagramCenter.z);
         this.camera.position.set(this.diagramCenter.x, 100, 2200);
-        this.columnItems = this.diagramBuilder.createNavColumn();
         this.__addWindowListeners();
         this.scene.add(this.navGroup);
+        this.scene.add(this.cubeGroup);
+
         this.__render();
 
         // Complex element controls
@@ -180,57 +194,45 @@ export default class Diagram {
         window.addEventListener('keyup', (event) => {
             switch (event.keyCode) {
                 case 27: // ESC
-                    this.mode = meta.modes.globalObserver;
-                    this.controls.enabled = true;
-                    this.navGroup.remove(this.CURRENTINFOCUBE);
-                    if (this.INTERSECTEDMOUSEDBL) {
-                        this.cameraAnimate.animateCameraOnClickElement( this.INTERSECTEDMOUSEDBL, meta.animateOn.click );
-                        this.INTERSECTEDMOUSEDBL = null;
-                        for(var i=0; i<this.textLabels.length; i++) {
-                            this.textLabels[i].element.hidden = false;
+                    if ( this.mode !== meta.modes.globalObserver ) {
+                        this.mode = meta.modes.groupObserver;
+                        this.controls.enabled = true;
+                        this.currentModule.group.remove(this.CURRENTINFOCUBE);
+                        if (this.INTERSECTEDMOUSEDBL) {
+                            this.cameraAnimate.animateCameraOnClickElement( this.INTERSECTEDMOUSEDBL, meta.animateOn.click );
+                            this.INTERSECTEDMOUSEDBL = null;
+                            for(var i=0; i<this.textLabels.length; i++) {
+                                this.textLabels[i].element.hidden = false;
+                            }
+                        } else {
+                            this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
                         }
-                    } else {
-                        this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
                     }
                     break;
                 case 8: // Backspace
                     
-                    if (this.mode === meta.modes.infoMode) {
+                    if (this.mode === meta.modes.infoMode || this.mode === meta.modes.globalObserver) {
                         return;
                     }
+                    this.items = [];
+                    // this.textLabels = [];
+                    // this.cameraAnimate.animateToLayer( {x:0, y:0, z:0}, 1 );
                     this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
+                    this.mode = meta.modes.globalObserver;
 
-                    this.mode === meta.modes.globalObserver? this.mode = meta.modes.groupObserver : this.mode = meta.modes.globalObserver;
-                    let newNavPos;
-                    if (this.mode === meta.modes.groupObserver) {
-                        newNavPos = {
-                            x: 5000,
-                            y: 200,
-                            z: -3000,
-                        };
-                        for(var j=0; j<this.textLabels.length; j++) {
-                            this.textLabels[j].element.hidden = true;
+                    let newNavPos = this.currentModule.pos;
+                        for(var k=0; k<this.textLabels.length; k++){
+                            this.textLabels[k].element.hidden = true;
                         }
-
-                    } else {
-                        newNavPos = {
-                            x: 0,
-                            y: 0,
-                            z: 0,
-                        };
-                        for(var j=0; j<this.textLabels.length; j++) {
-                            this.textLabels[j].element.hidden = false;
-                        }
-                    }
-
-                    var navPos = this.navGroup.position;
+                    
+                    var navPos = this.currentModule.group.position;
                     new TWEEN.Tween(navPos)
                         .to(newNavPos, 1000)
                         .easing(TWEEN.Easing. Quadratic.Out)
                         .onUpdate(() => {
-                            this.navGroup.position.x = navPos.x;
-                            this.navGroup.position.y = navPos.y;
-                            this.navGroup.position.z = navPos.z;
+                            this.currentModule.group.position.x = navPos.x;
+                            this.currentModule.group.position.y = navPos.y;
+                            this.currentModule.group.position.z = navPos.z;
                         })
                         .start(); 
                     break;
@@ -239,12 +241,20 @@ export default class Diagram {
     }
 
     __render() {
-        for(var i=0; i<this.textLabels.length; i++) {
-            this.textLabels[i].updatePosition();
+        if (this.mode !== meta.modes.globalObserver) {
+            if (this.textLabels.length){
+                for(var i=0; i<this.textLabels.length; i++) {
+                    this.textLabels[i].element.hidden = false;
+                    this.textLabels[i].updatePosition();
+                }
+            }
+        } else {
+            for(var j=0; j<this.textLabels.length; j++) {
+                this.textLabels[j].element.hidden = true;
+            }
         }
-        if (this.meshLabel) {
-            this.meshLabel.quaternion.copy( this.camera.quaternion );
-        }
+        this.modules.forEach(item => item.builder.faceLabel())
+
         this.renderer.render(this.scene, this.camera);
     }
 
@@ -256,9 +266,18 @@ export default class Diagram {
         this.__render();
     }
 
+    __onMouseUpDispatecher(e) {
+        if (this.mode === meta.modes.globalObserver) {
+            this.__onMouseUpGlobal(e);
+        }
+        if (this.mode === meta.modes.groupObserver) {
+            this.__onMouseUpGroup(e);
+        }
+    }
+
     __onDblClick(e) {
         clearTimeout(this.timer);
-        if (this.mode === meta.modes.globalObserver) {
+        if (this.mode === meta.modes.groupObserver) {
             this.controls.enabled = false;
             this.prevent = true;
             if (this.flag === 0) {
@@ -266,8 +285,11 @@ export default class Diagram {
                 this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
                 this.raycaster.setFromCamera(this.mouse, this.camera);
-
-                var intersects = this.raycaster.intersectObjects(this.navGroup.children);
+                const arr = [];
+                this.groups.forEach(el => {
+                    el.children.forEach(ch => arr.push(ch));
+                });
+                var intersects = this.raycaster.intersectObjects(arr);
 
                 if (intersects.length > 0) {
                     this.INTERSECTEDMOUSEDBL = intersects[0].object;
@@ -294,7 +316,7 @@ export default class Diagram {
                             height: 300,
                             width: 400
                         };
-                        this.CURRENTINFOCUBE = this.diagramBuilder.createMesh(size, this.INTERSECTEDMOUSEDBL, 'infoCube');
+                        this.CURRENTINFOCUBE = this.currentModule.builder.createMesh(size, this.INTERSECTEDMOUSEDBL, 'infoCube');
 
                         // Basic element controls (rotating around Y)
                         var controlsT = new ObjectControls(this.camera, this.renderer.domElement, this.CURRENTINFOCUBE);
@@ -321,16 +343,18 @@ export default class Diagram {
     }
 
     __onMouseDown(e) {
-        if (this.mode === meta.modes.globalObserver) {
+        if (this.mode === meta.modes.globalObserver || this.mode === meta.modes.groupObserver) {
             this.INTERSECTEDMOUSEDBL = null;
             this.flag = 0;
             this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
             this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
             this.raycaster.setFromCamera(this.mouse, this.camera);
-
-            var intersectsonMouseDown = this.raycaster.intersectObjects(this.navGroup.children);
-
+            const arr = [];
+            this.groups.forEach(el => {
+                el.children.forEach(ch => arr.push(ch));
+            });
+            var intersectsonMouseDown = this.raycaster.intersectObjects(arr);
 
             if (intersectsonMouseDown.length > 0) {
                 if (intersectsonMouseDown[0].object.userData.type === 'fullControlled') {
@@ -346,8 +370,60 @@ export default class Diagram {
         }
     }
 
-    __onMouseUp(e) {
-        if (this.mode === meta.modes.globalObserver) {
+    __onMouseUpGlobal(e) {
+            this.controls.enabled = true;
+            this.timer = setTimeout(() => {
+                if (!this.prevent) {
+                    if (this.flag === 0) {
+                        this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+                        this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+                        this.raycaster.setFromCamera(this.mouse, this.camera);
+                        const arr = [];
+                        this.groups.forEach(el => {
+                            el.children.forEach(ch => arr.push(ch));
+                        });
+
+                        var intersects = this.raycaster.intersectObjects(arr);
+
+                        if (intersects.length > 0) {
+                            if (this.INTERSECTEDMOUSEUP != intersects[0].object) {
+                                this.INTERSECTEDMOUSEUP = intersects[0].object;
+                                const group = this.groups.find(item => item.uuid === this.INTERSECTEDMOUSEUP.userData.groupUuid);
+                                this.currentModule = this.modules.find(item => item.group === group);
+                                    this.mode = meta.modes.groupObserver;
+                                    const newNavPos = {
+                                        x: 0,
+                                        y: 0,
+                                        z: 0,
+                                    };
+                                this.items = this.currentModule.items;
+                                this.textLabels = this.currentModule.texts;
+                                this.columnItems = this.currentModule.columnItems;
+                                var navPos = group.position;
+                                new TWEEN.Tween(navPos)
+                                    .to(newNavPos, 1000)
+                                    .easing(TWEEN.Easing. Quadratic.Out)
+                                    .onUpdate(() => {
+                                        group.position.x = navPos.x;
+                                        group.position.y = navPos.y;
+                                        group.position.z = navPos.z;
+                                    })
+                                    .start(); 
+                            } else {
+                                this.INTERSECTEDMOUSEUP = null;
+                            }
+                            this.mode = meta.modes.groupObserver;
+                            this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
+                        }
+                    }
+                }
+                this.prevent = false;
+            }, this.delay);
+    }
+    
+
+    __onMouseUpGroup(e) {
             this.controls.enabled = true;
             this.timer = setTimeout(() => {
                 if (!this.prevent) {
@@ -359,8 +435,11 @@ export default class Diagram {
                         this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
                         this.raycaster.setFromCamera(this.mouse, this.camera);
-
-                        var intersects = this.raycaster.intersectObjects(this.navGroup.children);
+                        const arr = [];
+                        this.groups.forEach(el => {
+                            el.children.forEach(ch => arr.push(ch));
+                        });
+                        var intersects = this.raycaster.intersectObjects(arr);
 
                         if (intersects.length > 0) {
                             if (this.INTERSECTEDMOUSEUP != intersects[0].object) {
@@ -402,6 +481,17 @@ export default class Diagram {
                                         }
                                     });
                                     this.cameraAnimate.animateToLayer(this.diagramCenter, this.INTERSECTEDMOUSEUP.userData.layer);
+                                } 
+                                if (this.INTERSECTEDMOUSEUP.userData.type === 'wrapper') {
+                                    this.items.forEach(item => {
+                                        item.material.forEach(m => {
+                                            m.opacity = 1;
+                                        });
+                                    });
+                                    this.columnItems.forEach(item => {
+                                        item.material.opacity = 1;
+                                    });
+                                    this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
                                 }
                             } else {
                                 this.INTERSECTEDMOUSEUP = null;
@@ -421,8 +511,8 @@ export default class Diagram {
                 }
                 this.prevent = false;
             }, this.delay);
-        }
     }
+
     setMode(targetMode) {
         this.mode = targetMode;
     }

@@ -5,10 +5,10 @@ import meta from '../meta';
 const defaultCubeData = meta.data;
 const colors = ['#63a884', '#fa8072', '#ffcc5c'];
 const infoColors = ['#bae0cc', '#ffd8d3', '#fcebc4'];
-export default function (scene, camera, cubeElements) {
+export default function (group, camera, cubeElements) {
     this.textlabels = [];
     this.camera = camera;
-    this.scene = scene;
+    this.group = group;
     this.cubeElements = cubeElements || defaultCubeData;
     this.currentInfoCube = null;
     var items = [];
@@ -58,7 +58,7 @@ export default function (scene, camera, cubeElements) {
         offset.z = newOffset.z;
     };
 
-    this.createCubeElements = function () {
+    this.createCubeElements = function (pos) {
         const geometry = new THREE.BoxGeometry( elemntSize.length, elemntSize.height, elemntSize.width );
         var texture = new THREE.TextureLoader().load( 'textures/trash.jpg' );
         this.cubeElements.forEach(el => {
@@ -82,6 +82,7 @@ export default function (scene, camera, cubeElements) {
             mesh.userData.layer = el.layer;
             mesh.userData.row = el.row;
             mesh.userData.type = 'cubeElement';
+            mesh.userData.groupUuid = this.group.uuid;
             mesh.updateMatrix();
             mesh.matrixAutoUpdate = true;
             var text = this.__createTextLabel();
@@ -89,51 +90,68 @@ export default function (scene, camera, cubeElements) {
             text.setParent(mesh);
             this.textlabels.push(text);
             document.body.appendChild(text.element);
-            this.scene.add( mesh );
+            this.group.add( mesh );
             items.push(mesh);
         });
         var planeGeo = new THREE.PlaneBufferGeometry( 4000.1, 4000.1 );
         // walls
-				var planeTop = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'red', transparent: true, opacity: 0.7 } ) );
+				var planeTop = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'red', transparent: true, opacity: 0.2 } ) );
                 planeTop.position.y = 1000;
                 planeTop.position.x = 1000;
-				planeTop.rotateX( Math.PI / 2 );
-                this.scene.add( planeTop );
+                planeTop.rotateX( Math.PI / 2 );
+                planeTop.userData.type = 'wrapper';
+                planeTop.userData.groupUuid = this.group.uuid;
+                this.group.add( planeTop );
                 
-                var planeBottom = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'yellow', transparent: true, opacity: 0.7 } ) );
+                var planeBottom = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'yellow', transparent: true, opacity: 0.2 } ) );
                 planeBottom.position.y = -3000;
                 planeBottom.position.x = 1000;
-				planeBottom.rotateX( - Math.PI / 2 );
-                this.scene.add( planeBottom );
+                planeBottom.rotateX( - Math.PI / 2 );
+                planeBottom.userData.type = 'wrapper';
+                planeBottom.userData.groupUuid = this.group.uuid;
+                this.group.add( planeBottom );
                 
-                var planeFront = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'blue', transparent: true, opacity: 0.7 } ) );
+                var planeFront = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'red', transparent: true, opacity: 0.2 } ) );
                 planeFront.position.x = 1000;
 				planeFront.position.z = 2000;
 				planeFront.position.y = -1000;
-				planeFront.rotateY( Math.PI );
-                this.scene.add( planeFront );
+                planeFront.rotateY( Math.PI );
+                planeFront.userData.type = 'wrapper';
+                planeFront.userData.groupUuid = this.group.uuid;
+                this.group.add( planeFront );
                 
-                var planeRight = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'green', transparent: true, opacity: 0.7 } ) );
+                var planeRight = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'green', transparent: true, opacity: 0.2 } ) );
 				planeRight.position.x = 3000;
 				planeRight.position.y = -1000;
 				planeRight.rotateY( - Math.PI / 2 );
-                this.scene.add( planeRight );
+                planeRight.userData.type = 'wrapper';
+                planeRight.userData.groupUuid = this.group.uuid;
+                this.group.add( planeRight );
                 
-                var planeLeft = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.7 } ) );
+                var planeLeft = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.2 } ) );
 				planeLeft.position.x = - 1000;
 				planeLeft.position.y = -1000;
 				planeLeft.rotateY( Math.PI / 2 );
-                this.scene.add( planeLeft );
+                planeLeft.userData.type = 'wrapper';
+                planeLeft.userData.groupUuid = this.group.uuid;
+                this.group.add( planeLeft );
 
-                var planeBack = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'pink', transparent: true, opacity: 0.7 } ) );
+                var planeBack = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'pink', transparent: true, opacity: 0.2 } ) );
                 planeBack.position.x = 1000;
                 planeBack.position.z = -2000;
                 planeBack.position.y = -1000;
-                this.scene.add( planeBack );
+                planeBack.userData.type = 'wrapper';
+                planeBack.userData.groupUuid = this.group.uuid;
+                this.group.add( planeBack );
+                const columnItems = this.createNavColumn();
+                this.createName();
                 
         return {
             items: items,
-            texts: this.textlabels
+            texts: this.textlabels,
+            group: this.group,
+            columnItems,
+            pos,
         };
     };
 
@@ -151,8 +169,9 @@ export default function (scene, camera, cubeElements) {
            meshC.position.z = 500;
            meshC.userData.type = 'navColumnElement';
            meshC.userData.layer = i;
+           meshC.userData.groupUuid = this.group.uuid;
            meshC.updateMatrix();
-           scene.add( meshC );
+           group.add( meshC );
            items.push(meshC);
         }
         return items;
@@ -178,7 +197,7 @@ export default function (scene, camera, cubeElements) {
         meshT.updateMatrix();
         meshT.matrixAutoUpdate = false;
         this.currentInfoCube = meshT;
-        this.scene.add(this.currentInfoCube);
+        this.group.add(this.currentInfoCube);
         return this.currentInfoCube;
      };
 
@@ -206,7 +225,7 @@ export default function (scene, camera, cubeElements) {
           updatePosition: function() {
             if(parent) {
                 var vec = new THREE.Vector3();
-                vec.addVectors(this.parent.parent.position, this.parent.position)
+                vec.addVectors(this.parent.parent.position, this.parent.position);
                 this.position.copy(vec);
             }
             
@@ -221,6 +240,28 @@ export default function (scene, camera, cubeElements) {
             return vector;
           }
         };
+      };
+
+      this.createName = async  function() {
+        var loader = new THREE.FontLoader();
+        await loader.load('fonts/font.json', (font) => {
+            var geometry = new THREE.TextGeometry( '3Diagram', {
+                font: font,
+                size: 80,
+                height: 5,
+                curveSegments: 12,
+                bevelEnabled: true,
+                bevelThickness: 1,
+                bevelSize: 1,
+                bevelSegments: 1
+            } );
+            var material = new THREE.MeshBasicMaterial( { color: 'white' } );
+            this.meshLabel = new THREE.Mesh(geometry, material);
+            this.meshLabel.position.x = 300;
+            this.meshLabel.position.y = 300;
+            this.meshLabel.position.z = 0;
+            this.group.add(this.meshLabel);
+        });
       };
 
      this.getDiagramCenter = function() {
@@ -242,5 +283,11 @@ export default function (scene, camera, cubeElements) {
             y: 0,
             z: 0
         };
+     };
+
+     this.faceLabel = function() {
+         if (this.meshLabel) {
+            this.meshLabel.quaternion.copy( this.camera.quaternion );
+         }
      };
 }
