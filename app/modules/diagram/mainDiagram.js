@@ -54,13 +54,15 @@ export default class Diagram {
         this.scene = new THREE.Scene();
         this.raycaster = new THREE.Raycaster();
         this.scene.background = new THREE.Color('#1E90FF');
-        this.navGroup = new THREE.Group();
-        this.groups.push(this.navGroup);
-        this.cubeGroup = new THREE.Group();
-        this.groups.push(this.cubeGroup);
+        this.navGroup1 = new THREE.Group();
+        this.groups.push(this.navGroup1);
+        this.navGroup2 = new THREE.Group();
+        this.groups.push(this.navGroup2);
+        this.navGroup3 = new THREE.Group();
+        this.groups.push(this.navGroup3);
 
         // Build diagram
-        this.diagramBuilder = new DiagramBuilder(this.navGroup, this.camera);
+        this.diagramBuilder = new DiagramBuilder(this.navGroup1, this.camera);
         this.diagramBuilder.setElemntLength(600);
         this.diagramBuilder.setOffset({
             x: 400,
@@ -69,7 +71,7 @@ export default class Diagram {
         });
         let builderOut = this.diagramBuilder.createCubeElements({
             x: 5000,
-            y: 1000,
+            y: 800,
             z: -6000,
         });
         this.currentModule = builderOut;
@@ -80,23 +82,41 @@ export default class Diagram {
         this.names.push(builderOut.name);
         this.modules.push(builderOut);
 
-
-        this.diagramBuilder2 = new DiagramBuilder(this.cubeGroup, this.camera);
+        this.diagramBuilder2 = new DiagramBuilder(this.navGroup2, this.camera);
         this.diagramBuilder2.setElemntLength(600);
         this.diagramBuilder2.setOffset({
             x: 400,
             y: 500,
             z: 200
         });
-        this.cubeGroup.position.x = -5000;
-        this.cubeGroup.position.y = 1000;
-        this.cubeGroup.position.z = -6000;
+        this.navGroup2.position.x = -5000;
+        this.navGroup2.position.y = 800;
+        this.navGroup2.position.z = -6000;
         builderOut = this.diagramBuilder2.createCubeElements({
             x: -5000,
-            y: 1000,
+            y: 800,
             z: -6000,
         });
         builderOut.builder = this.diagramBuilder2;
+        this.names.push(builderOut.name);
+        this.modules.push(builderOut);
+
+        this.diagramBuilder3 = new DiagramBuilder(this.navGroup3, this.camera);
+        this.diagramBuilder3.setElemntLength(600);
+        this.diagramBuilder3.setOffset({
+            x: 400,
+            y: 500,
+            z: 200
+        });
+        this.navGroup3.position.x = 0;
+        this.navGroup3.position.y = 800;
+        this.navGroup3.position.z = -6000;
+        builderOut = this.diagramBuilder3.createCubeElements({
+            x: 0,
+            y: 800,
+            z: -6000,
+        });
+        builderOut.builder = this.diagramBuilder3;
         this.names.push(builderOut.name);
         this.modules.push(builderOut);
 
@@ -105,8 +125,10 @@ export default class Diagram {
         this.controls.target.set(this.diagramCenter.x, this.diagramCenter.y, this.diagramCenter.z);
         this.camera.position.set(this.diagramCenter.x, 100, 2200);
         this.__addWindowListeners();
-        this.scene.add(this.navGroup);
-        this.scene.add(this.cubeGroup);
+        this.scene.add(this.navGroup1);
+        this.scene.add(this.navGroup2);
+        this.scene.add(this.navGroup3);
+
 
         this.__render();
 
