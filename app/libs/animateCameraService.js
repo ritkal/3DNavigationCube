@@ -91,14 +91,14 @@ export default function( camera, controls ){
          };
          new TWEEN.Tween(fromControlsTarget)
                .to(toControlsTarget, changeDuration )
-               .easing(TWEEN.Easing. Quadratic.Out)
+               .easing(TWEEN.Easing.Quadratic.Out)
                .onUpdate(function () {
                   controls.target.set(this._object.x, this._object.y, this._object.z);
                })
                .start();
          new TWEEN.Tween(fromCameraPosition)
             .to(toCameraPosition, changeDuration)
-            .easing(TWEEN.Easing. Quadratic.Out)
+            .easing(TWEEN.Easing.Quadratic.Out)
             .onUpdate(function () {
                camera.position.set(this._object.x, this._object.y, this._object.z);
             })
@@ -108,7 +108,7 @@ export default function( camera, controls ){
     this.animateOpacity = function(items, obj) {
         new TWEEN.Tween(fromCameraPosition)
         .to(toCameraPosition, changeDuration)
-        .easing(TWEEN.Easing. Quadratic.Out)
+        .easing(TWEEN.Easing.Quadratic.Out)
         .onUpdate(function () {
             items.forEach(item => {
                 if (item === obj) {

@@ -69,7 +69,7 @@ export default class Diagram {
         });
         let builderOut = this.diagramBuilder.createCubeElements({
             x: 5000,
-            y: 200,
+            y: 1000,
             z: -6000,
         });
         this.currentModule = builderOut;
@@ -89,11 +89,11 @@ export default class Diagram {
             z: 200
         });
         this.cubeGroup.position.x = -5000;
-        this.cubeGroup.position.y = 200;
+        this.cubeGroup.position.y = 1000;
         this.cubeGroup.position.z = -6000;
         builderOut = this.diagramBuilder2.createCubeElements({
             x: -5000,
-            y: 200,
+            y: 1000,
             z: -6000,
         });
         builderOut.builder = this.diagramBuilder2;
