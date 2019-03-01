@@ -58,43 +58,53 @@ export default function (group, camera, cubeElements) {
         offset.z = newOffset.z;
     };
 
-    this.createCubeElements = function (pos, name) {
+    this.createCubeElements = async function (pos, name) {
         const geometry = new THREE.BoxGeometry( elemntSize.length, elemntSize.height, elemntSize.width );
-        var texture = new THREE.TextureLoader().load( 'textures/trash.jpg' );
-        this.cubeElements.forEach(el => {
-            var materials = [
-                new THREE.MeshBasicMaterial( { color: '' } ),
-                new THREE.MeshBasicMaterial( { color: 'white' } ),
-                new THREE.MeshBasicMaterial( { map: texture } ),
-                new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
-                new THREE.MeshBasicMaterial( { color: 'white' } ),
-                new THREE.MeshBasicMaterial( { color: 'white' } ),
-             ];
-            var mesh = new THREE.Mesh( geometry, materials );
-            mesh.material.forEach(m => {
-               m.transparent = true;
-               m.opacity = 1;
+        const getTextures = ()=> new Promise((resolve, reject)=>{
+            const manager = new THREE.LoadingManager(()=>resolve(textures));
+            const loader = new THREE.TextureLoader(manager);
+            const textures = [
+              "textures/trash.jpg",
+            ].map(filename=>loader.load(filename));
+          });
+          
+          await getTextures().then(result=>{
+            this.cubeElements.forEach(el => {
+                var materials = [
+                    new THREE.MeshBasicMaterial( { color: '' } ),
+                    new THREE.MeshBasicMaterial( { color: 'white' } ),
+                    new THREE.MeshBasicMaterial( { map: result[0] } ),
+                    new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
+                    new THREE.MeshBasicMaterial( { color: 'white' } ),
+                    new THREE.MeshBasicMaterial( { color: 'white' } ),
+                 ];
+                var mesh = new THREE.Mesh( geometry, materials );
+                mesh.material.forEach(m => {
+                   m.transparent = true;
+                   m.opacity = 1;
+                });
+                mesh.position.x = el.column * ( elemntSize.length + offset.x );
+                mesh.position.y = - el.layer * offset.y;
+                mesh.position.z = el.row * ( elemntSize.width + offset.z);
+                mesh.userData.column = el.column;
+                mesh.userData.layer = el.layer;
+                mesh.userData.row = el.row;
+                mesh.userData.type = 'cubeElement';
+                mesh.userData.groupUuid = this.group.uuid;
+                mesh.updateMatrix();
+                mesh.matrixAutoUpdate = true;
+                var text = this.__createTextLabel();
+                text.setHTML(el.name);
+                text.setParent(mesh);
+                this.textlabels.push(text);
+                document.body.appendChild(text.element);
+                this.group.add( mesh );
+                items.push(mesh);
             });
-            mesh.position.x = el.column * ( elemntSize.length + offset.x );
-            mesh.position.y = - el.layer * offset.y;
-            mesh.position.z = el.row * ( elemntSize.width + offset.z);
-            mesh.userData.column = el.column;
-            mesh.userData.layer = el.layer;
-            mesh.userData.row = el.row;
-            mesh.userData.type = 'cubeElement';
-            mesh.userData.groupUuid = this.group.uuid;
-            mesh.updateMatrix();
-            mesh.matrixAutoUpdate = true;
-            var text = this.__createTextLabel();
-            text.setHTML(el.name);
-            text.setParent(mesh);
-            this.textlabels.push(text);
-            document.body.appendChild(text.element);
-            this.group.add( mesh );
-            items.push(mesh)
         });
+        
         var planeGeo = new THREE.PlaneBufferGeometry( 3000.1, 3000.1 );
-        // walls
+        // wrapper
 				var planeTop = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'black', transparent: true, opacity: 0.1 } ) );
                 planeTop.position.y = 1000;
                 planeTop.position.x = 1000;
@@ -177,27 +187,38 @@ export default function (group, camera, cubeElements) {
         return items;
     };
 
-    this.createMesh = function(size, obj, type) {
+    this.createMesh = async function(size, obj, type) {
         var geometryT = new THREE.BoxGeometry( size.lenght, size.height, size.width );
-        var texture1 = new THREE.TextureLoader().load( 'textures/carts.jpg' );
-        var texture2 = new THREE.TextureLoader().load( 'textures/column-charts.jpg' );
-        var materialT = [
-           new THREE.MeshBasicMaterial( { color: infoColors[obj.userData.layer],side: THREE.DoubleSide } ),
-           new THREE.MeshBasicMaterial( { color: infoColors[obj.userData.layer],side: THREE.DoubleSide } ),
-
-           new THREE.MeshBasicMaterial( { color: 'white', transparent: type==='infoCube'?true:false, opacity: 0.1,side: THREE.DoubleSide }),
-           new THREE.MeshBasicMaterial( { color: 'white', transparent: type==='infoCube'?true:false, opacity: 0.1, side: THREE.DoubleSide } ),
-           new THREE.MeshBasicMaterial( { map: texture1 , side: THREE.DoubleSide} ),
-           new THREE.MeshBasicMaterial( { map: texture2 , side: THREE.DoubleSide} ),
-        ];
-        var meshT = new THREE.Mesh( geometryT, materialT );
-        meshT.position.set(obj.position.x, obj.position.y - 200, obj.position.z);
-        meshT.userData.type = 'infoCube';
-        meshT.userData.layer = 1;
-        meshT.updateMatrix();
-        meshT.matrixAutoUpdate = false;
-        this.currentInfoCube = meshT;
-        this.group.add(this.currentInfoCube);
+        // const loadManager = new THREE.LoadingManager();
+        const getTextures = ()=> new Promise((resolve, reject)=>{
+            const manager = new THREE.LoadingManager(()=>resolve(textures));
+            const loader = new THREE.TextureLoader(manager);
+            const textures = [
+              "textures/carts.jpg",
+              "textures/column-charts.jpg",
+            ].map(filename=>loader.load(filename));
+          });
+          
+          await getTextures().then(result=>{
+            var materialT = [
+                new THREE.MeshBasicMaterial( { color: infoColors[obj.userData.layer],side: THREE.DoubleSide } ),
+                new THREE.MeshBasicMaterial( { color: infoColors[obj.userData.layer],side: THREE.DoubleSide } ),
+     
+                new THREE.MeshBasicMaterial( { color: 'white', transparent: type==='infoCube'?true:false, opacity: 0.1,side: THREE.DoubleSide }),
+                new THREE.MeshBasicMaterial( { color: 'white', transparent: type==='infoCube'?true:false, opacity: 0.1, side: THREE.DoubleSide } ),
+                new THREE.MeshBasicMaterial( { map: result[0] , side: THREE.DoubleSide} ),
+                new THREE.MeshBasicMaterial( { map: result[1] , side: THREE.DoubleSide} ),
+             ];
+             var meshT = new THREE.Mesh( geometryT, materialT );
+             
+             meshT.position.set(obj.position.x, obj.position.y - 200, obj.position.z);
+             meshT.userData.type = 'infoCube';
+             meshT.userData.layer = 1;
+             meshT.updateMatrix();
+             meshT.matrixAutoUpdate = false;
+             this.currentInfoCube = meshT;
+             this.group.add(this.currentInfoCube);
+        });
         return this.currentInfoCube;
      };
 
@@ -247,7 +268,7 @@ export default function (group, camera, cubeElements) {
         loader.load('fonts/font.json', (font) => {
             var geometry = new THREE.TextGeometry( '3Diagram '+name, {
                 font: font,
-                size: 80,
+                size: 100,
                 height: 5,
                 curveSegments: 12,
                 bevelEnabled: true,
@@ -255,7 +276,7 @@ export default function (group, camera, cubeElements) {
                 bevelSize: 1,
                 bevelSegments: 1
             } );
-            var material = new THREE.MeshBasicMaterial( { color: 'white' } );
+            var material = new THREE.MeshBasicMaterial( { color: '#750c41' } );
             this.meshLabel = new THREE.Mesh(geometry, material);
             this.meshLabel.position.x = 300;
             this.meshLabel.position.y = 300;

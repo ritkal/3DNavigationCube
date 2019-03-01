@@ -6,7 +6,7 @@ const cameraPositionOffsets = {
         y: 200,
         z: 500
     },
-    elDblClic :{
+    elDblClick :{
         x: 0,
         y: -150,
         z: 550
@@ -18,7 +18,7 @@ const controlTargetOffset = {
         y: -200,
         z: 0
     },
-    elDblClic :{
+    elDblClick :{
         x: 0,
         y: -200,
         z: 0

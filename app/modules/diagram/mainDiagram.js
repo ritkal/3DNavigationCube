@@ -25,7 +25,7 @@ export default class Diagram {
         this.names = [];
     }
 
-    __init() {
+    async __init() {
         this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 100000);
 
         // Camera controls            
@@ -69,9 +69,9 @@ export default class Diagram {
             y: 500,
             z: 200
         });
-        let builderOut = this.diagramBuilder.createCubeElements({
+        let builderOut = await this.diagramBuilder.createCubeElements({
             x: 5000,
-            y: 800,
+            y: 500,
             z: -6000,
         }, 'THREE');
         this.currentModule = builderOut;
@@ -90,11 +90,11 @@ export default class Diagram {
             z: 200
         });
         this.navGroup2.position.x = -5000;
-        this.navGroup2.position.y = 800;
+        this.navGroup2.position.y = 500;
         this.navGroup2.position.z = -6000;
-        builderOut = this.diagramBuilder2.createCubeElements({
+        builderOut = await this.diagramBuilder2.createCubeElements({
             x: -5000,
-            y: 800,
+            y: 500,
             z: -6000,
         }, 'ONE');
         builderOut.builder = this.diagramBuilder2;
@@ -109,11 +109,11 @@ export default class Diagram {
             z: 200
         });
         this.navGroup3.position.x = 0;
-        this.navGroup3.position.y = 800;
+        this.navGroup3.position.y = 500;
         this.navGroup3.position.z = -6000;
-        builderOut = this.diagramBuilder3.createCubeElements({
+        builderOut = await this.diagramBuilder3.createCubeElements({
             x: 0,
-            y: 800,
+            y: 50,
             z: -6000,
         }, 'TWO');
         builderOut.builder = this.diagramBuilder3;
@@ -233,12 +233,10 @@ export default class Diagram {
                     break;
                 case 8: // Backspace
                     
-                    if (this.mode === meta.modes.infoMode || this.mode === meta.modes.globalObserver) {
+                    if (this.mode === meta.modes.infoObserver || this.mode === meta.modes.globalObserver) {
                         return;
                     }
                     this.items = [];
-                    // this.textLabels = [];
-                    // this.cameraAnimate.animateToLayer( {x:0, y:0, z:0}, 1 );
                     this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
                     this.mode = meta.modes.globalObserver;
 
@@ -263,8 +261,8 @@ export default class Diagram {
     }
 
     __render() {
-        if (this.mode !== meta.modes.globalObserver) {
-            if (this.textLabels.length){
+        if (this.mode !== meta.modes.globalObserver && this.mode !== meta.modes.infoObserver) {
+            if (this.textLabels && this.textLabels.length){
                 for(var i=0; i<this.textLabels.length; i++) {
                     this.textLabels[i].element.hidden = false;
                     this.textLabels[i].updatePosition();
@@ -275,7 +273,7 @@ export default class Diagram {
                 this.textLabels[j].element.hidden = true;
             }
         }
-        this.modules.forEach(item => item.builder.faceLabel())
+        this.modules.forEach(item => item.builder.faceLabel());
 
         this.renderer.render(this.scene, this.camera);
     }
@@ -284,7 +282,6 @@ export default class Diagram {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        // this.controls.handleResize();
         this.__render();
     }
 
@@ -297,7 +294,7 @@ export default class Diagram {
         }
     }
 
-    __onDblClick(e) {
+    async __onDblClick(e) {
         clearTimeout(this.timer);
         if (this.mode === meta.modes.groupObserver) {
             this.controls.enabled = false;
@@ -338,14 +335,14 @@ export default class Diagram {
                             height: 300,
                             width: 400
                         };
-                        this.CURRENTINFOCUBE = this.currentModule.builder.createMesh(size, this.INTERSECTEDMOUSEDBL, 'infoCube');
+                        this.CURRENTINFOCUBE = await this.currentModule.builder.createMesh(size, this.INTERSECTEDMOUSEDBL, 'infoCube');
 
                         // Basic element controls (rotating around Y)
                         var controlsT = new ObjectControls(this.camera, this.renderer.domElement, this.CURRENTINFOCUBE);
                         controlsT.setDistance(0, 15000); // set min - max distance for zoom
                         controlsT.setZoomSpeed(1); // set zoom speed
                         this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEDBL, meta.animateOn.dblClick);
-                        this.mode = meta.modes.infoMode;
+                        this.mode = meta.modes.infoObserver;
                         this.CURRENTINFOCUBE.matrixAutoUpdate = true;
                     }
                 } else {

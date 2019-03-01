@@ -76,12 +76,12 @@ const data = [
 const modes = {
     globalObserver: 'Global observer',
     groupObserver: 'Group observer',
-    infoMode: 'Info observer'
+    infoObserver: 'Info observer'
 };
 
 const animateOn = {
     click: 'elClick',
-    dblClick: 'elDblClic'
+    dblClick: 'elDblClick'
 };
 
 export default {
