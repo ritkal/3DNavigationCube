@@ -1,6 +1,6 @@
 import * as TWEEN from '@tweenjs/tween.js';
 import * as THREE from 'three';
-import * as TrackballControls from 'three-trackballcontrols';
+import * as $ from 'jquery';
 import meta from '../../meta';
 import DiagramBuilder from '../../libs/DiagramBuilder';
 import cameraAnimation from '../../libs/animateCameraService';
@@ -26,10 +26,26 @@ export default class Diagram {
     }
 
     async __init() {
-        this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 100000);
+        this.container = $('#canvasDiagram');
+        this.camera = new THREE.PerspectiveCamera(90, this.container.width() / this.container.height(), 1, 100000);
+
+        // renderer
+        this.renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });
+        this.renderer.setSize(this.container.width(), this.container.height());
+        this.renderer.domElement.setAttribute('id', 'diagram');
+        // console.log(this.renderer);
+        this.renderer.setPixelRatio(window.devicePixelRatio);
+        // this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.domElement.addEventListener('mouseup',(e) => this.__onMouseUpDispatecher(e), false);
+        this.renderer.domElement.addEventListener('dblclick',(e) => this.__onDblClick(e), false);
+        this.renderer.domElement.addEventListener("mousemove", (e) =>  this.__onMouseMove(e), false);
+        this.renderer.domElement.addEventListener('mousedown',(e) => this.__onMouseDown(e), false);
+        $('#canvasDiagram').append(this.renderer.domElement);
 
         // Camera controls            
-        this.controls = new OrbitControls(this.camera);
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         this.controls.rotateSpeed = 0.5;
         this.controls.zoomSpeed = 1.5;
 
@@ -37,19 +53,6 @@ export default class Diagram {
 	    this.controls.panSpeed = 1.0;
 
         this.controls.addEventListener('change',() => this.__render());
-
-        // renderer
-        this.renderer = new THREE.WebGLRenderer({
-            antialias: true
-        });
-        this.renderer.setPixelRatio(window.devicePixelRatio);
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.domElement.addEventListener('mouseup',(e) => this.__onMouseUpDispatecher(e), false);
-        this.renderer.domElement.addEventListener('dblclick',(e) => this.__onDblClick(e), false);
-        this.renderer.domElement.addEventListener("mousemove", (e) => this.flag = 1, false);
-        this.renderer.domElement.addEventListener('mousedown',(e) => this.__onMouseDown(e), false);
-        document.body.appendChild(this.renderer.domElement);
-
         // world
         this.scene = new THREE.Scene();
         this.raycaster = new THREE.Raycaster();
@@ -76,7 +79,7 @@ export default class Diagram {
         }, 'THREE');
         this.currentModule = builderOut;
         this.items = builderOut.items;
-        this.textLabels = builderOut.texts;
+        // this.textLabels = builderOut.texts;
         this.columnItems = builderOut.columnItems;
         builderOut.builder = this.diagramBuilder;
         this.names.push(builderOut.name);
@@ -223,9 +226,9 @@ export default class Diagram {
                         if (this.INTERSECTEDMOUSEDBL) {
                             this.cameraAnimate.animateCameraOnClickElement( this.INTERSECTEDMOUSEDBL, meta.animateOn.click );
                             this.INTERSECTEDMOUSEDBL = null;
-                            for(var i=0; i<this.textLabels.length; i++) {
-                                this.textLabels[i].element.hidden = false;
-                            }
+                            // for(var i=0; i<this.textLabels.length; i++) {
+                            //     this.textLabels[i].element.hidden = false;
+                            // }
                         } else {
                             this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
                         }
@@ -241,9 +244,9 @@ export default class Diagram {
                     this.mode = meta.modes.globalObserver;
 
                     let newNavPos = this.currentModule.pos;
-                        for(var k=0; k<this.textLabels.length; k++){
-                            this.textLabels[k].element.hidden = true;
-                        }
+                        // for(var k=0; k<this.textLabels.length; k++){
+                        //     this.textLabels[k].element.hidden = true;
+                        // }
                     
                     var navPos = this.currentModule.group.position;
                     new TWEEN.Tween(navPos)
@@ -261,36 +264,44 @@ export default class Diagram {
     }
 
     __render() {
-        if (this.mode !== meta.modes.globalObserver && this.mode !== meta.modes.infoObserver) {
-            if (this.textLabels && this.textLabels.length){
-                for(var i=0; i<this.textLabels.length; i++) {
-                    this.textLabels[i].element.hidden = false;
-                    this.textLabels[i].updatePosition();
-                }
-            }
-        } else {
-            for(var j=0; j<this.textLabels.length; j++) {
-                this.textLabels[j].element.hidden = true;
-            }
-        }
+        // if (this.mode !== meta.modes.globalObserver && this.mode !== meta.modes.infoObserver) {
+        //     // if (this.textLabels && this.textLabels.length){
+        //     //     for(var i=0; i<this.textLabels.length; i++) {
+        //     //         this.textLabels[i].element.hidden = false;
+        //     //         this.textLabels[i].updatePosition();
+        //     //     }
+        //     // }
+        // } else {
+        //     for(var j=0; j<this.textLabels.length; j++) {
+        //         this.textLabels[j].element.hidden = true;
+        //     }
+        // }
         this.modules.forEach(item => item.builder.faceLabel());
 
         this.renderer.render(this.scene, this.camera);
     }
 
     __onWindowResize() {
-        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.aspect = this.container.width() / this.container.height();
         this.camera.updateProjectionMatrix();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setSize(this.container.width(), this.container.height());
         this.__render();
     }
 
-    __onMouseUpDispatecher(e) {
-        if (this.mode === meta.modes.globalObserver) {
-            this.__onMouseUpGlobal(e);
+    __onMouseMove(e) {
+        if (e.target.id === 'diagram') {
+            this.flag = 1;
         }
-        if (this.mode === meta.modes.groupObserver) {
-            this.__onMouseUpGroup(e);
+    }
+
+    __onMouseUpDispatecher(e) {
+        if (e.target.id === 'diagram') {
+            if (this.mode === meta.modes.globalObserver) {
+                this.__onMouseUpGlobal(e);
+            }
+            if (this.mode === meta.modes.groupObserver) {
+                this.__onMouseUpGroup(e);
+            }
         }
     }
 
@@ -300,8 +311,8 @@ export default class Diagram {
             this.controls.enabled = false;
             this.prevent = true;
             if (this.flag === 0) {
-                this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-                this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+                this.mouse.x = (e.clientX / this.container.width()) * 2 - 1;
+                this.mouse.y = -(e.clientY /this.container.height()) * 2 + 1;
 
                 this.raycaster.setFromCamera(this.mouse, this.camera);
                 const arr = [];
@@ -313,9 +324,9 @@ export default class Diagram {
                 if (intersects.length > 0) {
                     this.INTERSECTEDMOUSEDBL = intersects[0].object;
                     if (this.INTERSECTEDMOUSEDBL.userData.type === 'cubeElement') {
-                        for(var i=0; i<this.textLabels.length; i++) {
-                            this.textLabels[i].element.hidden = true;
-                        }
+                        // for(var i=0; i<this.textLabels.length; i++) {
+                        //     this.textLabels[i].element.hidden = true;
+                        // }
                         this.items.forEach(item => {
                             if (item.userData.column === this.INTERSECTEDMOUSEDBL.userData.column && item.userData.row === this.INTERSECTEDMOUSEDBL.userData.row) {
                                 item.material.forEach(m => {
@@ -362,29 +373,31 @@ export default class Diagram {
     }
 
     __onMouseDown(e) {
-        if (this.mode === meta.modes.globalObserver || this.mode === meta.modes.groupObserver) {
-            this.INTERSECTEDMOUSEDBL = null;
-            this.flag = 0;
-            this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-            this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        if (e.target.id === 'diagram') {
+            if (this.mode === meta.modes.globalObserver || this.mode === meta.modes.groupObserver) {
+                this.INTERSECTEDMOUSEDBL = null;
+                this.flag = 0;
+                this.mouse.x = (e.clientX / this.container.width()) * 2 - 1;
+                this.mouse.y = -(e.clientY / this.container.height()) * 2 + 1;
 
-            this.raycaster.setFromCamera(this.mouse, this.camera);
-            const arr = [];
-            this.groups.forEach(el => {
-                el.children.forEach(ch => arr.push(ch));
-            });
-            var intersectsonMouseDown = this.raycaster.intersectObjects(arr);
+                this.raycaster.setFromCamera(this.mouse, this.camera);
+                const arr = [];
+                this.groups.forEach(el => {
+                    el.children.forEach(ch => arr.push(ch));
+                });
+                var intersectsonMouseDown = this.raycaster.intersectObjects(arr);
 
-            if (intersectsonMouseDown.length > 0) {
-                if (intersectsonMouseDown[0].object.userData.type === 'fullControlled') {
-                    this.controlsElement.attach(intersectsonMouseDown[0].object);
-                    if (this.INTERSECTEDMOUSEDOWN !== intersectsonMouseDown[0].object) {
-                        cameraAnimation(intersectsonMouseDown[0].object);
-                        this.INTERSECTEDMOUSEDOWN = intersectsonMouseDown[0].object;
+                if (intersectsonMouseDown.length > 0) {
+                    if (intersectsonMouseDown[0].object.userData.type === 'fullControlled') {
+                        this.controlsElement.attach(intersectsonMouseDown[0].object);
+                        if (this.INTERSECTEDMOUSEDOWN !== intersectsonMouseDown[0].object) {
+                            cameraAnimation(intersectsonMouseDown[0].object);
+                            this.INTERSECTEDMOUSEDOWN = intersectsonMouseDown[0].object;
+                        }
                     }
+                } else {
+                    this.info = null;
                 }
-            } else {
-                this.info = null;
             }
         }
     }
@@ -394,8 +407,8 @@ export default class Diagram {
             this.timer = setTimeout(() => {
                 if (!this.prevent) {
                     if (this.flag === 0) {
-                        this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-                        this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+                        this.mouse.x = (e.clientX / this.container.width()) * 2 - 1;
+                        this.mouse.y = -(e.clientY / this.container.height()) * 2 + 1;
 
                         this.raycaster.setFromCamera(this.mouse, this.camera);
                         const arr = [];
@@ -417,7 +430,7 @@ export default class Diagram {
                                         z: 0,
                                     };
                                 this.items = this.currentModule.items;
-                                this.textLabels = this.currentModule.texts;
+                                // this.textLabels = this.currentModule.texts;
                                 this.columnItems = this.currentModule.columnItems;
                                 var navPos = group.position;
                                 new TWEEN.Tween(navPos)
@@ -450,8 +463,8 @@ export default class Diagram {
                         this.info.matrixAutoUpdate = false;
                     }
                     if (this.flag === 0) {
-                        this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-                        this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+                        this.mouse.x = (e.clientX / this.container.width()) * 2 - 1;
+                        this.mouse.y = -(e.clientY / this.container.height()) * 2 + 1;
 
                         this.raycaster.setFromCamera(this.mouse, this.camera);
                         const arr = [];
