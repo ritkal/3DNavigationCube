@@ -1,0 +1,1 @@
+export const changeMode = text => ({ type: 'CHANGE_MODE', text });

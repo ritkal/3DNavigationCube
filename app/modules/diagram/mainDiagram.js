@@ -8,9 +8,10 @@ import ObjectControls from '../../libs/ObjectControls';
 import * as TransformControls from 'three-transformcontrols';
 import OrbitControls from 'three-orbitcontrols';
 
+const changeMode = obj => ({ type: 'NAVIGATE', obj });
 
 export default class Diagram {
-    constructor() {
+    constructor(options) {
         this.mode = meta.modes.groupObserver;
 
         this.items = [];
@@ -23,6 +24,11 @@ export default class Diagram {
         this.groups = [];
         this.modules = [];
         this.names = [];
+        // window.store.subscribe(() => this.__update());
+    }
+
+    __update() {
+        console.log(window.store.getState());
     }
 
     async __init() {
@@ -173,6 +179,10 @@ export default class Diagram {
         this.controls.update();
     }
 
+    __change(some) {
+        window.store.dispatch(changeMode(some));
+    }
+
     __addWindowListeners() {
         // Complex control listeners
         window.addEventListener('resize', () => this.__onWindowResize(), false);
@@ -182,7 +192,7 @@ export default class Diagram {
                 this.controlsElement.setSpace(this.controlsElemenct.space === "local" ? "world" : "local");
                     break;
                 case 17: // Ctrl
-                this.controlsElement.setTranslationSnap(100);
+                thiqwes.controlsElement.setTranslationSnap(100);
                 this.controlsElement.setRotationSnap(THREE.Math.degToRad(15));
                     break;
                 case 87: // W
@@ -196,23 +206,23 @@ export default class Diagram {
                     break;
                 case 187:
                 case 107: // +, =, num+
-                this.controlsElement.setSize(controlsElement.size + 0.1);
+                this.controlsElement.setSize(this.controlsElement.size + 0.1);
                     break;
                 case 189:
                 case 109: // -, _, num-
-                this.controlsElement.setSize(Math.max(controlsElement.size - 0.1, 0.1));
+                this.controlsElement.setSize(Math.max(this.controlsElement.size - 0.1, 0.1));
                     break;
                 case 88: // X
-                this.controlsElement.showX = !controlsElement.showX;
+                this.controlsElement.showX = !this.controlsElement.showX;
                     break;
                 case 89: // Y
-                this.controlsElement.showY = !controlsElement.showY;
+                this.controlsElement.showY = !this.controlsElement.showY;
                     break;
                 case 90: // Z
-                this.controlsElement.showZ = !controlsElement.showZ;
+                this.controlsElement.showZ = !this.controlsElement.showZ;
                     break;
                 case 32: // Spacebar
-                this.controlsElement.enabled = !controlsElement.enabled;
+                this.controlsElement.enabled = !this.controlsElement.enabled;
                     break;
             }
         });
@@ -225,6 +235,14 @@ export default class Diagram {
                         this.currentModule.group.remove(this.CURRENTINFOCUBE);
                         if (this.INTERSECTEDMOUSEDBL) {
                             this.cameraAnimate.animateCameraOnClickElement( this.INTERSECTEDMOUSEDBL, meta.animateOn.click );
+                            this.__change({
+                                mode: 'Group mode',
+                                group: this.INTERSECTEDMOUSEDBL.parent.uuid,
+                                layer: this.INTERSECTEDMOUSEDBL.userData.layer,
+                                row: this.INTERSECTEDMOUSEDBL.userData.row,
+                                column: this.INTERSECTEDMOUSEDBL.userData.column
+                            });
+    
                             this.INTERSECTEDMOUSEDBL = null;
                             // for(var i=0; i<this.textLabels.length; i++) {
                             //     this.textLabels[i].element.hidden = false;
@@ -235,10 +253,10 @@ export default class Diagram {
                     }
                     break;
                 case 8: // Backspace
-                    
                     if (this.mode === meta.modes.infoObserver || this.mode === meta.modes.globalObserver) {
                         return;
                     }
+                    this.__change({mode: 'Global mode'});
                     this.items = [];
                     this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
                     this.mode = meta.modes.globalObserver;
@@ -324,6 +342,14 @@ export default class Diagram {
                 if (intersects.length > 0) {
                     this.INTERSECTEDMOUSEDBL = intersects[0].object;
                     if (this.INTERSECTEDMOUSEDBL.userData.type === 'cubeElement') {
+                        this.__change({
+                            mode: 'Info mode',
+                            group: this.INTERSECTEDMOUSEDBL.parent.uuid,
+                            layer: this.INTERSECTEDMOUSEDBL.userData.layer,
+                            row: this.INTERSECTEDMOUSEDBL.userData.row,
+                            column: this.INTERSECTEDMOUSEDBL.userData.column
+                        });
+
                         // for(var i=0; i<this.textLabels.length; i++) {
                         //     this.textLabels[i].element.hidden = true;
                         // }
@@ -349,7 +375,8 @@ export default class Diagram {
                         this.CURRENTINFOCUBE = await this.currentModule.builder.createMesh(size, this.INTERSECTEDMOUSEDBL, 'infoCube');
 
                         // Basic element controls (rotating around Y)
-                        var controlsT = new ObjectControls(this.camera, this.renderer.domElement, this.CURRENTINFOCUBE);
+                        var controlsT = new 
+                        ObjectControls(this.camera, this.renderer.domElement, this.CURRENTINFOCUBE);
                         controlsT.setDistance(0, 15000); // set min - max distance for zoom
                         controlsT.setZoomSpeed(1); // set zoom speed
                         this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEDBL, meta.animateOn.dblClick);
@@ -403,10 +430,12 @@ export default class Diagram {
     }
 
     __onMouseUpGlobal(e) {
+            
             this.controls.enabled = true;
             this.timer = setTimeout(() => {
                 if (!this.prevent) {
                     if (this.flag === 0) {
+                        // this.__change('Group mode');
                         this.mouse.x = (e.clientX / this.container.width()) * 2 - 1;
                         this.mouse.y = -(e.clientY / this.container.height()) * 2 + 1;
 
@@ -421,6 +450,14 @@ export default class Diagram {
                         if (intersects.length > 0) {
                             if (this.INTERSECTEDMOUSEUP != intersects[0].object) {
                                 this.INTERSECTEDMOUSEUP = intersects[0].object;
+                                this.__change({
+                                    mode: 'Group mode',
+                                    group: this.INTERSECTEDMOUSEUP.parent.uuid,
+                                    layer: this.INTERSECTEDMOUSEUP.userData.layer,
+                                    row: this.INTERSECTEDMOUSEUP.userData.row,
+                                    column: this.INTERSECTEDMOUSEUP.userData.column
+                                });
+
                                 const group = this.groups.find(item => item.uuid === this.INTERSECTEDMOUSEUP.userData.groupUuid);
                                 this.currentModule = this.modules.find(item => item.group === group);
                                     this.mode = meta.modes.groupObserver;
@@ -477,6 +514,13 @@ export default class Diagram {
                             if (this.INTERSECTEDMOUSEUP != intersects[0].object) {
                                 this.INTERSECTEDMOUSEUP = intersects[0].object;
                                 if (this.INTERSECTEDMOUSEUP.userData.type === 'cubeElement') {
+                                    this.__change({
+                                        mode: 'Group mode',
+                                        group: this.INTERSECTEDMOUSEUP.parent.uuid,
+                                        layer: this.INTERSECTEDMOUSEUP.userData.layer,
+                                        row: this.INTERSECTEDMOUSEUP.userData.row,
+                                        column: this.INTERSECTEDMOUSEUP.userData.column
+                                    });
                                     this.items.forEach(item => {
                                         if (item.userData.column === this.INTERSECTEDMOUSEUP.userData.column && item.userData.row === this.INTERSECTEDMOUSEUP.userData.row) {
                                             item.material.forEach(m => {
@@ -494,6 +538,13 @@ export default class Diagram {
                                     this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEUP, meta.animateOn.click);
                                 }
                                 if (this.INTERSECTEDMOUSEUP.userData.type === 'navColumnElement') {
+                                    this.__change({
+                                        mode: 'Group mode',
+                                        group: this.INTERSECTEDMOUSEUP.parent.uuid,
+                                        layer: this.INTERSECTEDMOUSEUP.userData.layer,
+                                        row: '',
+                                        column: ''
+                                    });
                                     this.columnItems.forEach(item => {
                                         if (item === this.INTERSECTEDMOUSEUP) {
                                             item.material.opacity = 1;

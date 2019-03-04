@@ -2,7 +2,10 @@
 	<head>
 		<title>Three.js app</title>
 		<style>
-			body { margin: 0; }
+			body { 
+				margin: 0;
+				height: 100%; 
+			}
 			canvas { width: 100%; height: 100% }
 			#info {
 				position: absolute;
@@ -13,10 +16,11 @@
 				display:block;
 			}
 			#test {
-				width: 50%;
 				height: 100%;
+				display: flex
 			}
 			#canvasDiagram {
+				width: 50%;
 				height: 100%;
 			}
 		</style>
@@ -28,6 +32,21 @@
 		<div id = 'test'>
 			<div id='canvasDiagram'>
 			</div>
+			<div id="state">
+					<span>Mode:</span>
+					<input id="mode" type="text" value="Group mode">
+					<span>Group:</span>
+					<input id="group" type="text" value="">
+					<span>Row:</span>
+					<input id="row" type="text" value="">
+					<span>Column:</span>
+					<input id="column" type="text" value="">
+					<br></br>
+					<span>Layer:</span>
+					<input id="layer" type="text" value="">
+					<input id="button" type="button" value="Go">
+					<input id="some" type="time">
+				  </div>
 		</div>
 	</body>
 	<script type="text/javascript" src="bundle.js"></script></body>
