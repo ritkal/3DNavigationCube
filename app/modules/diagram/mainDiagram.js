@@ -236,9 +236,10 @@ export default class Diagram {
                         this.currentModule.group.remove(this.CURRENTINFOCUBE);
                         if (this.INTERSECTEDMOUSEDBL) {
                             this.cameraAnimate.animateCameraOnClickElement( this.INTERSECTEDMOUSEDBL, meta.animateOn.click );
+                            console.log(this.currentModule.group.uuid);
                             this.__change({
                                 mode: 'Group mode',
-                                group: this.INTERSECTEDMOUSEDBL.parent.uuid,
+                                group: this.currentModule.group.uuid,
                                 layer: this.INTERSECTEDMOUSEDBL.userData.layer,
                                 row: this.INTERSECTEDMOUSEDBL.userData.row,
                                 column: this.INTERSECTEDMOUSEDBL.userData.column
@@ -251,7 +252,7 @@ export default class Diagram {
                         } else {
                             this.__change({
                                 mode: 'Group mode',
-                                group: this.navGroup1.uuid,
+                                group: this.currentModule.group.uuid,
                                 layer: '',
                                 row: '',
                                 column: ''

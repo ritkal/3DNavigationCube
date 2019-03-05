@@ -107,7 +107,9 @@ class State {
             this.diagram.cameraAnimate.animateToLayer(this.diagram.diagramCenter, 1);
          } else  {
             const currentGroup = this.diagram.currentModule.group;
-            if ( currentGroup ) {
+            const group = this.diagram.groups.find(item => item.uuid === state.group.toString());
+
+            if ( currentGroup && currentGroup !== group.uuid) {
                const currentNewNavPos = this.diagram.currentModule.pos;
                const currentNavPos = this.diagram.currentModule.group.position;
                new TWEEN.Tween(currentNavPos)
@@ -120,7 +122,6 @@ class State {
                })
                .start(); 
             }
-            const group = this.diagram.groups.find(item => item.uuid === state.group.toString());
             this.diagram.currentModule = this.diagram.modules.find(item => item.group === group);
                this.diagram.mode = 'Group mode';
                const newNavPos = {
@@ -147,20 +148,24 @@ class State {
       if (state.mode === 'Global mode') {
          this.diagram.cameraAnimate.animateToLayer(this.diagram.diagramCenter, 1);
          let newNavPos = this.diagram.currentModule.pos;
+
          // for(var k=0; k<this.textLabels.length; k++){
          //     this.textLabels[k].element.hidden = true;
          // }
      
      var navPos = this.diagram.currentModule.group.position;
+     this.module = this.diagram.currentModule;
      new TWEEN.Tween(navPos)
          .to(newNavPos, 1000)
          .easing(TWEEN.Easing. Quadratic.Out)
          .onUpdate(() => {
-             this.diagram.currentModule.group.position.x = navPos.x;
-             this.diagram.currentModule.group.position.y = navPos.y;
-             this.diagram.currentModule.group.position.z = navPos.z;
+            this.module.group.position.x = navPos.x;
+            this.module.group.position.y = navPos.y;
+            this.module.group.position.z = navPos.z;
          })
          .start(); 
+         this.diagram.currentModule = [];
+
       }
    }
  
