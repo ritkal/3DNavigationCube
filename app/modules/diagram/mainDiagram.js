@@ -24,11 +24,6 @@ export default class Diagram {
         this.groups = [];
         this.modules = [];
         this.names = [];
-        // window.store.subscribe(() => this.__update());
-    }
-
-    __update() {
-        console.log(window.store.getState());
     }
 
     async __init() {
@@ -152,6 +147,9 @@ export default class Diagram {
         this.__change({
             mode: 'Group mode',
             group: this.navGroup1.uuid,
+            layer: '',
+            row: '',
+            column: ''
         });
         // controlsElement.attach( meshT );
         // scene.add( controlsElement );
@@ -251,7 +249,13 @@ export default class Diagram {
                             //     this.textLabels[i].element.hidden = false;
                             // }
                         } else {
-                            this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
+                            this.__change({
+                                mode: 'Group mode',
+                                group: this.navGroup1.uuid,
+                                layer: '',
+                                row: '',
+                                column: ''
+                            });
                         }
                     }
                     break;
@@ -566,7 +570,7 @@ export default class Diagram {
                                             });
                                         }
                                     });
-                                    this.cameraAnimate.animateToLayer(this.diagramCenter, this.INTERSECTEDMOUSEUP.userData.layer);
+                                    // this.cameraAnimate.animateToLayer(this.diagramCenter, this.INTERSECTEDMOUSEUP.userData.layer);
                                 } 
                                 if (this.INTERSECTEDMOUSEUP.userData.type === 'wrapper') {
                                     this.items.forEach(item => {
@@ -577,10 +581,13 @@ export default class Diagram {
                                     this.columnItems.forEach(item => {
                                         item.material.opacity = 1;
                                     });
-                                    this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
+                                    // this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
                                     this.__change({
                                         mode: 'Group mode',
                                         group: this.INTERSECTEDMOUSEUP.parent.uuid,
+                                        layer: '',
+                                        row: '',
+                                        column: ''
                                     });
                                 }
                             } else {
