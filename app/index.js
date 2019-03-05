@@ -106,6 +106,20 @@ class State {
                .start(); 
             this.diagram.cameraAnimate.animateToLayer(this.diagram.diagramCenter, 1);
          } else  {
+            const currentGroup = this.diagram.currentModule.group;
+            if ( currentGroup ) {
+               const currentNewNavPos = this.diagram.currentModule.pos;
+               const currentNavPos = this.diagram.currentModule.group.position;
+               new TWEEN.Tween(currentNavPos)
+               .to(currentNewNavPos, 1000)
+               .easing(TWEEN.Easing. Quadratic.Out)
+               .onUpdate(() => {
+                  currentGroup.position.x = currentNavPos.x;
+                  currentGroup.position.y = currentNavPos.y;
+                  currentGroup.position.z = currentNavPos.z;
+               })
+               .start(); 
+            }
             const group = this.diagram.groups.find(item => item.uuid === state.group.toString());
             this.diagram.currentModule = this.diagram.modules.find(item => item.group === group);
                this.diagram.mode = 'Group mode';
@@ -132,7 +146,6 @@ class State {
       }
       if (state.mode === 'Global mode') {
          this.diagram.cameraAnimate.animateToLayer(this.diagram.diagramCenter, 1);
-
          let newNavPos = this.diagram.currentModule.pos;
          // for(var k=0; k<this.textLabels.length; k++){
          //     this.textLabels[k].element.hidden = true;

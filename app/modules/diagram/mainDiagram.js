@@ -273,22 +273,6 @@ export default class Diagram {
                     this.items = [];
                     // this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
                     this.mode = meta.modes.globalObserver;
-
-                    // let newNavPos = this.currentModule.pos;
-                    //     // for(var k=0; k<this.textLabels.length; k++){
-                    //     //     this.textLabels[k].element.hidden = true;
-                    //     // }
-                    
-                    // var navPos = this.currentModule.group.position;
-                    // new TWEEN.Tween(navPos)
-                    //     .to(newNavPos, 1000)
-                    //     .easing(TWEEN.Easing. Quadratic.Out)
-                    //     .onUpdate(() => {
-                    //         this.currentModule.group.position.x = navPos.x;
-                    //         this.currentModule.group.position.y = navPos.y;
-                    //         this.currentModule.group.position.z = navPos.z;
-                    //     })
-                    //     .start(); 
                     break;
             }
         });
@@ -307,9 +291,12 @@ export default class Diagram {
         //         this.textLabels[j].element.hidden = true;
         //     }
         // }
-        this.modules.forEach(item => item.builder.faceLabel());
-
-        this.renderer.render(this.scene, this.camera);
+        if (this.modules) {
+            this.modules.forEach(item => item.builder.faceLabel());
+        }
+        if (this.renderer) {
+            this.renderer.render(this.scene, this.camera);
+        }
     }
 
     __onWindowResize() {
@@ -470,33 +457,11 @@ export default class Diagram {
                                     row: '',
                                     column: ''
                                 });
-
-                                const group = this.groups.find(item => item.uuid === this.INTERSECTEDMOUSEUP.userData.groupUuid);
-                                this.currentModule = this.modules.find(item => item.group === group);
-                                    this.mode = meta.modes.groupObserver;
-                                    const newNavPos = {
-                                        x: 0,
-                                        y: 0,
-                                        z: 0,
-                                    };
-                                this.items = this.currentModule.items;
-                                // this.textLabels = this.currentModule.texts;
-                                this.columnItems = this.currentModule.columnItems;
-                                var navPos = group.position;
-                                new TWEEN.Tween(navPos)
-                                    .to(newNavPos, 1000)
-                                    .easing(TWEEN.Easing. Quadratic.Out)
-                                    .onUpdate(() => {
-                                        group.position.x = navPos.x;
-                                        group.position.y = navPos.y;
-                                        group.position.z = navPos.z;
-                                    })
-                                    .start(); 
                             } else {
                                 this.INTERSECTEDMOUSEUP = null;
                             }
                             this.mode = meta.modes.groupObserver;
-                            this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
+                            // this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
                         }
                     }
                 }
