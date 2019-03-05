@@ -257,7 +257,7 @@ export default class Diagram {
                         }
                     }
                     break;
-                case 36: // Home
+                case 192: // `
                     if (this.mode === meta.modes.infoObserver || this.mode === meta.modes.globalObserver) {
                         return;
                     }
