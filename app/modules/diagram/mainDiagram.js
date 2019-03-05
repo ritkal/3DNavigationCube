@@ -36,7 +36,6 @@ export default class Diagram {
         });
         this.renderer.setSize(this.container.width(), this.container.height());
         this.renderer.domElement.setAttribute('id', 'diagram');
-        // console.log(this.renderer);
         this.renderer.setPixelRatio(window.devicePixelRatio);
         // this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.domElement.addEventListener('mouseup',(e) => this.__onMouseUpDispatecher(e), false);
@@ -235,8 +234,6 @@ export default class Diagram {
                         this.controls.enabled = true;
                         this.currentModule.group.remove(this.CURRENTINFOCUBE);
                         if (this.INTERSECTEDMOUSEDBL) {
-                            this.cameraAnimate.animateCameraOnClickElement( this.INTERSECTEDMOUSEDBL, meta.animateOn.click );
-                            console.log(this.currentModule.group.uuid);
                             this.__change({
                                 mode: 'Group mode',
                                 group: this.currentModule.group.uuid,
@@ -272,7 +269,6 @@ export default class Diagram {
                         column: ''
                     });
                     this.items = [];
-                    // this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
                     this.mode = meta.modes.globalObserver;
                     break;
             }
@@ -386,7 +382,6 @@ export default class Diagram {
                     }
                 } else {
                     this.INTERSECTEDMOUSEDBL = null;
-                    this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
                     this.items.forEach(item => {
                         item.material.forEach(m => {
                             m.opacity = 1;
@@ -462,7 +457,6 @@ export default class Diagram {
                                 this.INTERSECTEDMOUSEUP = null;
                             }
                             this.mode = meta.modes.groupObserver;
-                            // this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
                         }
                     }
                 }
@@ -542,7 +536,6 @@ export default class Diagram {
                                             });
                                         }
                                     });
-                                    // this.cameraAnimate.animateToLayer(this.diagramCenter, this.INTERSECTEDMOUSEUP.userData.layer);
                                 } 
                                 if (this.INTERSECTEDMOUSEUP.userData.type === 'wrapper') {
                                     this.items.forEach(item => {
@@ -553,7 +546,6 @@ export default class Diagram {
                                     this.columnItems.forEach(item => {
                                         item.material.opacity = 1;
                                     });
-                                    // this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
                                     this.__change({
                                         mode: 'Group mode',
                                         group: this.INTERSECTEDMOUSEUP.parent.uuid,
@@ -574,7 +566,6 @@ export default class Diagram {
                             this.columnItems.forEach(item => {
                                 item.material.opacity = 1;
                             });
-                            this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
                         }
                     }
                 }

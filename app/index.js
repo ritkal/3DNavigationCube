@@ -60,6 +60,7 @@ class State {
    }
  
    update() {
+      let navPos;
       const state = window.store.getState(); 
       this.$mode
          .value = state.mode;
@@ -94,7 +95,7 @@ class State {
             this.diagram.items = this.diagram.currentModule.items;
             // this.textLabels = this.currentModule.texts;
             this.diagram.columnItems = this.diagram.currentModule.columnItems;
-            var navPos = group.position;
+            navPos = group.position;
             new TWEEN.Tween(navPos)
                .to(newNavPos, 1000)
                .easing(TWEEN.Easing. Quadratic.Out)
@@ -132,7 +133,7 @@ class State {
             this.diagram.items = this.diagram.currentModule.items;
             // this.textLabels = this.currentModule.texts;
             this.diagram.columnItems = this.diagram.currentModule.columnItems;
-            var navPos = group.position;
+            navPos = group.position;
             new TWEEN.Tween(navPos)
                .to(newNavPos, 1000)
                .easing(TWEEN.Easing. Quadratic.Out)
@@ -153,7 +154,7 @@ class State {
          //     this.textLabels[k].element.hidden = true;
          // }
      
-     var navPos = this.diagram.currentModule.group.position;
+     navPos = this.diagram.currentModule.group.position;
      this.module = this.diagram.currentModule;
      new TWEEN.Tween(navPos)
          .to(newNavPos, 1000)
