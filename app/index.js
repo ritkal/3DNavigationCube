@@ -1,4 +1,5 @@
 import MainDiagram from './modules/diagram/mainDiagram';
+import TWEEN from '@tweenjs/tween.js';
 import {createStore} from 'redux';
 
 const changeMode = obj => ({ type: 'NAVIGATE', obj });
@@ -81,7 +82,72 @@ class State {
             this.diagram.cameraAnimate.animateToLayer(this.diagram.diagramCenter, this.diagram.INTERSECTEDMOUSEUP.userData.layer);
             return;
          }
+         if (!state.group.toString()) {
+            const group = this.diagram.groups.find(item => item.uuid === this.diagram.INTERSECTEDMOUSEUP.userData.groupUuid);
+            this.diagram.currentModule = this.diagram.modules.find(item => item.group === group);
+               this.diagram.mode = 'Group mode';
+               const newNavPos = {
+                  x: 0,
+                  y: 0,
+                  z: 0,
+               };
+            this.diagram.items = this.diagram.currentModule.items;
+            // this.textLabels = this.currentModule.texts;
+            this.diagram.columnItems = this.diagram.currentModule.columnItems;
+            var navPos = group.position;
+            new TWEEN.Tween(navPos)
+               .to(newNavPos, 1000)
+               .easing(TWEEN.Easing. Quadratic.Out)
+               .onUpdate(() => {
+                  group.position.x = navPos.x;
+                  group.position.y = navPos.y;
+                  group.position.z = navPos.z;
+               })
+               .start(); 
+            this.diagram.cameraAnimate.animateToLayer(this.diagram.diagramCenter, 1);
+         } else  {
+            const group = this.diagram.groups.find(item => item.uuid === state.group.toString());
+            this.diagram.currentModule = this.diagram.modules.find(item => item.group === group);
+               this.diagram.mode = 'Group mode';
+               const newNavPos = {
+                  x: 0,
+                  y: 0,
+                  z: 0,
+               };
+            this.diagram.items = this.diagram.currentModule.items;
+            // this.textLabels = this.currentModule.texts;
+            this.diagram.columnItems = this.diagram.currentModule.columnItems;
+            var navPos = group.position;
+            new TWEEN.Tween(navPos)
+               .to(newNavPos, 1000)
+               .easing(TWEEN.Easing. Quadratic.Out)
+               .onUpdate(() => {
+                  group.position.x = navPos.x;
+                  group.position.y = navPos.y;
+                  group.position.z = navPos.z;
+               })
+               .start(); 
+            this.diagram.cameraAnimate.animateToLayer(this.diagram.diagramCenter, 1);
+         }
+      }
+      if (state.mode === 'Global mode') {
          this.diagram.cameraAnimate.animateToLayer(this.diagram.diagramCenter, 1);
+
+         let newNavPos = this.diagram.currentModule.pos;
+         // for(var k=0; k<this.textLabels.length; k++){
+         //     this.textLabels[k].element.hidden = true;
+         // }
+     
+     var navPos = this.diagram.currentModule.group.position;
+     new TWEEN.Tween(navPos)
+         .to(newNavPos, 1000)
+         .easing(TWEEN.Easing. Quadratic.Out)
+         .onUpdate(() => {
+             this.diagram.currentModule.group.position.x = navPos.x;
+             this.diagram.currentModule.group.position.y = navPos.y;
+             this.diagram.currentModule.group.position.z = navPos.z;
+         })
+         .start(); 
       }
    }
  

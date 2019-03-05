@@ -193,7 +193,7 @@ export default class Diagram {
                 this.controlsElement.setSpace(this.controlsElemenct.space === "local" ? "world" : "local");
                     break;
                 case 17: // Ctrl
-                thiqwes.controlsElement.setTranslationSnap(100);
+                this.controlsElement.setTranslationSnap(100);
                 this.controlsElement.setRotationSnap(THREE.Math.degToRad(15));
                     break;
                 case 87: // W
@@ -263,26 +263,32 @@ export default class Diagram {
                     if (this.mode === meta.modes.infoObserver || this.mode === meta.modes.globalObserver) {
                         return;
                     }
-                    this.__change({mode: 'Global mode'});
+                    this.__change({
+                        mode: 'Global mode',
+                        group: '',
+                        layer: '',
+                        row: '',
+                        column: ''
+                    });
                     this.items = [];
-                    this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
+                    // this.cameraAnimate.animateToLayer( this.diagramCenter, 1 );
                     this.mode = meta.modes.globalObserver;
 
-                    let newNavPos = this.currentModule.pos;
-                        // for(var k=0; k<this.textLabels.length; k++){
-                        //     this.textLabels[k].element.hidden = true;
-                        // }
+                    // let newNavPos = this.currentModule.pos;
+                    //     // for(var k=0; k<this.textLabels.length; k++){
+                    //     //     this.textLabels[k].element.hidden = true;
+                    //     // }
                     
-                    var navPos = this.currentModule.group.position;
-                    new TWEEN.Tween(navPos)
-                        .to(newNavPos, 1000)
-                        .easing(TWEEN.Easing. Quadratic.Out)
-                        .onUpdate(() => {
-                            this.currentModule.group.position.x = navPos.x;
-                            this.currentModule.group.position.y = navPos.y;
-                            this.currentModule.group.position.z = navPos.z;
-                        })
-                        .start(); 
+                    // var navPos = this.currentModule.group.position;
+                    // new TWEEN.Tween(navPos)
+                    //     .to(newNavPos, 1000)
+                    //     .easing(TWEEN.Easing. Quadratic.Out)
+                    //     .onUpdate(() => {
+                    //         this.currentModule.group.position.x = navPos.x;
+                    //         this.currentModule.group.position.y = navPos.y;
+                    //         this.currentModule.group.position.z = navPos.z;
+                    //     })
+                    //     .start(); 
                     break;
             }
         });
@@ -460,9 +466,9 @@ export default class Diagram {
                                 this.__change({
                                     mode: 'Group mode',
                                     group: this.INTERSECTEDMOUSEUP.parent.uuid,
-                                    layer: this.INTERSECTEDMOUSEUP.userData.layer,
-                                    row: this.INTERSECTEDMOUSEUP.userData.row,
-                                    column: this.INTERSECTEDMOUSEUP.userData.column
+                                    layer: '',
+                                    row: '',
+                                    column: ''
                                 });
 
                                 const group = this.groups.find(item => item.uuid === this.INTERSECTEDMOUSEUP.userData.groupUuid);
