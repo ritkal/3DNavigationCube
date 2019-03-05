@@ -57,7 +57,7 @@ export default class Diagram {
 
         this.controls.enablePan = true;
 	    this.controls.panSpeed = 1.0;
-
+        this.controls.enableKeys = false;
         this.controls.addEventListener('change',() => this.__render());
         // world
         this.scene = new THREE.Scene();
@@ -252,7 +252,7 @@ export default class Diagram {
                         }
                     }
                     break;
-                case 8: // Backspace
+                case 9: // Tab
                     if (this.mode === meta.modes.infoObserver || this.mode === meta.modes.globalObserver) {
                         return;
                     }
@@ -535,7 +535,7 @@ export default class Diagram {
                                     this.columnItems.forEach(item => {
                                         item.material.opacity = 1;
                                     });
-                                    this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEUP, meta.animateOn.click);
+
                                 }
                                 if (this.INTERSECTEDMOUSEUP.userData.type === 'navColumnElement') {
                                     this.__change({
