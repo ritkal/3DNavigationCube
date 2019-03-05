@@ -149,7 +149,10 @@ export default class Diagram {
         this.controlsElement.addEventListener('dragging-changed', function (event) {
             this.control.enabled = !event.value;
         });
-
+        this.__change({
+            mode: 'Group mode',
+            group: this.navGroup1.uuid,
+        });
         // controlsElement.attach( meshT );
         // scene.add( controlsElement );
 
@@ -252,7 +255,7 @@ export default class Diagram {
                         }
                     }
                     break;
-                case 9: // Tab
+                case 36: // Home
                     if (this.mode === meta.modes.infoObserver || this.mode === meta.modes.globalObserver) {
                         return;
                     }
@@ -575,6 +578,10 @@ export default class Diagram {
                                         item.material.opacity = 1;
                                     });
                                     this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
+                                    this.__change({
+                                        mode: 'Group mode',
+                                        group: this.INTERSECTEDMOUSEUP.parent.uuid,
+                                    });
                                 }
                             } else {
                                 this.INTERSECTEDMOUSEUP = null;

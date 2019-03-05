@@ -71,7 +71,7 @@ class State {
       this.$column
          .value = state.column;
       if (state.mode === 'Group mode' && state.group !== undefined && state.group.toString() && state.layer !== undefined && state.layer.toString() && state.row !== undefined && state.row.toString() && state.row !== undefined && state.column.toString()) {
-         this.diagram.INTERSECTEDMOUSEUP = this.diagram.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) && (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()) && (item.parent.uuid === state.group))
+         this.diagram.INTERSECTEDMOUSEUP = this.diagram.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) && (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()) && (item.parent.uuid === state.group));
          this.diagram.cameraAnimate.animateCameraOnClickElement(this.diagram.INTERSECTEDMOUSEUP, 'elClick');
       }
    }
