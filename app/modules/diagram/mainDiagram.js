@@ -231,8 +231,7 @@ export default class Diagram {
                 case 27: // ESC
                     if ( this.mode !== meta.modes.globalObserver ) {
                         this.mode = meta.modes.groupObserver;
-                        this.controls.enabled = true;
-                        this.currentModule.group.remove(this.CURRENTINFOCUBE);
+                        // this.controls.enabled = true;
                         if (this.INTERSECTEDMOUSEDBL) {
                             this.__change({
                                 mode: 'Group mode',
@@ -241,7 +240,6 @@ export default class Diagram {
                                 row: this.INTERSECTEDMOUSEDBL.userData.row,
                                 column: this.INTERSECTEDMOUSEDBL.userData.column
                             });
-    
                             this.INTERSECTEDMOUSEDBL = null;
                             // for(var i=0; i<this.textLabels.length; i++) {
                             //     this.textLabels[i].element.hidden = false;
@@ -261,6 +259,8 @@ export default class Diagram {
                     if (this.mode === meta.modes.infoObserver || this.mode === meta.modes.globalObserver) {
                         return;
                     }
+                    this.items = [];
+                    this.mode = meta.modes.globalObserver;
                     this.__change({
                         mode: 'Global mode',
                         group: '',
@@ -268,8 +268,7 @@ export default class Diagram {
                         row: '',
                         column: ''
                     });
-                    this.items = [];
-                    this.mode = meta.modes.globalObserver;
+
                     break;
             }
         });
@@ -323,7 +322,6 @@ export default class Diagram {
     async __onDblClick(e) {
         clearTimeout(this.timer);
         if (this.mode === meta.modes.groupObserver) {
-            this.controls.enabled = false;
             this.prevent = true;
             if (this.flag === 0) {
                 this.mouse.x = (e.clientX / this.container.width()) * 2 - 1;
@@ -364,21 +362,10 @@ export default class Diagram {
                                 item.material.opacity = 1;
                             });
                         });
-                        var size = {
-                            lenght: 400,
-                            height: 300,
-                            width: 400
-                        };
-                        this.CURRENTINFOCUBE = await this.currentModule.builder.createMesh(size, this.INTERSECTEDMOUSEDBL, 'infoCube');
 
-                        // Basic element controls (rotating around Y)
-                        var controlsT = new 
-                        ObjectControls(this.camera, this.renderer.domElement, this.CURRENTINFOCUBE);
-                        controlsT.setDistance(0, 15000); // set min - max distance for zoom
-                        controlsT.setZoomSpeed(1); // set zoom speed
-                        this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEDBL, meta.animateOn.dblClick);
+                        // this.createInfo();
+                        // this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEDBL, meta.animateOn.dblClick);
                         this.mode = meta.modes.infoObserver;
-                        this.CURRENTINFOCUBE.matrixAutoUpdate = true;
                     }
                 } else {
                     this.INTERSECTEDMOUSEDBL = null;
@@ -425,13 +412,11 @@ export default class Diagram {
         }
     }
 
-    __onMouseUpGlobal(e) {
-            
+    __onMouseUpGlobal(e) {      
             this.controls.enabled = true;
             this.timer = setTimeout(() => {
                 if (!this.prevent) {
                     if (this.flag === 0) {
-                        // this.__change('Group mode');
                         this.mouse.x = (e.clientX / this.container.width()) * 2 - 1;
                         this.mouse.y = -(e.clientY / this.container.height()) * 2 + 1;
 
@@ -494,20 +479,20 @@ export default class Diagram {
                                         row: this.INTERSECTEDMOUSEUP.userData.row,
                                         column: this.INTERSECTEDMOUSEUP.userData.column
                                     });
-                                    this.items.forEach(item => {
-                                        if (item.userData.column === this.INTERSECTEDMOUSEUP.userData.column && item.userData.row === this.INTERSECTEDMOUSEUP.userData.row) {
-                                            item.material.forEach(m => {
-                                                m.opacity = 1;
-                                            });
-                                        } else {
-                                            item.material.forEach(m => {
-                                                m.opacity = 0.3;
-                                            });
-                                        }
-                                    });
-                                    this.columnItems.forEach(item => {
-                                        item.material.opacity = 1;
-                                    });
+                                    // this.items.forEach(item => {
+                                    //     if (item.userData.column === this.INTERSECTEDMOUSEUP.userData.column && item.userData.row === this.INTERSECTEDMOUSEUP.userData.row) {
+                                    //         item.material.forEach(m => {
+                                    //             m.opacity = 1;
+                                    //         });
+                                    //     } else {
+                                    //         item.material.forEach(m => {
+                                    //             m.opacity = 0.3;
+                                    //         });
+                                    //     }
+                                    // });
+                                    // this.columnItems.forEach(item => {
+                                    //     item.material.opacity = 1;
+                                    // });
 
                                 }
                                 if (this.INTERSECTEDMOUSEUP.userData.type === 'navColumnElement') {
@@ -518,34 +503,34 @@ export default class Diagram {
                                         row: '',
                                         column: ''
                                     });
-                                    this.columnItems.forEach(item => {
-                                        if (item === this.INTERSECTEDMOUSEUP) {
-                                            item.material.opacity = 1;
-                                        } else {
-                                            item.material.opacity = 0.3;
-                                        }
-                                    });
-                                    this.items.forEach(item => {
-                                        if (item.userData.layer === this.INTERSECTEDMOUSEUP.userData.layer) {
-                                            item.material.forEach(m => {
-                                                m.opacity = 1;
-                                            });
-                                        } else {
-                                            item.material.forEach(m => {
-                                                m.opacity = 0.3;
-                                            });
-                                        }
-                                    });
+                                    // this.columnItems.forEach(item => {
+                                    //     if (item === this.INTERSECTEDMOUSEUP) {
+                                    //         item.material.opacity = 1;
+                                    //     } else {
+                                    //         item.material.opacity = 0.3;
+                                    //     }
+                                    // });
+                                    // this.items.forEach(item => {
+                                    //     if (item.userData.layer === this.INTERSECTEDMOUSEUP.userData.layer) {
+                                    //         item.material.forEach(m => {
+                                    //             m.opacity = 1;
+                                    //         });
+                                    //     } else {
+                                    //         item.material.forEach(m => {
+                                    //             m.opacity = 0.3;
+                                    //         });
+                                    //     }
+                                    // });
                                 } 
                                 if (this.INTERSECTEDMOUSEUP.userData.type === 'wrapper') {
-                                    this.items.forEach(item => {
-                                        item.material.forEach(m => {
-                                            m.opacity = 1;
-                                        });
-                                    });
-                                    this.columnItems.forEach(item => {
-                                        item.material.opacity = 1;
-                                    });
+                                    // this.items.forEach(item => {
+                                    //     item.material.forEach(m => {
+                                    //         m.opacity = 1;
+                                    //     });
+                                    // });
+                                    // this.columnItems.forEach(item => {
+                                    //     item.material.opacity = 1;
+                                    // });
                                     this.__change({
                                         mode: 'Group mode',
                                         group: this.INTERSECTEDMOUSEUP.parent.uuid,
@@ -576,8 +561,25 @@ export default class Diagram {
     setMode(targetMode) {
         this.mode = targetMode;
     }
+
     getMode() {
         return mode;
+    }
+
+    async createInfo() {
+        var size = {
+            lenght: 400,
+            height: 300,
+            width: 400
+        };
+        this.CURRENTINFOCUBE = await this.currentModule.builder.createMesh(size, this.INTERSECTEDMOUSEDBL, 'infoCube');
+
+        // Basic element controls (rotating around Y)
+        var controlsT = new ObjectControls(this.camera, this.renderer.domElement, this.CURRENTINFOCUBE);
+        controlsT.setDistance(0, 15000); // set min - max distance for zoom
+        controlsT.setZoomSpeed(1); // set zoom speed
+        this.CURRENTINFOCUBE.matrixAutoUpdate = true;
+
     }
 
     createDiagram() {
