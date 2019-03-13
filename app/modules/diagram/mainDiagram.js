@@ -1,6 +1,8 @@
 import * as TWEEN from '@tweenjs/tween.js';
 import * as THREE from 'three';
 import * as $ from 'jquery';
+import 'babel-polyfill';
+import React from 'react';
 import meta from '../../meta';
 import DiagramBuilder from '../../libs/DiagramBuilder';
 import cameraAnimation from '../../libs/animateCameraService';
@@ -10,39 +12,80 @@ import OrbitControls from 'three-orbitcontrols';
 
 const changeMode = obj => ({ type: 'NAVIGATE', obj });
 
-export default class Diagram {
-    constructor(options) {
-        this.mode = meta.modes.groupObserver;
+class Diagram extends React.Component {
+    constructor(props) {
+      super(props);
+      this.mode = meta.modes.groupObserver;
 
-        this.items = [];
-        this.mouse = {
-            x: 0,
-            y: 0
-        };
-        this.delay = 200;
-        this.prevent = false;
-        this.groups = [];
-        this.modules = [];
-        this.names = [];
+      this.items = [];
+      this.mouse = {
+          x: 0,
+          y: 0
+      };
+      this.delay = 200;
+      this.prevent = false;
+      this.groups = [];
+      this.modules = [];
+      this.names = [];
+      this.start = this.start.bind(this)
+      this.stop = this.stop.bind(this)
+      this.__animate = this.__animate.bind(this)
     }
 
-    async __init() {
-        this.container = $('#canvasDiagram');
-        this.camera = new THREE.PerspectiveCamera(90, this.container.width() / this.container.height(), 1, 100000);
+    componentWillUnmount() {
+        this.stop()
+        this.mount.removeChild(this.renderer.domElement)
+      }
+    
+      start() {
+        if (!this.frameId) {
+          this.frameId = requestAnimationFrame(this.__animate)
+        }
+      }
+    
+      stop() {
+        cancelAnimationFrame(this.frameId)
+      }
+
+    async componentDidMount() {
+        const width = this.mount.clientWidth
+        const height = this.mount.clientHeight
+    
+        // const camera = new THREE.PerspectiveCamera(
+        //   75,
+        //   width / height,
+        //   0.1,
+        //   1000
+        // )
+        this.camera = new THREE.PerspectiveCamera(90, width / height, 1, 100000);
+
+        // const geometry = new THREE.BoxGeometry(1, 1, 1)
+        // const material = new THREE.MeshBasicMaterial({ color: 0xff00ff })
+        // const cube = new THREE.Mesh(geometry, material)
+    
+        // camera.position.z = 4
+        // scene.add(cube)
+        // renderer.setClearColor('#000000')
+   
+
+        this.start()
+        // this.container = $('#canvasDiagram');
 
         // renderer
         this.renderer = new THREE.WebGLRenderer({
             antialias: true
         });
-        this.renderer.setSize(this.container.width(), this.container.height());
+        // this.renderer.setSize(this.container.width(), this.container.height());
         this.renderer.domElement.setAttribute('id', 'diagram');
         this.renderer.setPixelRatio(window.devicePixelRatio);
-        // this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setSize(width, height)
         this.renderer.domElement.addEventListener('mouseup',(e) => this.__onMouseUpDispatecher(e), false);
         this.renderer.domElement.addEventListener('dblclick',(e) => this.__onDblClick(e), false);
         this.renderer.domElement.addEventListener("mousemove", (e) =>  this.__onMouseMove(e), false);
         this.renderer.domElement.addEventListener('mousedown',(e) => this.__onMouseDown(e), false);
-        $('#canvasDiagram').append(this.renderer.domElement);
+        this.mount.appendChild(this.renderer.domElement)
+        this.contaier = this.mount;
+        // $('#canvasDiagram').append(this.renderer.domElement);
 
         // Camera controls            
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -52,7 +95,7 @@ export default class Diagram {
         this.controls.enablePan = true;
 	    this.controls.panSpeed = 1.0;
         this.controls.enableKeys = false;
-        this.controls.addEventListener('change',() => this.__render());
+        this.controls.addEventListener('change',() => this.__renderScene());
         // world
         this.scene = new THREE.Scene();
         this.raycaster = new THREE.Raycaster();
@@ -133,13 +176,13 @@ export default class Diagram {
         this.scene.add(this.navGroup3);
 
 
-        this.__render();
+        this.__renderScene();
 
         // Complex element controls
         this.cameraAnimate = new cameraAnimation(this.camera, this.controls);
 
         this.controlsElement = new TransformControls(this.camera, this.renderer.domElement);
-        this.controlsElement.addEventListener('change', this.__render);
+        this.controlsElement.addEventListener('change', this.__renderScene);
         this.controlsElement.addEventListener('dragging-changed', function (event) {
             this.control.enabled = !event.value;
         });
@@ -173,14 +216,14 @@ export default class Diagram {
     }
 
     __animate() {
-        this.__render();
+        this.__renderScene();
         requestAnimationFrame(() => this.__animate());
         TWEEN.update();
         this.controls.update();
     }
 
     __change(some) {
-        window.store.dispatch(changeMode(some));
+        // window.store.dispatch(changeMode(some));
     }
 
     __addWindowListeners() {
@@ -231,7 +274,6 @@ export default class Diagram {
                 case 27: // ESC
                     if ( this.mode !== meta.modes.globalObserver ) {
                         this.mode = meta.modes.groupObserver;
-                        // this.controls.enabled = true;
                         if (this.INTERSECTEDMOUSEDBL) {
                             this.__change({
                                 mode: 'Group mode',
@@ -274,7 +316,7 @@ export default class Diagram {
         });
     }
 
-    __render() {
+    __renderScene() {
         // if (this.mode !== meta.modes.globalObserver && this.mode !== meta.modes.infoObserver) {
         //     // if (this.textLabels && this.textLabels.length){
         //     //     for(var i=0; i<this.textLabels.length; i++) {
@@ -295,11 +337,19 @@ export default class Diagram {
         }
     }
 
+    render() {
+        return (
+          <div
+            style={{ width: '100%', height: '1000px' }}
+            ref={(mount) => { this.mount = mount }}
+          />
+        )
+      }
     __onWindowResize() {
-        this.camera.aspect = this.container.width() / this.container.height();
+        this.camera.aspect = this.mount.offsetWidth / this.mount.offsetHeight;
         this.camera.updateProjectionMatrix();
-        this.renderer.setSize(this.container.width(), this.container.height());
-        this.__render();
+        this.renderer.setSize(this.mount.offsetWidth,this.mount.offsetHeight);
+        this.__renderScene();
     }
 
     __onMouseMove(e) {
@@ -324,8 +374,8 @@ export default class Diagram {
         if (this.mode === meta.modes.groupObserver) {
             this.prevent = true;
             if (this.flag === 0) {
-                this.mouse.x = (e.clientX / this.container.width()) * 2 - 1;
-                this.mouse.y = -(e.clientY /this.container.height()) * 2 + 1;
+                this.mouse.x = (e.clientX / this.mount.offsetWidth) * 2 - 1;
+                this.mouse.y = -(e.clientY /this.mount.offsetHeight) * 2 + 1;
 
                 this.raycaster.setFromCamera(this.mouse, this.camera);
                 const arr = [];
@@ -387,8 +437,8 @@ export default class Diagram {
             if (this.mode === meta.modes.globalObserver || this.mode === meta.modes.groupObserver) {
                 this.INTERSECTEDMOUSEDBL = null;
                 this.flag = 0;
-                this.mouse.x = (e.clientX / this.container.width()) * 2 - 1;
-                this.mouse.y = -(e.clientY / this.container.height()) * 2 + 1;
+                this.mouse.x = (e.clientX / this.mount.offsetWidth) * 2 - 1;
+                this.mouse.y = -(e.clientY / this.mount.offsetHeight) * 2 + 1;
 
                 this.raycaster.setFromCamera(this.mouse, this.camera);
                 const arr = [];
@@ -417,8 +467,8 @@ export default class Diagram {
             this.timer = setTimeout(() => {
                 if (!this.prevent) {
                     if (this.flag === 0) {
-                        this.mouse.x = (e.clientX / this.container.width()) * 2 - 1;
-                        this.mouse.y = -(e.clientY / this.container.height()) * 2 + 1;
+                        this.mouse.x = (e.clientX / this.mount.offsetWidth) * 2 - 1;
+                        this.mouse.y = -(e.clientY / this.mount.offsetHeight) * 2 + 1;
 
                         this.raycaster.setFromCamera(this.mouse, this.camera);
                         const arr = [];
@@ -458,8 +508,8 @@ export default class Diagram {
                         this.info.matrixAutoUpdate = false;
                     }
                     if (this.flag === 0) {
-                        this.mouse.x = (e.clientX / this.container.width()) * 2 - 1;
-                        this.mouse.y = -(e.clientY / this.container.height()) * 2 + 1;
+                        this.mouse.x = (e.clientX / this.mount.offsetWidth) * 2 - 1;
+                        this.mouse.y = -(e.clientY / this.mount.offsetHeight) * 2 + 1;
 
                         this.raycaster.setFromCamera(this.mouse, this.camera);
                         const arr = [];
@@ -581,9 +631,6 @@ export default class Diagram {
         this.CURRENTINFOCUBE.matrixAutoUpdate = true;
 
     }
-
-    createDiagram() {
-        this.__init();
-        this.__animate();
-    }
 }
+
+export default Diagram;

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-
+import 'babel-polyfill';
 import meta from '../meta';
 
 const defaultCubeData = meta.data;
