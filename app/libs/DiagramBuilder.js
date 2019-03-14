@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import 'babel-polyfill';
 import meta from '../meta';
-
 const defaultCubeData = meta.data;
 const colors = ['#63a884', '#fa8072', '#ffcc5c'];
 const infoColors = ['#bae0cc', '#ffd8d3', '#fcebc4'];

@@ -5,6 +5,14 @@ import { Provider } from 'react-redux'
 import React from 'react';
 import App from './src/App.js';
 import {createStore} from 'redux';
+const initState = {
+   mode: 'Group mode',
+   group: '0',
+   layer: '0',
+   row: '0',
+   column: '0',
+};
+
 // reducer 
 function counter(state = initState, action) {
    switch(action.type) {
@@ -15,18 +23,13 @@ function counter(state = initState, action) {
    }
  }
 
-const store = createStore(counter)
+const store = createStore(counter);
 
-ReactDOM.render(  
-   <Provider store={store}>
-      <App />
-   </Provider>,
+ReactDOM.render(
+   <div>
+      <Provider store={store}>
+         <App />
+      </Provider>
+   </div>,
    document.getElementById('root')
 );
-const initState = {
-   mode: 'Group mode',
-   group: '',
-   layer: '',
-   row: '',
-   column: '',
-};

@@ -1,6 +1,6 @@
 import * as TWEEN from '@tweenjs/tween.js';
 import * as THREE from 'three';
-import * as $ from 'jquery';
+import { connect } from "react-redux";
 import 'babel-polyfill';
 import React from 'react';
 import meta from '../../meta';
@@ -11,6 +11,15 @@ import * as TransformControls from 'three-transformcontrols';
 import OrbitControls from 'three-orbitcontrols';
 
 const changeMode = obj => ({ type: 'NAVIGATE', obj });
+function mapDispatchToProps(dispatch) {
+    return {
+        changeMode: mode => dispatch(changeMode(mode))
+    };
+  }
+
+  const mapStateToProps = state => {
+    return { mode: state };
+  };
 
 class Diagram extends React.Component {
     constructor(props) {
@@ -32,6 +41,407 @@ class Diagram extends React.Component {
       this.__animate = this.__animate.bind(this)
     }
 
+    componentDidUpdate(oldProps) {
+        const newProps = this.props
+        if(oldProps.mode !== newProps.mode) {
+            // this.setState(newProps.mode);
+        }
+        let navPos;
+        const state = newProps.mode;
+
+        if (!state) return;
+        // if (!state.layer) {
+        //     state.layer = 1;
+        //     state.column = 1;
+        //     state.row = 1;
+        // }
+        if (state.mode === 'Group mode' && state.group.toString() ) {
+            this.removeInfo();
+            if (state.layer.toString() && state.row.toString() && state.column.toString()) {
+               this.fullState(state);
+               return;
+            }
+            if (state.layer.toString()) {
+               this.layerState(state);
+               return;
+            }
+            if (!state.group.toString()) {
+               const group = this.groups.find(item => item.uuid === this.INTERSECTEDMOUSEUP.userData.groupUuid);
+               this.currentModule = this.modules.find(item => item.group === group);
+                  this.mode = 'Group mode';
+                  const newNavPos = {
+                     x: 0,
+                     y: 0,
+                     z: 0,
+                  };
+               this.items = this.currentModule.items;
+               // this.textLabels = this.currentModule.texts;
+               this.columnItems = this.currentModule.columnItems;
+               navPos = group.position;
+               new TWEEN.Tween(navPos)
+                  .to(newNavPos, 1000)
+                  .easing(TWEEN.Easing. Quadratic.Out)
+                  .onUpdate(() => {
+                     group.position.x = navPos.x;
+                     group.position.y = navPos.y;
+                     group.position.z = navPos.z;
+                  })
+                  .start(); 
+               this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
+            } else {
+               let currentGroup;
+               if (this.currentModule) {
+                  currentGroup = this.currentModule.group;
+               }
+               const group = this.groups.find(item => item.uuid === state.group.toString());
+   
+               if ( currentGroup && currentGroup !== group.uuid) {
+                  const currentNewNavPos = this.currentModule.pos;
+                  const currentNavPos = this.currentModule.group.position;
+                  new TWEEN.Tween(currentNavPos)
+                  .to(currentNewNavPos, 1000)
+                  .easing(TWEEN.Easing. Quadratic.Out)
+                  .onUpdate(() => {
+                     currentGroup.position.x = currentNavPos.x;
+                     currentGroup.position.y = currentNavPos.y;
+                     currentGroup.position.z = currentNavPos.z;
+                  })
+                  .start(); 
+               }
+               this.currentModule = this.modules.find(item => item.group === group);
+                  this.mode = 'Group mode';
+                  const newNavPos = {
+                     x: 0,
+                     y: 0,
+                     z: 0,
+                  };
+               this.items = this.currentModule.items;
+               // this.textLabels = this.currentModule.texts;
+               this.columnItems = this.currentModule.columnItems;
+               navPos = group.position;
+               new TWEEN.Tween(navPos)
+                  .to(newNavPos, 1000)
+                  .easing(TWEEN.Easing. Quadratic.Out)
+                  .onUpdate(() => {
+                     group.position.x = navPos.x;
+                     group.position.y = navPos.y;
+                     group.position.z = navPos.z;
+                  })
+                  .start(); 
+               this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
+               this.items.forEach(item => {
+                  item.material.forEach(m => {
+                     m.opacity = 1;
+                 });
+               });
+               this.columnItems.forEach(item => {
+                  item.material.opacity = 1;
+               });
+            }
+         }
+         if (state.mode === 'Global mode') {
+            if (this.currentModule) {
+                this.mode = 'Global mode';
+                this.removeInfo();
+                this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
+                let newNavPos = this.currentModule.pos;
+                this.items.forEach(item => {
+                item.material.forEach(m => {
+                    m.opacity = 1;
+                });
+                });
+                this.columnItems.forEach(item => {
+                item.material.opacity = 1;
+                });
+                this.items = [];
+                // for(var k=0; k<this.textLabels.length; k++){
+                //     this.textLabels[k].element.hidden = true;
+                // }
+            
+                navPos = this.currentModule.group.position;
+                this.module = this.currentModule;
+                new TWEEN.Tween(navPos)
+                    .to(newNavPos, 1000)
+                    .easing(TWEEN.Easing. Quadratic.Out)
+                    .onUpdate(() => {
+                        this.module.group.position.x = navPos.x;
+                        this.module.group.position.y = navPos.y;
+                        this.module.group.position.z = navPos.z;
+                    })
+                    .start(); 
+                this.currentModule = null;
+            }
+         }
+         if (state.mode === 'Info mode') {
+            this.removeInfo();
+            let navPos;
+            if (this.currentModule) {
+               if (this.currentModule.group.uuid === state.group.toString()) {
+                  this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) &&
+                     (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()) && (item.parent.uuid === state.group));
+               } else {
+                  var currentGroup = this.currentModule.group;
+                  const group = this.groups.find(item => item.uuid === state.group.toString());
+      
+                  const currentNewNavPos = this.currentModule.pos;
+                  const currentNavPos = this.currentModule.group.position;
+                  new TWEEN.Tween(currentNavPos)
+                  .to(currentNewNavPos, 1000)
+                  .easing(TWEEN.Easing. Quadratic.Out)
+                  .onUpdate(() => {
+                     currentGroup.position.x = currentNavPos.x;
+                     currentGroup.position.y = currentNavPos.y;
+                     currentGroup.position.z = currentNavPos.z;
+                  })
+                  .start(); 
+                  this.currentModule = this.modules.find(item => item.group === group);
+                  this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) &&
+                  (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()) && (item.parent.uuid === state.group));
+                     this.mode = 'Group mode';
+                     const newNavPos = {
+                        x: 0,
+                        y: 0,
+                        z: 0,
+                     };
+                  this.items = this.currentModule.items;
+                  // this.textLabels = this.currentModule.texts;
+                  this.columnItems = this.currentModule.columnItems;
+                  navPos = group.position;
+                  new TWEEN.Tween(navPos)
+                     .to(newNavPos, 1000)
+                     .easing(TWEEN.Easing. Quadratic.Out)
+                     .onUpdate(() => {
+                        group.position.x = navPos.x;
+                        group.position.y = navPos.y;
+                        group.position.z = navPos.z;
+                     })
+                     .start();
+               }
+            } else {
+               const group = this.groups.find(item => item.uuid === state.group.toString());
+               this.currentModule = this.modules.find(item => item.group === group);
+               this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) &&
+               (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()) && (item.parent.uuid === state.group));
+                  this.mode = 'Group mode';
+                  const newNavPos = {
+                     x: 0,
+                     y: 0,
+                     z: 0,
+                  };
+               this.items = this.currentModule.items;
+               // this.textLabels = this.currentModule.texts;
+               this.columnItems = this.currentModule.columnItems;
+               navPos = group.position;
+               new TWEEN.Tween(navPos)
+                  .to(newNavPos, 1000)
+                  .easing(TWEEN.Easing. Quadratic.Out)
+                  .onUpdate(() => {
+                     group.position.x = navPos.x;
+                     group.position.y = navPos.y;
+                     group.position.z = navPos.z;
+                  })
+                  .start();
+            }
+            this.mode = 'Info mode';
+            this.controls.enabled = false;
+            if (!this.INTERSECTEDMOUSEDBL) {
+               this.INTERSECTEDMOUSEDBL = this.items.find(item => (item.userData.layer.toString() === state.layer) && (item.userData.row.toString() === state.row) && (item.userData.column.toString() === state.column));
+            }
+            if ((this.INTERSECTEDMOUSEDBL.userData.layer.toString() !== state.layer.toString()) || (this.INTERSECTEDMOUSEDBL.userData.row.toString() !== state.row.toString()) || (this.INTERSECTEDMOUSEDBL.userData.column.toString() !== state.column.toString())) {
+               this.INTERSECTEDMOUSEDBL = this.items.find(item => (item.userData.layer.toString() === state.layer.toString()) && (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()));
+            }
+            this.createInfo();
+            this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEDBL, 'elDblClick');
+         }
+        // this.fullState();
+    }
+
+    fullState(state) {
+        let navPos;
+        // const state = this.state;
+        if (this.currentModule) {
+            if (this.currentModule.group.uuid === state.group.toString()) {
+               this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) &&
+                  (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()) && (item.parent.uuid === state.group));
+            } else {
+               var currentGroup = this.currentModule.group;
+               const group = this.groups.find(item => item.uuid === state.group.toString());
+   
+               const currentNewNavPos = this.currentModule.pos;
+               const currentNavPos = this.currentModule.group.position;
+               new TWEEN.Tween(currentNavPos)
+               .to(currentNewNavPos, 1000)
+               .easing(TWEEN.Easing. Quadratic.Out)
+               .onUpdate(() => {
+                  currentGroup.position.x = currentNavPos.x;
+                  currentGroup.position.y = currentNavPos.y;
+                  currentGroup.position.z = currentNavPos.z;
+               })
+               .start(); 
+               this.currentModule = this.modules.find(item => item.group === group);
+               this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) &&
+               (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()) && (item.parent.uuid === state.group));
+                  this.mode = 'Group mode';
+                  const newNavPos = {
+                     x: 0,
+                     y: 0,
+                     z: 0,
+                  };
+               this.items = this.currentModule.items;
+               // this.textLabels = this.currentModule.texts;
+               this.columnItems = this.currentModule.columnItems;
+               navPos = group.position;
+               new TWEEN.Tween(navPos)
+                  .to(newNavPos, 1000)
+                  .easing(TWEEN.Easing. Quadratic.Out)
+                  .onUpdate(() => {
+                     group.position.x = navPos.x;
+                     group.position.y = navPos.y;
+                     group.position.z = navPos.z;
+                  })
+                  .start();
+            }
+         } else {
+            const group = this.groups.find(item => item.uuid === state.group.toString());
+            this.currentModule = this.modules.find(item => item.group === group);
+            this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) &&
+               (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()) && (item.parent.uuid === state.group));
+            this.mode = 'Group mode';
+                  const newNavPos = {
+                     x: 0,
+                     y: 0,
+                     z: 0,
+                  };
+               this.items = this.currentModule.items;
+               // this.textLabels = this.currentModule.texts;
+               this.columnItems = this.currentModule.columnItems;
+               navPos = group.position;
+               new TWEEN.Tween(navPos)
+                  .to(newNavPos, 1000)
+                  .easing(TWEEN.Easing. Quadratic.Out)
+                  .onUpdate(() => {
+                     group.position.x = navPos.x;
+                     group.position.y = navPos.y;
+                     group.position.z = navPos.z;
+                  })
+                  .start(); 
+               this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
+               this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEUP, 'elClick');
+         }
+         this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEUP, 'elClick');
+         this.items.forEach(item => {
+            if (item.userData.column === this.INTERSECTEDMOUSEUP.userData.column && item.userData.row === this.INTERSECTEDMOUSEUP.userData.row) {
+                item.material.forEach(m => {
+                    m.opacity = 1;
+                });
+            } else {
+                item.material.forEach(m => {
+                    m.opacity = 0.3;
+                });
+            }
+         });
+         this.columnItems.forEach(item => {
+               item.material.opacity = 1;
+         });
+    }
+
+    layerState(state) {
+        let navPos;
+        // const state = this.state;
+        if (this.currentModule) {
+            if (this.currentModule.group.uuid === state.group.toString()) {
+                this.INTERSECTEDMOUSEUP = this.currentModule.columnItems.find(item=>(item.userData.layer.toString() === state.layer.toString()) && (item.parent.uuid === state.group));
+            } else {
+               var currentGroup = this.currentModule.group;
+               const group = this.groups.find(item => item.uuid === state.group.toString());
+   
+               const currentNewNavPos = this.currentModule.pos;
+               const currentNavPos = this.currentModule.group.position;
+               new TWEEN.Tween(currentNavPos)
+               .to(currentNewNavPos, 1000)
+               .easing(TWEEN.Easing. Quadratic.Out)
+               .onUpdate(() => {
+                  currentGroup.position.x = currentNavPos.x;
+                  currentGroup.position.y = currentNavPos.y;
+                  currentGroup.position.z = currentNavPos.z;
+               })
+               .start(); 
+               this.currentModule = this.modules.find(item => item.group === group);
+               this.INTERSECTEDMOUSEUP = this.currentModule.columnItems.find(item=>(item.userData.layer.toString() === state.layer.toString()) && (item.parent.uuid === state.group));
+
+                  this.mode = 'Group mode';
+                  const newNavPos = {
+                     x: 0,
+                     y: 0,
+                     z: 0,
+                  };
+               this.items = this.currentModule.items;
+               // this.textLabels = this.currentModule.texts;
+               this.columnItems = this.currentModule.columnItems;
+               navPos = group.position;
+               new TWEEN.Tween(navPos)
+                  .to(newNavPos, 1000)
+                  .easing(TWEEN.Easing. Quadratic.Out)
+                  .onUpdate(() => {
+                     group.position.x = navPos.x;
+                     group.position.y = navPos.y;
+                     group.position.z = navPos.z;
+                  })
+                  .start();
+            }
+         } else {
+            const group = this.groups.find(item => item.uuid === state.group.toString());
+            this.currentModule = this.modules.find(item => item.group === group);
+            this.INTERSECTEDMOUSEUP = this.currentModule.columnItems.find(item=>(item.userData.layer.toString() === state.layer.toString()) && (item.parent.uuid === state.group));
+            this.mode = 'Group mode';
+                  const newNavPos = {
+                     x: 0,
+                     y: 0,
+                     z: 0,
+                  };
+               this.items = this.currentModule.items;
+               // this.textLabels = this.currentModule.texts;
+               this.columnItems = this.currentModule.columnItems;
+               navPos = group.position;
+               new TWEEN.Tween(navPos)
+                  .to(newNavPos, 1000)
+                  .easing(TWEEN.Easing. Quadratic.Out)
+                  .onUpdate(() => {
+                     group.position.x = navPos.x;
+                     group.position.y = navPos.y;
+                     group.position.z = navPos.z;
+                  })
+                  .start(); 
+         }
+         this.cameraAnimate.animateToLayer(this.diagramCenter, this.INTERSECTEDMOUSEUP.userData.layer);
+        this.columnItems.forEach(item => {
+            if (item === this.INTERSECTEDMOUSEUP) {
+                item.material.opacity = 1;
+            } else {
+                item.material.opacity = 0.3;
+            }
+        });
+        this.items.forEach(item => {
+            if (item.userData.layer === this.INTERSECTEDMOUSEUP.userData.layer) {
+                item.material.forEach(m => {
+                    m.opacity = 1;
+                });
+            } else {
+                item.material.forEach(m => {
+                    m.opacity = 0.3;
+                });
+            }
+        });
+     }
+  
+     removeInfo() {
+        if (this.CURRENTINFOCUBE) {
+           this.currentModule.group.remove(this.CURRENTINFOCUBE);
+           this.CURRENTINFOCUBE = null;
+           this.controls.enabled = true;
+        }
+     }
+
     componentWillUnmount() {
         this.stop()
         this.mount.removeChild(this.renderer.domElement)
@@ -51,31 +461,14 @@ class Diagram extends React.Component {
         const width = this.mount.clientWidth
         const height = this.mount.clientHeight
     
-        // const camera = new THREE.PerspectiveCamera(
-        //   75,
-        //   width / height,
-        //   0.1,
-        //   1000
-        // )
         this.camera = new THREE.PerspectiveCamera(90, width / height, 1, 100000);
 
-        // const geometry = new THREE.BoxGeometry(1, 1, 1)
-        // const material = new THREE.MeshBasicMaterial({ color: 0xff00ff })
-        // const cube = new THREE.Mesh(geometry, material)
-    
-        // camera.position.z = 4
-        // scene.add(cube)
-        // renderer.setClearColor('#000000')
-   
-
         this.start()
-        // this.container = $('#canvasDiagram');
 
         // renderer
         this.renderer = new THREE.WebGLRenderer({
             antialias: true
         });
-        // this.renderer.setSize(this.container.width(), this.container.height());
         this.renderer.domElement.setAttribute('id', 'diagram');
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(width, height)
@@ -85,7 +478,6 @@ class Diagram extends React.Component {
         this.renderer.domElement.addEventListener('mousedown',(e) => this.__onMouseDown(e), false);
         this.mount.appendChild(this.renderer.domElement)
         this.contaier = this.mount;
-        // $('#canvasDiagram').append(this.renderer.domElement);
 
         // Camera controls            
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -193,6 +585,13 @@ class Diagram extends React.Component {
             row: '',
             column: ''
         });
+        this.__change({
+            mode: 'Group mode',
+            group: this.navGroup1.uuid,
+            layer: '',
+            row: '',
+            column: ''
+        });
         // controlsElement.attach( meshT );
         // scene.add( controlsElement );
 
@@ -222,8 +621,9 @@ class Diagram extends React.Component {
         this.controls.update();
     }
 
-    __change(some) {
-        // window.store.dispatch(changeMode(some));
+    __change(state) {
+        // this.setState(state);
+        this.props.changeMode(state);
     }
 
     __addWindowListeners() {
@@ -387,6 +787,7 @@ class Diagram extends React.Component {
                 if (intersects.length > 0) {
                     this.INTERSECTEDMOUSEDBL = intersects[0].object;
                     if (this.INTERSECTEDMOUSEDBL.userData.type === 'cubeElement') {
+                        // this.props.changeMode(this.state);
                         this.__change({
                             mode: 'Info mode',
                             group: this.INTERSECTEDMOUSEDBL.parent.uuid,
@@ -632,5 +1033,6 @@ class Diagram extends React.Component {
 
     }
 }
+const DiagramEl = connect(mapStateToProps, mapDispatchToProps)(Diagram);
 
-export default Diagram;
+export default DiagramEl;

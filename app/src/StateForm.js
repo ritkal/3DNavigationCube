@@ -1,4 +1,16 @@
 import React from 'react';
+import { connect } from "react-redux";
+const changeMode = obj => ({ type: 'NAVIGATE', obj });
+
+function mapDispatchToProps(dispatch) {
+  return {
+      changeMode: mode => dispatch(changeMode(mode))
+  };
+}
+const mapStateToProps = state => {
+  return { mode: state };
+};
+
 class StateFrom extends React.Component {
     constructor(props) {
         super(props);
@@ -14,6 +26,13 @@ class StateFrom extends React.Component {
         this.handleButtonClick = this.handleButtonClick.bind(this);
       }
 
+      componentDidUpdate(oldProps) {
+        const newProps = this.props
+        if(oldProps.mode !== newProps.mode) {
+          this.setState(newProps.mode);
+        }
+      }
+
       handleInputChange(event) {
         const target = event.target;
         const value = target.value;
@@ -25,8 +44,9 @@ class StateFrom extends React.Component {
       }
 
       handleButtonClick(event) {
+        this.buttonClicked =
         event.preventDefault();
-        console.log(this.state);
+        this.props.changeMode(this.state);
       }
 
       render() {
@@ -88,4 +108,8 @@ class StateFrom extends React.Component {
       }
 }
 
-export default StateFrom;
+const Form = connect(mapStateToProps, mapDispatchToProps)(StateFrom);
+// const Form = connect(null, mapStateToProps)(StateFrom);
+
+
+export default Form;
