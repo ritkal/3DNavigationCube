@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
+import { Link } from 'react-router-dom';
 const changeMode = obj => ({ type: 'NAVIGATE', obj });
 
 function mapDispatchToProps(dispatch) {
@@ -8,7 +9,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 const mapStateToProps = state => {
-  return { mode: state };
+  return { state };
 };
 
 class StateFrom extends React.Component {
@@ -28,8 +29,8 @@ class StateFrom extends React.Component {
 
       componentDidUpdate(oldProps) {
         const newProps = this.props
-        if(oldProps.mode !== newProps.mode) {
-          this.setState(newProps.mode);
+        if(oldProps.state.state !== newProps.state.state ) {
+          this.setState(newProps.state.state);
         }
       }
 
@@ -102,7 +103,9 @@ class StateFrom extends React.Component {
                 onChange={this.handleInputChange}/>
           </label>
           <br />
-          <button type="button" onClick={this.handleButtonClick}>Go</button>
+          {/* <Link to="/dashboard"> */}
+            <button type="button" onClick={this.handleButtonClick}>Go</button>
+          {/* </Link> */}
           </form>
         );
       }

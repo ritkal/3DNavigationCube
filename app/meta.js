@@ -74,9 +74,9 @@ const data = [
 ];
 
 const modes = {
-    globalObserver: 'Global mode',
-    groupObserver: 'Group mode',
-    infoObserver: 'Info mode'
+    globalObserver: 'Global',
+    groupObserver: 'Group',
+    infoObserver: 'Info'
 };
 
 const animateOn = {
