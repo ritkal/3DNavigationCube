@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-
+import { Router, Route, hashHistory } from 'react-router'
 import StateFrom from './StateForm';
 import Diagram from '../modules/diagram/mainDiagram.js';
 
@@ -19,14 +19,6 @@ class App extends Component {
   }
 }
 
-
-
-// export default connect(
-//   (state, ownProps) => {
-//     // tracks: state.counter.filter(track => track.name.includes(state.filterTracks)),
-//     ownProps
-//   }
-// )(App);
 
 export default connect((state, ownProps) => {
   const foo = state.state;

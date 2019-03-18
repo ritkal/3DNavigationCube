@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { Link } from 'react-router-dom';
+// import { Route, Redirect } from 'react-router'
+import { withRouter } from 'react-router-dom'
+// import { Link } from 'react-router-dom';
 const changeMode = obj => ({ type: 'NAVIGATE', obj });
 
 function mapDispatchToProps(dispatch) {
@@ -42,12 +44,15 @@ class StateFrom extends React.Component {
         this.setState({
           [name]: value
         });
+
       }
 
       handleButtonClick(event) {
         this.buttonClicked =
         event.preventDefault();
         this.props.changeMode(this.state);
+        const { history } = this.props;
+        if(history) history.push('/home');
       }
 
       render() {

@@ -9,17 +9,28 @@ export default function (group, camera, cubeElements) {
     this.camera = camera;
     this.group = group;
     this.cubeElements = cubeElements || defaultCubeData;
+    this.exploredElements = [{
+        x: {
+            left: 0.4296,
+            right: 0.5333
+        },
+        y: {
+            top: 0.3307,
+            bottom: 0.2481
+        },
+        id: 0
+    }];
     this.currentInfoCube = null;
     var items = [];
     var elemntSize = {
-        length: 400,
-        width: 300,
-        height: 5
+        length: 2000,
+        width: 1500,
+        height: 10
     };
 
     var offset = {
         x: 200,
-        y: 200,
+        y: 500,
         z: 200
     };
 
@@ -63,26 +74,28 @@ export default function (group, camera, cubeElements) {
             const manager = new THREE.LoadingManager(()=>resolve(textures));
             const loader = new THREE.TextureLoader(manager);
             const textures = [
-              "textures/trash.jpg",
+              "textures/BP3D/Arch1.png",
+              "textures/BP3D/Proc1.png",
+              "textures/BP3D/Data1.png",
             ].map(filename=>loader.load(filename));
           });
           
           await getTextures().then(result=>{
             this.cubeElements.forEach(el => {
                 var materials = [
-                    new THREE.MeshBasicMaterial( { color: '' } ),
-                    new THREE.MeshBasicMaterial( { color: 'white' } ),
-                    new THREE.MeshBasicMaterial( { map: result[0] } ),
                     new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
-                    new THREE.MeshBasicMaterial( { color: 'white' } ),
-                    new THREE.MeshBasicMaterial( { color: 'white' } ),
+                    new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
+                    new THREE.MeshBasicMaterial( { map: result[el.layer] } ),
+                    new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
+                    new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
+                    new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
                  ];
                 var mesh = new THREE.Mesh( geometry, materials );
                 mesh.material.forEach(m => {
                    m.transparent = true;
                    m.opacity = 1;
                 });
-                mesh.position.x = el.column * ( elemntSize.length + offset.x );
+                mesh.position.x = 700 + el.column * ( elemntSize.length + offset.x );
                 mesh.position.y = - el.layer * offset.y;
                 mesh.position.z = el.row * ( elemntSize.width + offset.z);
                 mesh.userData.column = el.column;
@@ -101,7 +114,7 @@ export default function (group, camera, cubeElements) {
                 items.push(mesh);
             });
         });
-        
+        // this.createArchElementsHidden();
         var planeGeo = new THREE.PlaneBufferGeometry( 3000.1, 3000.1 );
         // wrapper
 				var planeTop = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'black', transparent: true, opacity: 0.1 } ) );
@@ -153,7 +166,7 @@ export default function (group, camera, cubeElements) {
                 planeBack.userData.groupUuid = this.group.uuid;
                 this.group.add( planeBack );
                 const columnItems = this.createNavColumn();
-                this.createName(name);
+                // this.createName(name);
                 
         return {
             items: items,
@@ -162,6 +175,54 @@ export default function (group, camera, cubeElements) {
             columnItems,
             pos,
         };
+    };
+
+    this.createArchElementsHidden = async function () {
+        const geometry = new THREE.BoxGeometry( elemntSize.length/4, elemntSize.height, elemntSize.width/4 );
+        const getTextures = ()=> new Promise((resolve, reject)=>{
+            const manager = new THREE.LoadingManager(()=>resolve(textures));
+            const loader = new THREE.TextureLoader(manager);
+            const textures = [
+              "textures/BP3D/Arch1-1.png",
+              "textures/BP3D/Arch1-2.png",
+              "textures/BP3D/Arch1-3.png",
+              "textures/BP3D/Arch1-4.png",
+            ].map(filename=>loader.load(filename));
+          });
+          await getTextures().then(result=>{
+            this.exploredElements.forEach(el => {
+                var materials = [
+                    new THREE.MeshBasicMaterial( { color: 'black' } ),
+                    new THREE.MeshBasicMaterial( { color: 'black' } ),
+                    new THREE.MeshBasicMaterial( { map: result[el.id] } ),
+                    new THREE.MeshBasicMaterial( { color: 'black' } ),
+                    new THREE.MeshBasicMaterial( { color: 'black' } ),
+                    new THREE.MeshBasicMaterial( { color: 'black' } ),
+                 ];
+                var mesh = new THREE.Mesh( geometry, materials );
+                mesh.material.forEach(m => {
+                   m.transparent = true;
+                   m.opacity = 1;
+                });
+                mesh.position.x = elemntSize.length * el.x.left - elemntSize.length/8;
+                mesh.position.y = - 1 * offset.y;
+                mesh.position.z =  elemntSize.width*el.y.top - elemntSize.width/8;
+                mesh.userData.column = el.column;
+                mesh.userData.layer = el.layer;
+                mesh.userData.row = el.row;
+                mesh.userData.type = 'cubeElement';
+                mesh.userData.groupUuid = this.group.uuid;
+                mesh.updateMatrix();
+                mesh.matrixAutoUpdate = true;
+                var text = this.__createTextLabel();
+                text.setHTML(el.name);
+                text.setParent(mesh);
+                this.textlabels.push(text);
+                document.body.appendChild(text.element);
+                this.group.add( mesh );
+                // items.push(mesh);
+            });
+        });
     };
 
     this.createNavColumn = function () {
@@ -173,9 +234,9 @@ export default function (group, camera, cubeElements) {
            var meshC = new THREE.Mesh( geometryC, materialC );
            meshC.material.transparent = true;
            meshC.material.opacity = 1;
-           meshC.position.x = 2000;
+           meshC.position.x = 2100;
            meshC.position.y = -i*offset.y;
-           meshC.position.z = 500;
+           meshC.position.z = 200;
            meshC.userData.type = 'navColumnElement';
            meshC.userData.layer = i;
            meshC.userData.groupUuid = this.group.uuid;
@@ -290,7 +351,7 @@ export default function (group, camera, cubeElements) {
             var maxRows = getMaxRow();
             var maxLayer = getMaxLayer();
             var maxColumn = getMaxColumn();
-            var diagramLength = ( maxColumn + 1 ) * elemntSize.length + maxColumn * offset.x;
+            var diagramLength = ( maxColumn + 1 ) * elemntSize.length + maxColumn * offset.x+1000;
             var diagramHeight = ( maxLayer + 1 ) * elemntSize.height + maxLayer * offset.y;
             var diagramWidth = ( maxRows + 1 ) * elemntSize.width + maxRows * offset.z;
             return {

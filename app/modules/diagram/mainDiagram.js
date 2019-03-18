@@ -49,12 +49,8 @@ class Diagram extends React.Component {
         let navPos;
         const state = newProps.state.state;
 
-        if (!state) return;
-        // if (!state.layer) {
-        //     state.layer = 1;
-        //     state.column = 1;
-        //     state.row = 1;
-        // }
+        if (!state && this.modules.lenght === 0) return;
+
         if (state.mode === 'Group' && state.group.toString() ) {
             this.removeInfo();
             if (state.layer.toString() && state.row.toString() && state.column.toString()) {
@@ -253,12 +249,10 @@ class Diagram extends React.Component {
             this.createInfo();
             this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEDBL, 'elDblClick');
          }
-        // this.fullState();
     }
 
     fullState(state) {
         let navPos;
-        // const state = this.state;
         if (this.currentModule) {
             if (this.currentModule.group.uuid === state.group.toString()) {
                this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) &&
@@ -304,6 +298,8 @@ class Diagram extends React.Component {
          } else {
             const group = this.groups.find(item => item.uuid === state.group.toString());
             this.currentModule = this.modules.find(item => item.group === group);
+            if (!this.currentModule) return;
+        
             this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) &&
                (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()) && (item.parent.uuid === state.group));
             this.mode = 'Group';
@@ -501,14 +497,14 @@ class Diagram extends React.Component {
 
         // Build diagram
         this.diagramBuilder = new DiagramBuilder(this.navGroup1, this.camera);
-        this.diagramBuilder.setElemntLength(600);
+        // this.diagramBuilder.setElemntLength(600);
         this.diagramBuilder.setOffset({
             x: 400,
-            y: 500,
+            y: 800,
             z: 200
         });
         let builderOut = await this.diagramBuilder.createCubeElements({
-            x: 5000,
+            x: 0,
             y: 500,
             z: -6000,
         }, 'THREE');
@@ -520,43 +516,43 @@ class Diagram extends React.Component {
         this.names.push(builderOut.name);
         this.modules.push(builderOut);
 
-        this.diagramBuilder2 = new DiagramBuilder(this.navGroup2, this.camera);
-        this.diagramBuilder2.setElemntLength(600);
-        this.diagramBuilder2.setOffset({
-            x: 400,
-            y: 500,
-            z: 200
-        });
-        this.navGroup2.position.x = -5000;
-        this.navGroup2.position.y = 500;
-        this.navGroup2.position.z = -6000;
-        builderOut = await this.diagramBuilder2.createCubeElements({
-            x: -5000,
-            y: 500,
-            z: -6000,
-        }, 'ONE');
-        builderOut.builder = this.diagramBuilder2;
-        this.names.push(builderOut.name);
-        this.modules.push(builderOut);
+        // this.diagramBuilder2 = new DiagramBuilder(this.navGroup2, this.camera);
+        // this.diagramBuilder2.setElemntLength(600);
+        // this.diagramBuilder2.setOffset({
+        //     x: 0,
+        //     y: 500,
+        //     z: 200
+        // });
+        // this.navGroup2.position.x = -5000;
+        // this.navGroup2.position.y = 500;
+        // this.navGroup2.position.z = -6000;
+        // builderOut = await this.diagramBuilder2.createCubeElements({
+        //     x: -5000,
+        //     y: 500,
+        //     z: -6000,
+        // }, 'ONE');
+        // builderOut.builder = this.diagramBuilder2;
+        // this.names.push(builderOut.name);
+        // this.modules.push(builderOut);
 
-        this.diagramBuilder3 = new DiagramBuilder(this.navGroup3, this.camera);
-        this.diagramBuilder3.setElemntLength(600);
-        this.diagramBuilder3.setOffset({
-            x: 400,
-            y: 500,
-            z: 200
-        });
-        this.navGroup3.position.x = 0;
-        this.navGroup3.position.y = 500;
-        this.navGroup3.position.z = -6000;
-        builderOut = await this.diagramBuilder3.createCubeElements({
-            x: 0,
-            y: 50,
-            z: -6000,
-        }, 'TWO');
-        builderOut.builder = this.diagramBuilder3;
-        this.names.push(builderOut.name);
-        this.modules.push(builderOut);
+        // this.diagramBuilder3 = new DiagramBuilder(this.navGroup3, this.camera);
+        // this.diagramBuilder3.setElemntLength(600);
+        // this.diagramBuilder3.setOffset({
+        //     x: 400,
+        //     y: 500,
+        //     z: 200
+        // });
+        // this.navGroup3.position.x = 0;
+        // this.navGroup3.position.y = 500;
+        // this.navGroup3.position.z = -6000;
+        // builderOut = await this.diagramBuilder3.createCubeElements({
+        //     x: 0,
+        //     y: 50,
+        //     z: -6000,
+        // }, 'TWO');
+        // builderOut.builder = this.diagramBuilder3;
+        // this.names.push(builderOut.name);
+        // this.modules.push(builderOut);
 
         this.diagramCenter = this.diagramBuilder.getDiagramCenter();
 
@@ -902,11 +898,32 @@ class Diagram extends React.Component {
                             el.children.forEach(ch => arr.push(ch));
                         });
                         var intersects = this.raycaster.intersectObjects(arr);
-
+                        
                         if (intersects.length > 0) {
                             if (this.INTERSECTEDMOUSEUP != intersects[0].object) {
                                 this.INTERSECTEDMOUSEUP = intersects[0].object;
                                 if (this.INTERSECTEDMOUSEUP.userData.type === 'cubeElement') {
+                                    if (intersects[0].uv.x < 0.5333 && intersects[0].uv.x > 0.4296 && intersects[0].uv.y < 0.3307 && intersects[0].uv.y > 0.2481) {
+                                        this.items.forEach(item => {
+                                            if (item.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
+                                            const navPos = item.position;
+                                            var newNavPos = {
+                                                x: navPos.x,
+                                                y: navPos.y - 800,
+                                            }
+                                            new TWEEN.Tween(navPos)
+                                               .to(newNavPos, 1000)
+                                               .easing(TWEEN.Easing. Quadratic.Out)
+                                               .onUpdate(() => {
+                                                  item.position.x = navPos.x;
+                                                  item.position.y = navPos.y;
+                                                  item.position.z = navPos.z;
+                                               })
+                                               .start();
+                                            }
+                                        });
+                                        this.diagramBuilder.createArchElementsHidden();
+                                    }
                                     this.__change({
                                         mode: 'Group',
                                         group: this.INTERSECTEDMOUSEUP.parent.uuid,
