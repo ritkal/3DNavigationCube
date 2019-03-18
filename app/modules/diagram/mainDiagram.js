@@ -898,7 +898,21 @@ class Diagram extends React.Component {
                             el.children.forEach(ch => arr.push(ch));
                         });
                         var intersects = this.raycaster.intersectObjects(arr);
-                        
+                        const vertices0 = {z: intersects[0].object.geometry.vertices[0].z}
+                        const vert = {z: 1200};
+                        new TWEEN.Tween(vertices0)
+                            .to(vert, 1000)
+                            .easing(TWEEN.Easing. Quadratic.Out)
+                            .onUpdate(() => {
+                                intersects[0].object.geometry.vertices[0].z = vertices0.z;
+                                intersects[0].object.geometry.vertices[5].z = vertices0.z;
+                                console.log(vertices0);
+                                intersects[0].object.geometry.verticesNeedUpdate = true
+                            })
+                            .start();
+                        // intersects[0].object.geometry.vertices[0].z = 1200;
+                        // intersects[0].object.geometry.vertices[5].z = 1200;
+                        // intersects[0].object.geometry.verticesNeedUpdate = true
                         if (intersects.length > 0) {
                             if (this.INTERSECTEDMOUSEUP != intersects[0].object) {
                                 this.INTERSECTEDMOUSEUP = intersects[0].object;

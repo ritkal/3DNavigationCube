@@ -69,7 +69,6 @@ export default function (group, camera, cubeElements) {
     };
 
     this.createCubeElements = async function (pos, name) {
-        const geometry = new THREE.BoxGeometry( elemntSize.length, elemntSize.height, elemntSize.width );
         const getTextures = ()=> new Promise((resolve, reject)=>{
             const manager = new THREE.LoadingManager(()=>resolve(textures));
             const loader = new THREE.TextureLoader(manager);
@@ -82,6 +81,8 @@ export default function (group, camera, cubeElements) {
           
           await getTextures().then(result=>{
             this.cubeElements.forEach(el => {
+                const geometry = new THREE.BoxGeometry( elemntSize.length, elemntSize.height, elemntSize.width );
+
                 var materials = [
                     new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
                     new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
