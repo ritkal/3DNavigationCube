@@ -9,6 +9,7 @@ import cameraAnimation from '../../libs/animateCameraService';
 import ObjectControls from '../../libs/ObjectControls';
 import * as TransformControls from 'three-transformcontrols';
 import OrbitControls from 'three-orbitcontrols';
+import { deepStrictEqual } from 'assert';
 
 const changeMode = obj => ({ type: 'NAVIGATE', obj });
 function mapDispatchToProps(dispatch) {
@@ -883,7 +884,6 @@ class Diagram extends React.Component {
             this.controls.enabled = true;
             this.timer = setTimeout(() => {
                 if (!this.prevent) {
-                    console.log(this.prevent, this.flag);
                     if (this.info) {
                         this.info.matrixAutoUpdate = false;
                     }
@@ -907,8 +907,24 @@ class Diagram extends React.Component {
                                             this.diagramBuilder.resizeWrapperVertical('+');
                                             this.diagramBuilder.resizeNavColumn(this.INTERSECTEDMOUSEUP.userData.layer, '+');
                                             this.INTERSECTEDMOUSEUP.userData.isExpanded = !this.INTERSECTEDMOUSEUP.userData.isExpanded;
-                                            // this.INTERSECTEDMOUSEUP.userData.extensions.forEach(el => this.currentModule.group.add(el))
+                                            const newExtPos = {
+                                                y: this.INTERSECTEDMOUSEUP.userData.extensions[0].position.y
+                                            }
+                                            const extPos = {
+                                                y: this.INTERSECTEDMOUSEUP.userData.extensions[0].position.y + 799
+                                            }
+                                            this.INTERSECTEDMOUSEUP.userData.extensions[0].position.y += 799;
                                             this.currentModule.group.add(this.INTERSECTEDMOUSEUP.userData.extensions[0]);
+
+                                            new TWEEN.Tween(extPos)
+                                            .to(newExtPos, 1000)
+                                            .easing(TWEEN.Easing. Quadratic.Out)
+                                            .onUpdate(() => {
+                                                this.INTERSECTEDMOUSEUP.userData.extensions[0].position.y = extPos.y;
+                                                // item.position.y = navPos.y;
+                                                // item.position.z = navPos.z;
+                                            })
+                                            .start();
                                             this.currentModule.group.remove(this.INTERSECTEDMOUSEUP.userData.extensions[1]);
                                             this.items.forEach(item => {
                                                 if (item.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
@@ -928,14 +944,33 @@ class Diagram extends React.Component {
                                                     .start();
                                                 }
                                             });
-                                                // this.diagramBuilder.createArchElementsHidden();
                                         } else  {
                                             this.diagramBuilder.resizeWrapperVertical('-');
                                             this.diagramBuilder.resizeNavColumn(this.INTERSECTEDMOUSEUP.userData.layer, '-');
                                             this.INTERSECTEDMOUSEUP.userData.isExpanded = !this.INTERSECTEDMOUSEUP.userData.isExpanded;
-                                            // this.INTERSECTEDMOUSEUP.userData.extensions.forEach(el => this.currentModule.group.remove(el))
-                                            this.currentModule.group.remove(this.INTERSECTEDMOUSEUP.userData.extensions[0]);
+                                            const newExtPos = {
+                                                y: this.INTERSECTEDMOUSEUP.userData.extensions[0].position.y + 799
+                                            }
+                                            const extPos = {
+                                                y: this.INTERSECTEDMOUSEUP.userData.extensions[0].position.y
+                                            }
+                                            // this.INTERSECTEDMOUSEUP.userData.extensions[0].position.y -= 799;
+                                            // this.currentModule.group.add(this.INTERSECTEDMOUSEUP.userData.extensions[0]);
 
+                                            new TWEEN.Tween(extPos)
+                                                .to(newExtPos, 1000)
+                                                .easing(TWEEN.Easing. Quadratic.Out)
+                                                .onUpdate(() => {
+                                                    this.INTERSECTEDMOUSEUP.userData.extensions[0].position.y = extPos.y;
+                                                    // item.position.y = navPos.y;
+                                                    // item.position.z = navPos.z;
+                                                })
+                                                .onComplete(() => {
+                                                    this.currentModule.group.remove(this.INTERSECTEDMOUSEUP.userData.extensions[0]);
+                                                    this.INTERSECTEDMOUSEUP.userData.extensions[0].position.y -=799;
+
+                                                })
+                                                .start();
                                             this.items.forEach(item => {
                                                 if (item.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
                                                     const navPos = item.position;

@@ -305,9 +305,9 @@ export default function (group, camera, cubeElements) {
                    m.transparent = true;
                    m.opacity = 1;
                 });
-                mesh.position.x = elemntSize.length * el.area.pos1.x + elemntSize.length/4;
+                mesh.position.x = elemntSize.length * el.area.pos1.x + elemntSize.length/8;
                 mesh.position.y = - 1 * offset.y;
-                mesh.position.z =  -elemntSize.width*el.area.pos1.z + elemntSize.width/4 ;
+                mesh.position.z =  -elemntSize.width*el.area.pos1.z + elemntSize.width/4;
                 mesh.userData.subLayer = el.subLayer;
                 mesh.userData.type = el.type;
                 mesh.userData.isExpandable = el.isExpandable;
