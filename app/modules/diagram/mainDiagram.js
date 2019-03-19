@@ -869,8 +869,6 @@ class Diagram extends React.Component {
                                     row: '',
                                     column: ''
                                 });
-                            } else {
-                                this.INTERSECTEDMOUSEUP = null;
                             }
                             this.mode = meta.modes.groupObserver;
                         }
@@ -885,6 +883,7 @@ class Diagram extends React.Component {
             this.controls.enabled = true;
             this.timer = setTimeout(() => {
                 if (!this.prevent) {
+                    console.log(this.prevent, this.flag);
                     if (this.info) {
                         this.info.matrixAutoUpdate = false;
                     }
@@ -899,9 +898,12 @@ class Diagram extends React.Component {
                         });
                         var intersects = this.raycaster.intersectObjects(arr);
                         if (intersects.length > 0) {
-                            if (this.INTERSECTEDMOUSEUP != intersects[0].object) {
+                            console.log(this.INTERSECTEDMOUSEUP != intersects[0].object);
+                            // if (this.INTERSECTEDMOUSEUP != intersects[0].object) {
                                 this.INTERSECTEDMOUSEUP = intersects[0].object;
                                 if (this.INTERSECTEDMOUSEUP.userData.type === 'base') {
+                                    // console.log(this.INTERSECTEDMOUSEUP.userData.isExpandable && 
+                                    //     intersects[0].uv.x < 0.5 && intersects[0].uv.x > 0 && intersects[0].uv.y < 0.5 && intersects[0].uv.y > 0);
                                     if (this.INTERSECTEDMOUSEUP.userData.isExpandable && 
                                         intersects[0].uv.x < 0.5 && intersects[0].uv.x > 0 && intersects[0].uv.y < 0.5 && intersects[0].uv.y > 0) {
                                         if ( !this.INTERSECTEDMOUSEUP.userData.isExpanded) {
@@ -996,8 +998,9 @@ class Diagram extends React.Component {
                             });
                         }
                     }
-                }
+                // }
                 this.prevent = false;
+
             }, this.delay);
     }
 
