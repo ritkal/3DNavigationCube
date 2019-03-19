@@ -21,6 +21,22 @@ const data = [
                 }
             },
             isExpandable: false
+        },
+        {
+            type: 'extension',
+            layer: 0,
+            subLayer: 1,
+            area: {
+                pos1: {
+                    x:0,
+                    z:0.5
+                },
+                pos2: {
+                    x:0.5,
+                    z:1
+                }
+            },
+            isExpandable: false
         }]
     },
     // {

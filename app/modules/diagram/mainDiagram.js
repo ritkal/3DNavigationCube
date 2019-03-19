@@ -321,10 +321,10 @@ class Diagram extends React.Component {
                      group.position.z = navPos.z;
                   })
                   .start(); 
-               this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
-               this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEUP, 'elClick');
+            //    this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
+            //    this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEUP, 'elClick');
          }
-         this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEUP, 'elClick');
+        //  this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEUP, 'elClick');
          this.items.forEach(item => {
             if (item.userData.column === this.INTERSECTEDMOUSEUP.userData.column && item.userData.row === this.INTERSECTEDMOUSEUP.userData.row) {
                 item.material.forEach(m => {
@@ -899,18 +899,17 @@ class Diagram extends React.Component {
                         var intersects = this.raycaster.intersectObjects(arr);
                         if (intersects.length > 0) {
                             console.log(this.INTERSECTEDMOUSEUP != intersects[0].object);
-                            // if (this.INTERSECTEDMOUSEUP != intersects[0].object) {
                                 this.INTERSECTEDMOUSEUP = intersects[0].object;
                                 if (this.INTERSECTEDMOUSEUP.userData.type === 'base') {
-                                    // console.log(this.INTERSECTEDMOUSEUP.userData.isExpandable && 
-                                    //     intersects[0].uv.x < 0.5 && intersects[0].uv.x > 0 && intersects[0].uv.y < 0.5 && intersects[0].uv.y > 0);
                                     if (this.INTERSECTEDMOUSEUP.userData.isExpandable && 
                                         intersects[0].uv.x < 0.5 && intersects[0].uv.x > 0 && intersects[0].uv.y < 0.5 && intersects[0].uv.y > 0) {
                                         if ( !this.INTERSECTEDMOUSEUP.userData.isExpanded) {
                                             this.diagramBuilder.resizeWrapperVertical('+');
                                             this.diagramBuilder.resizeNavColumn(this.INTERSECTEDMOUSEUP.userData.layer, '+');
                                             this.INTERSECTEDMOUSEUP.userData.isExpanded = !this.INTERSECTEDMOUSEUP.userData.isExpanded;
-                                            this.INTERSECTEDMOUSEUP.userData.extensions.forEach(el => this.currentModule.group.add(el))
+                                            // this.INTERSECTEDMOUSEUP.userData.extensions.forEach(el => this.currentModule.group.add(el))
+                                            this.currentModule.group.add(this.INTERSECTEDMOUSEUP.userData.extensions[0]);
+                                            this.currentModule.group.remove(this.INTERSECTEDMOUSEUP.userData.extensions[1]);
                                             this.items.forEach(item => {
                                                 if (item.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
                                                     const navPos = item.position;
@@ -930,11 +929,13 @@ class Diagram extends React.Component {
                                                 }
                                             });
                                                 // this.diagramBuilder.createArchElementsHidden();
-                                        } else {
+                                        } else  {
                                             this.diagramBuilder.resizeWrapperVertical('-');
                                             this.diagramBuilder.resizeNavColumn(this.INTERSECTEDMOUSEUP.userData.layer, '-');
                                             this.INTERSECTEDMOUSEUP.userData.isExpanded = !this.INTERSECTEDMOUSEUP.userData.isExpanded;
-                                            this.INTERSECTEDMOUSEUP.userData.extensions.forEach(el => this.currentModule.group.remove(el))
+                                            // this.INTERSECTEDMOUSEUP.userData.extensions.forEach(el => this.currentModule.group.remove(el))
+                                            this.currentModule.group.remove(this.INTERSECTEDMOUSEUP.userData.extensions[0]);
+
                                             this.items.forEach(item => {
                                                 if (item.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
                                                     const navPos = item.position;
@@ -954,6 +955,7 @@ class Diagram extends React.Component {
                                                 }
                                             });
                                         }
+                                    
                                     }
                                     this.__change({
                                         mode: 'Group',
