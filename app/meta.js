@@ -1,9 +1,27 @@
 const data = [
     {
+        type: 'base',
         layer: 0,
         row: 0,
         column: 0,
-        name: 'Label 1'
+        name: 'Label 1',
+        isExpandable: true,
+        extensions: [{
+            type: 'extension',
+            layer: 0,
+            subLayer: 0,
+            area: {
+                pos1: {
+                    x:0,
+                    z:0
+                },
+                pos2: {
+                    x:0.5,
+                    z:0.5
+                }
+            },
+            isExpandable: false
+        }]
     },
     // {
     //     layer: 0,
@@ -24,10 +42,12 @@ const data = [
     //     name: 'Label 4'
     // },
     {
+        type: 'base',
         layer: 1,
         row: 0,
         column: 0,
-        name: 'Label 5'
+        name: 'Label 5',
+        isExpandable: false
     },
     // {
     //     layer: 1,
@@ -48,10 +68,12 @@ const data = [
     //     name: 'Label 8'
     // },
     {
+        type: 'base',
         layer: 2,
         row: 0,
         column: 0,
-        name: 'Label 9'
+        name: 'Label 9',
+        isExpandable: false
     },
     // {
     //     layer: 2,

@@ -770,7 +770,7 @@ class Diagram extends React.Component {
 
                 if (intersects.length > 0) {
                     this.INTERSECTEDMOUSEDBL = intersects[0].object;
-                    if (this.INTERSECTEDMOUSEDBL.userData.type === 'cubeElement') {
+                    if (this.INTERSECTEDMOUSEDBL.userData.type === 'base') {
                         this.__change({
                             mode: 'Info',
                             group: this.INTERSECTEDMOUSEDBL.parent.uuid,
@@ -881,7 +881,7 @@ class Diagram extends React.Component {
     }
     
 
-    __onMouseUpGroup(e) {
+    async __onMouseUpGroup(e) {
             this.controls.enabled = true;
             this.timer = setTimeout(() => {
                 if (!this.prevent) {
@@ -898,45 +898,60 @@ class Diagram extends React.Component {
                             el.children.forEach(ch => arr.push(ch));
                         });
                         var intersects = this.raycaster.intersectObjects(arr);
-                        const vertices0 = {z: intersects[0].object.geometry.vertices[0].z}
-                        const vert = {z: 1200};
-                        new TWEEN.Tween(vertices0)
-                            .to(vert, 1000)
-                            .easing(TWEEN.Easing. Quadratic.Out)
-                            .onUpdate(() => {
-                                intersects[0].object.geometry.vertices[0].z = vertices0.z;
-                                intersects[0].object.geometry.vertices[5].z = vertices0.z;
-                                console.log(vertices0);
-                                intersects[0].object.geometry.verticesNeedUpdate = true
-                            })
-                            .start();
-                        // intersects[0].object.geometry.vertices[0].z = 1200;
-                        // intersects[0].object.geometry.vertices[5].z = 1200;
-                        // intersects[0].object.geometry.verticesNeedUpdate = true
                         if (intersects.length > 0) {
                             if (this.INTERSECTEDMOUSEUP != intersects[0].object) {
                                 this.INTERSECTEDMOUSEUP = intersects[0].object;
-                                if (this.INTERSECTEDMOUSEUP.userData.type === 'cubeElement') {
-                                    if (intersects[0].uv.x < 0.5333 && intersects[0].uv.x > 0.4296 && intersects[0].uv.y < 0.3307 && intersects[0].uv.y > 0.2481) {
-                                        this.items.forEach(item => {
-                                            if (item.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
-                                            const navPos = item.position;
-                                            var newNavPos = {
-                                                x: navPos.x,
-                                                y: navPos.y - 800,
-                                            }
-                                            new TWEEN.Tween(navPos)
-                                               .to(newNavPos, 1000)
-                                               .easing(TWEEN.Easing. Quadratic.Out)
-                                               .onUpdate(() => {
-                                                  item.position.x = navPos.x;
-                                                  item.position.y = navPos.y;
-                                                  item.position.z = navPos.z;
-                                               })
-                                               .start();
-                                            }
-                                        });
-                                        this.diagramBuilder.createArchElementsHidden();
+                                if (this.INTERSECTEDMOUSEUP.userData.type === 'base') {
+                                    if (this.INTERSECTEDMOUSEUP.userData.isExpandable && 
+                                        intersects[0].uv.x < 0.5 && intersects[0].uv.x > 0 && intersects[0].uv.y < 0.5 && intersects[0].uv.y > 0) {
+                                        if ( !this.INTERSECTEDMOUSEUP.userData.isExpanded) {
+                                            this.diagramBuilder.resizeWrapperVertical('+');
+                                            this.diagramBuilder.resizeNavColumn(this.INTERSECTEDMOUSEUP.userData.layer, '+');
+                                            this.INTERSECTEDMOUSEUP.userData.isExpanded = !this.INTERSECTEDMOUSEUP.userData.isExpanded;
+                                            this.INTERSECTEDMOUSEUP.userData.extensions.forEach(el => this.currentModule.group.add(el))
+                                            this.items.forEach(item => {
+                                                if (item.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
+                                                    const navPos = item.position;
+                                                    var newNavPos = {
+                                                        x: navPos.x,
+                                                        y: navPos.y - 800,
+                                                    }
+                                                    new TWEEN.Tween(navPos)
+                                                    .to(newNavPos, 1000)
+                                                    .easing(TWEEN.Easing. Quadratic.Out)
+                                                    .onUpdate(() => {
+                                                        item.position.x = navPos.x;
+                                                        item.position.y = navPos.y;
+                                                        item.position.z = navPos.z;
+                                                    })
+                                                    .start();
+                                                }
+                                            });
+                                                // this.diagramBuilder.createArchElementsHidden();
+                                        } else {
+                                            this.diagramBuilder.resizeWrapperVertical('-');
+                                            this.diagramBuilder.resizeNavColumn(this.INTERSECTEDMOUSEUP.userData.layer, '-');
+                                            this.INTERSECTEDMOUSEUP.userData.isExpanded = !this.INTERSECTEDMOUSEUP.userData.isExpanded;
+                                            this.INTERSECTEDMOUSEUP.userData.extensions.forEach(el => this.currentModule.group.remove(el))
+                                            this.items.forEach(item => {
+                                                if (item.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
+                                                    const navPos = item.position;
+                                                    var newNavPos = {
+                                                        x: navPos.x,
+                                                        y: navPos.y + 800,
+                                                    }
+                                                    new TWEEN.Tween(navPos)
+                                                    .to(newNavPos, 1000)
+                                                    .easing(TWEEN.Easing. Quadratic.Out)
+                                                    .onUpdate(() => {
+                                                        item.position.x = navPos.x;
+                                                        item.position.y = navPos.y;
+                                                        item.position.z = navPos.z;
+                                                    })
+                                                    .start();
+                                                }
+                                            });
+                                        }
                                     }
                                     this.__change({
                                         mode: 'Group',
@@ -963,6 +978,9 @@ class Diagram extends React.Component {
                                         row: '',
                                         column: ''
                                     });
+                                }
+                                if (this.INTERSECTEDMOUSEUP.userData.type === 'extension') {
+                                    this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEUP, 'elClick');
                                 }
                             } else {
                                 this.INTERSECTEDMOUSEUP = null;

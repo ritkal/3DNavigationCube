@@ -3,8 +3,8 @@ const changeDuration = 700;
 const cameraPositionOffsets = {
     elClick :{
         x: -500,
-        y: 600,
-        z: 1000
+        y: 800,
+        z: 1500
     },
     elDblClick :{
         x: 0,
