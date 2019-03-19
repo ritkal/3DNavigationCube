@@ -2,9 +2,9 @@ import * as TWEEN from '@tweenjs/tween.js';
 const changeDuration = 700;
 const cameraPositionOffsets = {
     elClick :{
-        x: -300,
-        y: 200,
-        z: 500
+        x: -500,
+        y: 800,
+        z: 1500
     },
     elDblClick :{
         x: 0,

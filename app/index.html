@@ -6,50 +6,44 @@
 				margin: 0;
 				height: 100%; 
 			}
+			label {
+				margin-top: 10px;
+			}
 			canvas { width: 100%; height: 100% }
 			#info {
 				position: absolute;
 				top: 10px;
 				width: 50%;
 				text-align: center;
-				z-index: 100;
+				z-index: 200;
 				display:block;
 			}
-			#test {
+			#root {
 				height: 100%;
 				display: flex
 			}
-			#canvasDiagram {
+			.App {
+				position: absolute;
+				width: 100%;
+				z-index: 100;
+				display:flex;
+			}
+			.canvasDiagram {
 				width: 50%;
 				height: 100%;
+			}
+			.State {
+				top:0;
 			}
 		</style>
 	</head>
 	<body>
-		<div id='info'>
+		<!-- <div id='info'>
 			<p>click - pick an element, dblclick - go to info, Esc - go back, ` - go global</p>
+		</div> -->
+		<div id = 'root'>
 		</div>
-		<div id = 'test'>
-			<div id='canvasDiagram'>
-			</div>
-			<form id="state">
-					<br>
-					<br>
-					<span>Mode:</span>
-					<input id="mode" type="text" value="Group mode">
-					<span>Group:</span>
-					<input id="group" type="text" value="">
-					<span>Row:</span>
-					<input id="row" type="text" value="">
-					<span>Column:</span>
-					<input id="column" type="text" value="">
-					<br>
-					<br>
-					<span>Layer:</span>
-					<input id="layer" type="text" value="">
-					<input id="button" type="button" value="Go">
-				  </div>
-			</form>
+		<!-- <div id = 'root'></div> -->
 	</body>
 	<script type="text/javascript" src="bundle.js"></script></body>
 </html>

@@ -40,6 +40,13 @@ module.exports = {
                 use: ['vue-style-loader', 'css-loader']
             },
             {
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: {
+                  loader: "babel-loader"
+                }
+            },
+            {
                 test: /\.svg(\?.*)?$/,
                 loader: 'raw-loader'
             },
