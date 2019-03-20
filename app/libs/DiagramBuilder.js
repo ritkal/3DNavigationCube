@@ -108,6 +108,7 @@ export default function (group, camera, cubeElements) {
                 mesh.userData.isExpandable = el.isExpandable;
                 mesh.userData.isExpanded = false;
                 mesh.userData.groupUuid = this.group.uuid;
+
                 mesh.updateMatrix();
                 mesh.matrixAutoUpdate = true;
                 var text = this.__createTextLabel();
@@ -117,9 +118,9 @@ export default function (group, camera, cubeElements) {
                 document.body.appendChild(text.element);
                 this.group.add( mesh );
                 if (el.isExpandable) {
-                    this.createArchElementsHidden(el.extensions).then(result =>
+                    this.createArchElementsHidden(el.extensions, 1).then(result =>
                         mesh.userData.extensions = result
-                    ) 
+                    ); 
                 }
                 items.push(mesh);
             });
@@ -230,8 +231,8 @@ export default function (group, camera, cubeElements) {
                     .to(tweenNewObj, 1000)
                     .easing(TWEEN.Easing. Quadratic.Out)
                     .onUpdate(() => {
-                        el.scale.set(el.scale.x, tweenObj.scaleY, 1)
-                        el.position.y = tweenObj.posY
+                        el.scale.set(el.scale.x, tweenObj.scaleY, 1);
+                        el.position.y = tweenObj.posY;
                         
                     })
                     .start();
@@ -267,8 +268,8 @@ export default function (group, camera, cubeElements) {
                 .to(tweenNewObj, 1000)
                 .easing(TWEEN.Easing. Quadratic.Out)
                 .onUpdate(() => {
-                    el.scale.set(el.scale.x, tweenObj.scaleY, 1)
-                    el.position.y = tweenObj.posY
+                    el.scale.set(el.scale.x, tweenObj.scaleY, 1);
+                    el.position.y = tweenObj.posY;
                     
                 })
                 .start();
@@ -277,7 +278,7 @@ export default function (group, camera, cubeElements) {
         }
     }
 
-    this.createArchElementsHidden = async function (arr) {
+    this.createArchElementsHidden = async function (arr, k) {
         const geometry = new THREE.BoxGeometry( elemntSize.length/2, elemntSize.height, elemntSize.width/2 );
         const out = [];
         const getTextures = ()=> new Promise((resolve, reject)=>{
@@ -293,12 +294,12 @@ export default function (group, camera, cubeElements) {
           await getTextures().then(result=>{
             arr.forEach(el => {
                 var materials = [
-                    new THREE.MeshBasicMaterial( { color: 'black' } ),
-                    new THREE.MeshBasicMaterial( { color: 'black' } ),
+                    new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
+                    new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
                     new THREE.MeshBasicMaterial( { map: result[el.subLayer] } ),
-                    new THREE.MeshBasicMaterial( { color: 'black' } ),
-                    new THREE.MeshBasicMaterial( { color: 'black' } ),
-                    new THREE.MeshBasicMaterial( { color: 'black' } ),
+                    new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
+                    new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
+                    new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
                  ];
                 var mesh = new THREE.Mesh( geometry, materials );
                 mesh.material.forEach(m => {
@@ -306,19 +307,27 @@ export default function (group, camera, cubeElements) {
                    m.opacity = 1;
                 });
                 mesh.position.x = elemntSize.length * el.area.pos1.x + elemntSize.length/8;
-                mesh.position.y = - 1 * offset.y;
+                mesh.position.y = - k * offset.y;
                 mesh.position.z =  -elemntSize.width*el.area.pos1.z + elemntSize.width/4;
+                mesh.userData.layer =  el.layer;
                 mesh.userData.subLayer = el.subLayer;
+                mesh.userData.area = el.area;
                 mesh.userData.type = el.type;
                 mesh.userData.isExpandable = el.isExpandable;
                 mesh.userData.isExpanded = false;
+                mesh.userData.isVisible = false;
                 mesh.userData.groupUuid = this.group.uuid;
                 mesh.updateMatrix();
                 mesh.matrixAutoUpdate = true;
                 var text = this.__createTextLabel();
                 text.setHTML(el.name);
                 text.setParent(mesh);
-                this.textlabels.push(text);
+                if (el.isExpandable) {
+                    this.createArchElementsHidden(el.extensions, 2).then(result =>
+                        mesh.userData.extensions = result
+                    ); 
+                }
+                // this.textlabels.push(text);
                 document.body.appendChild(text.element);
                 out.push(mesh)
             });
@@ -329,7 +338,9 @@ export default function (group, camera, cubeElements) {
     this.createNavColumn = function () {
         var layersCount = getMaxLayer();
         this.columnItems = [];
-        var geometryC = new THREE.CylinderGeometry( offset.y/3, offset.y/3, offset.y, 32 );
+        var geometryC = new THREE.CylinderGeometry( 1, 1, 1, 32 );
+      
+
         for (var i = 0; i < layersCount + 1; i++) {
            var materialC = new THREE.MeshBasicMaterial( { color: colors[i] } );
            var meshC = new THREE.Mesh( geometryC, materialC );
@@ -343,6 +354,7 @@ export default function (group, camera, cubeElements) {
            meshC.userData.groupUuid = this.group.uuid;
            meshC.updateMatrix();
            group.add( meshC );
+           meshC.scale.set(offset.y/3, offset.y, offset.y, 32);
            this.columnItems.push(meshC);
         }
         return this.columnItems;
@@ -358,15 +370,15 @@ export default function (group, camera, cubeElements) {
 
             const tweenNewObj ={
                 posY: item.position.y - offset.y/2,
-                scaleY: item.scale.y*2
-            }
+                scaleY: item.scale.y + offset.y
+            };
 
             new TWEEN.Tween(tweenObj)
                 .to(tweenNewObj, 1000)
                 .easing(TWEEN.Easing. Quadratic.Out)
                 .onUpdate(() => {
-                    item.scale.set(item.scale.x, tweenObj.scaleY, 1)
-                    item.position.y = tweenObj.posY
+                    item.scale.set(item.scale.x, tweenObj.scaleY,  item.scale.z);
+                    item.position.y = tweenObj.posY;
                     
                 })
                 .start();
@@ -392,19 +404,19 @@ export default function (group, camera, cubeElements) {
             const tweenObj = {
                 posY: item.position.y,
                 scaleY: item.scale.y
-            }
+            };
     
             const tweenNewObj ={
                 posY: item.position.y + offset.y/2,
-                scaleY: item.scale.y/2
-            }
+                scaleY: item.scale.y -+ offset.y
+            };
     
             new TWEEN.Tween(tweenObj)
                 .to(tweenNewObj, 1000)
                 .easing(TWEEN.Easing. Quadratic.Out)
                 .onUpdate(() => {
-                    item.scale.set(item.scale.x, tweenObj.scaleY, 1)
-                    item.position.y = tweenObj.posY
+                    item.scale.set(item.scale.x, tweenObj.scaleY,  item.scale.z);
+                    item.position.y = tweenObj.posY;
                     
                 })
                 .start();

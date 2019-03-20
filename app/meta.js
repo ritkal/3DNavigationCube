@@ -20,7 +20,23 @@ const data = [
                     z:0.5
                 }
             },
-            isExpandable: false
+            isExpandable: true,
+            extensions: [{
+                type: 'extension',
+                layer: 0,
+                subLayer: 0,
+                area: {
+                    pos1: {
+                        x:0,
+                        z:0
+                    },
+                    pos2: {
+                        x:0.5,
+                        z:0.5
+                    }
+                },
+                isExpandable: false
+            }]
         },
         {
             type: 'extension',
@@ -33,6 +49,38 @@ const data = [
                 },
                 pos2: {
                     x:0.5,
+                    z:1
+                }
+            },
+            isExpandable: false
+        },
+        {
+            type: 'extension',
+            layer: 0,
+            subLayer: 2,
+            area: {
+                pos1: {
+                    x:0.5,
+                    z:0
+                },
+                pos2: {
+                    x:1,
+                    z:0.5
+                }
+            },
+            isExpandable: false
+        },
+        {
+            type: 'extension',
+            layer: 0,
+            subLayer: 3,
+            area: {
+                pos1: {
+                    x:0.5,
+                    z:0.5
+                },
+                pos2: {
+                    x:1,
                     z:1
                 }
             },
