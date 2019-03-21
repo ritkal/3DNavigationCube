@@ -23,6 +23,7 @@ class StateFrom extends React.Component {
             layer: '',
             row: '',
             column: '',
+            level: ''
         };
     
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -105,6 +106,17 @@ class StateFrom extends React.Component {
                 type="text" 
                 name="layer"
                 value={this.state.layer}
+                onChange={this.handleInputChange}/>
+          </label>
+          <br />
+
+          <label>
+            Level:
+            <input 
+                id="level" 
+                type="text" 
+                name="level"
+                value={this.state.level}
                 onChange={this.handleInputChange}/>
           </label>
           <br />

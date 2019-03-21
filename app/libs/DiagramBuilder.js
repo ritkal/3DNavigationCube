@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import * as TWEEN from '@tweenjs/tween.js';
 import 'babel-polyfill';
 import meta from '../meta';
-import { throws } from 'assert';
+// import BaseItem from '../modules/diagram/components/diagramItem';
 const defaultCubeData = meta.data;
 const colors = ['#63a884', '#fa8072', '#ffcc5c'];
 const infoColors = ['#bae0cc', '#ffd8d3', '#fcebc4'];
@@ -94,6 +94,7 @@ export default function (group, camera, cubeElements) {
                     new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
                  ];
                 var mesh = new THREE.Mesh( geometry, materials );
+                // console.log(new BaseItem(el))
                 mesh.material.forEach(m => {
                    m.transparent = true;
                    m.opacity = 1;
@@ -103,6 +104,7 @@ export default function (group, camera, cubeElements) {
                 mesh.position.z = el.row * ( elemntSize.width + offset.z);
                 mesh.userData.column = el.column;
                 mesh.userData.layer = el.layer;
+                mesh.userData.level = el.level;
                 mesh.userData.row = el.row;
                 mesh.userData.type = el.type;
                 mesh.userData.isExpandable = el.isExpandable;
@@ -111,14 +113,14 @@ export default function (group, camera, cubeElements) {
 
                 mesh.updateMatrix();
                 mesh.matrixAutoUpdate = true;
-                var text = this.__createTextLabel();
-                text.setHTML(el.name);
-                text.setParent(mesh);
-                this.textlabels.push(text);
-                document.body.appendChild(text.element);
+                // var text = this.__createTextLabel();
+                // text.setHTML(el.name);
+                // text.setParent(mesh);
+                // this.textlabels.push(text);
+                // document.body.appendChild(text.element);
                 this.group.add( mesh );
                 if (el.isExpandable) {
-                    this.createArchElementsHidden(el.extensions, 1).then(result =>
+                    this.createExtension(el.extensions, 1).then(result =>
                         mesh.userData.extensions = result
                     ); 
                 }
@@ -278,7 +280,7 @@ export default function (group, camera, cubeElements) {
         }
     }
 
-    this.createArchElementsHidden = async function (arr, k) {
+    this.createExtension = async function (arr, k) {
         const geometry = new THREE.BoxGeometry( elemntSize.length/2, elemntSize.height, elemntSize.width/2 );
         const out = [];
         const getTextures = ()=> new Promise((resolve, reject)=>{
@@ -307,9 +309,12 @@ export default function (group, camera, cubeElements) {
                    m.opacity = 1;
                 });
                 mesh.position.x = elemntSize.length * el.area.pos1.x + elemntSize.length/8;
-                mesh.position.y = - k * offset.y;
+                mesh.position.y = - (k + el.layer) * offset.y;
                 mesh.position.z =  -elemntSize.width*el.area.pos1.z + elemntSize.width/4;
                 mesh.userData.layer =  el.layer;
+                mesh.userData.level = el.level;
+                mesh.userData.row =  el.row;
+                mesh.userData.column =  el.column;
                 mesh.userData.subLayer = el.subLayer;
                 mesh.userData.area = el.area;
                 mesh.userData.type = el.type;
@@ -319,11 +324,12 @@ export default function (group, camera, cubeElements) {
                 mesh.userData.groupUuid = this.group.uuid;
                 mesh.updateMatrix();
                 mesh.matrixAutoUpdate = true;
+                items.push(mesh);
                 var text = this.__createTextLabel();
                 text.setHTML(el.name);
                 text.setParent(mesh);
                 if (el.isExpandable) {
-                    this.createArchElementsHidden(el.extensions, 2).then(result =>
+                    this.createExtension(el.extensions, 2).then(result =>
                         mesh.userData.extensions = result
                     ); 
                 }
@@ -354,7 +360,7 @@ export default function (group, camera, cubeElements) {
            meshC.userData.groupUuid = this.group.uuid;
            meshC.updateMatrix();
            group.add( meshC );
-           meshC.scale.set(offset.y/3, offset.y, offset.y, 32);
+           meshC.scale.set(offset.y/3, offset.y, offset.y/3, 32);
            this.columnItems.push(meshC);
         }
         return this.columnItems;
@@ -383,7 +389,7 @@ export default function (group, camera, cubeElements) {
                 })
                 .start();
             this.columnItems.forEach(el => {
-                if (el !== item) {
+                if (el !== item && el.userData.layer > item.userData.layer) {
                     const pos = {
                         y: el.position.y
                     }
@@ -408,7 +414,7 @@ export default function (group, camera, cubeElements) {
     
             const tweenNewObj ={
                 posY: item.position.y + offset.y/2,
-                scaleY: item.scale.y -+ offset.y
+                scaleY: item.scale.y - offset.y
             };
     
             new TWEEN.Tween(tweenObj)
@@ -421,7 +427,7 @@ export default function (group, camera, cubeElements) {
                 })
                 .start();
             this.columnItems.forEach(el => {
-                if (el !== item) {
+                if (el !== item && el.userData.layer > item.userData.layer) {
                     const pos = {
                         y: el.position.y
                     }
