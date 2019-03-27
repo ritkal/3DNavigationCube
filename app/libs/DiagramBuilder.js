@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import * as TWEEN from '@tweenjs/tween.js';
 import 'babel-polyfill';
 import meta from '../meta';
-// import BaseItem from '../modules/diagram/components/diagramItem';
+import BaseItem from '../modules/diagram/components/diagramItem';
 const defaultCubeData = meta.data;
 const colors = ['#63a884', '#fa8072', '#ffcc5c'];
 const infoColors = ['#bae0cc', '#ffd8d3', '#fcebc4'];
@@ -11,17 +11,7 @@ export default function (group, camera, cubeElements) {
     this.camera = camera;
     this.group = group;
     this.cubeElements = cubeElements || defaultCubeData;
-    // this.exploredElements = [{
-    //     x: {
-    //         left: 0.4296,
-    //         right: 0.5333
-    //     },
-    //     y: {
-    //         top: 0.3307,
-    //         bottom: 0.2481
-    //     },
-    //     id: 0
-    // }];
+
     this.currentInfoCube = null;
     var items = [];
     var elemntSize = {
@@ -202,19 +192,19 @@ export default function (group, camera, cubeElements) {
         };
     };
 
-    this.resizeWrapperVertical = function(flag) {
+    this.resizeWrapperVertical = function(flag, length = 1) {
         if (flag ==='+') {
             const pos = {
                 y: this.bottomWrapper.position.y
             }
             const newPos = {
-                y: this.bottomWrapper.position.y - offset.y
+                y: this.bottomWrapper.position.y - length*offset.y
             }
             new TWEEN.Tween(pos)
             .to(newPos, 1000)
             .easing(TWEEN.Easing. Quadratic.Out)
             .onUpdate(() => {
-                this.bottomWrapper.position.y = pos.y            
+                this.bottomWrapper.position.y = pos.y;            
             })
             .start();
 
@@ -243,15 +233,15 @@ export default function (group, camera, cubeElements) {
         if (flag ==='-') {
             const pos = {
                 y: this.bottomWrapper.position.y
-            }
+            };
             const newPos = {
-                y: this.bottomWrapper.position.y + offset.y
+                y: this.bottomWrapper.position.y + length*offset.y
             }
             new TWEEN.Tween(pos)
             .to(newPos, 1000)
             .easing(TWEEN.Easing. Quadratic.Out)
             .onUpdate(() => {
-                this.bottomWrapper.position.y = pos.y            
+                this.bottomWrapper.position.y = pos.y;            
             })
             .start();
 
@@ -259,14 +249,14 @@ export default function (group, camera, cubeElements) {
                 const tweenObj = {
                     posY: el.position.y,
                     scaleY: el.scale.y
-                }
+                };
 
                 const tweenNewObj ={
-                    posY: el.position.y + offset.y/2,
-                    scaleY: el.scale.y - offset.y
-                }
+                    posY: el.position.y + length*offset.y/2,
+                    scaleY: el.scale.y - length*offset.y
+                };
 
-            new TWEEN.Tween(tweenObj)
+            new TWEEN.Tween(tweenObj)   
                 .to(tweenNewObj, 1000)
                 .easing(TWEEN.Easing. Quadratic.Out)
                 .onUpdate(() => {
@@ -366,7 +356,7 @@ export default function (group, camera, cubeElements) {
         return this.columnItems;
     };
 
-    this.resizeNavColumn = function(layer, flag) {
+    this.resizeNavColumn = function(layer, flag, k = 1) {
         const item  = this.columnItems[layer];
         if (flag ==='+') {
             const tweenObj = {
@@ -413,8 +403,8 @@ export default function (group, camera, cubeElements) {
             };
     
             const tweenNewObj ={
-                posY: item.position.y + offset.y/2,
-                scaleY: item.scale.y - offset.y
+                posY: item.position.y + k*offset.y/2,
+                scaleY: item.scale.y - k*offset.y
             };
     
             new TWEEN.Tween(tweenObj)
@@ -432,13 +422,13 @@ export default function (group, camera, cubeElements) {
                         y: el.position.y
                     }
                     const newPos = {
-                        y: el.position.y + offset.y
+                        y: el.position.y + k*offset.y
                     }
                     new TWEEN.Tween(pos)
                     .to(newPos, 1000)
                     .easing(TWEEN.Easing. Quadratic.Out)
                     .onUpdate(() => {
-                        el.position.y = pos.y            
+                        el.position.y = pos.y;            
                     })
                     .start();
                 }
