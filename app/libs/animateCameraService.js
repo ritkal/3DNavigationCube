@@ -104,20 +104,4 @@ export default function( camera, controls ){
             })
             .start();
     };
-
-    this.animateOpacity = function(items, obj) {
-        new TWEEN.Tween(fromCameraPosition)
-        .to(toCameraPosition, changeDuration)
-        .easing(TWEEN.Easing.Quadratic.Out)
-        .onUpdate(function () {
-            items.forEach(item => {
-                if (item === obj) {
-                    item.material.opacity = 1;
-                } else {
-                    item.material.opacity = 0.6;
-                }
-            });
-        })
-        .start();
-    };
 }

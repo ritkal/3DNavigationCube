@@ -102,19 +102,21 @@ export default function (group, camera, cubeElements) {
                 mesh.userData.groupUuid = this.group.uuid;
 
                 mesh.updateMatrix();
-                mesh.matrixAutoUpdate = true;
+                mesh.matrixAutoUpdate = true;   
+               const item = new BaseItem({mesh, group});
+                item.show();
                 // var text = this.__createTextLabel();
                 // text.setHTML(el.name);
                 // text.setParent(mesh);
                 // this.textlabels.push(text);
                 // document.body.appendChild(text.element);
-                this.group.add( mesh );
+                // this.group.add( mesh );
                 if (el.isExpandable) {
                     this.createExtension(el.extensions, 1).then(result =>
                         mesh.userData.extensions = result
                     ); 
                 }
-                items.push(mesh);
+                items.push(item);
             });
         });
         this.sideWrappers = [];
@@ -126,7 +128,7 @@ export default function (group, camera, cubeElements) {
         planeTop.rotateX( Math.PI / 2 );
         planeTop.userData.type = 'wrapper';
         planeTop.userData.groupUuid = this.group.uuid;
-        planeTop.scale.set(3000.1, 3000.1, 1)
+        planeTop.scale.set(3000.1, 3000.1, 1);
         this.group.add( planeTop );
                 
         var planeBottom = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'black', transparent: true, opacity: 0.1 } ) );
@@ -135,7 +137,7 @@ export default function (group, camera, cubeElements) {
         planeBottom.rotateX( - Math.PI / 2 );
         planeBottom.userData.type = 'wrapper';
         planeBottom.userData.groupUuid = this.group.uuid;
-        planeBottom.scale.set(3000.1, 3000.1, 1)
+        planeBottom.scale.set(3000.1, 3000.1, 1);
         this.group.add( planeBottom );
                 
         var planeFront = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'gray', transparent: true, opacity: 0.1 } ) );
@@ -145,7 +147,7 @@ export default function (group, camera, cubeElements) {
         planeFront.rotateY( Math.PI );                planeFront.userData.type = 'wrapper';
         planeFront.userData.groupUuid = this.group.uuid;
         this.group.add( planeFront );
-        planeFront.scale.set(3000.1, 3000.1, 1)
+        planeFront.scale.set(3000.1, 3000.1, 1);
         this.sideWrappers.push(planeFront);
 
                 
@@ -156,7 +158,7 @@ export default function (group, camera, cubeElements) {
         planeRight.userData.type = 'wrapper';
         planeRight.userData.groupUuid = this.group.uuid;
         this.group.add( planeRight );
-        planeRight.scale.set(3000.1, 3000.1, 1)
+        planeRight.scale.set(3000.1, 3000.1, 1);
         this.sideWrappers.push(planeRight);
                 
         var planeLeft = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'white', transparent: true, opacity: 0.1 } ) );
@@ -166,7 +168,7 @@ export default function (group, camera, cubeElements) {
         planeLeft.userData.type = 'wrapper';
         planeLeft.userData.groupUuid = this.group.uuid;
         this.group.add( planeLeft );
-        planeLeft.scale.set(3000.1, 3000.1, 1)
+        planeLeft.scale.set(3000.1, 3000.1, 1);
         this.sideWrappers.push(planeLeft);
 
         var planeBack = new THREE.Mesh( planeGeo, new THREE.MeshBasicMaterial( { color: 'gray', transparent: true, opacity: 0.1 } ) );
@@ -177,7 +179,7 @@ export default function (group, camera, cubeElements) {
         planeBack.userData.groupUuid = this.group.uuid;
         this.group.add( planeBack );
         // this.createName(name);
-        planeBack.scale.set(3000.1, 3000.1, 1)
+        planeBack.scale.set(3000.1, 3000.1, 1);
         this.sideWrappers.push(planeBack);
         this.bottomWrapper = planeBottom;
         // this.Wrapper = planeTop;
@@ -196,10 +198,10 @@ export default function (group, camera, cubeElements) {
         if (flag ==='+') {
             const pos = {
                 y: this.bottomWrapper.position.y
-            }
+            };
             const newPos = {
                 y: this.bottomWrapper.position.y - length*offset.y
-            }
+            };
             new TWEEN.Tween(pos)
             .to(newPos, 1000)
             .easing(TWEEN.Easing. Quadratic.Out)
@@ -212,12 +214,12 @@ export default function (group, camera, cubeElements) {
                 const tweenObj = {
                     posY: el.position.y,
                     scaleY: el.scale.y
-                }
+                };
 
                 const tweenNewObj ={
                     posY: el.position.y - offset.y/2,
                     scaleY: el.scale.y + offset.y
-                }
+                };
 
                 new TWEEN.Tween(tweenObj)
                     .to(tweenNewObj, 1000)
@@ -228,7 +230,7 @@ export default function (group, camera, cubeElements) {
                         
                     })
                     .start();
-            })
+            });
         }
         if (flag ==='-') {
             const pos = {
@@ -236,7 +238,7 @@ export default function (group, camera, cubeElements) {
             };
             const newPos = {
                 y: this.bottomWrapper.position.y + length*offset.y
-            }
+            };
             new TWEEN.Tween(pos)
             .to(newPos, 1000)
             .easing(TWEEN.Easing. Quadratic.Out)
@@ -266,9 +268,9 @@ export default function (group, camera, cubeElements) {
                 })
                 .start();
 
-            })
+            });
         }
-    }
+    };
 
     this.createExtension = async function (arr, k) {
         const geometry = new THREE.BoxGeometry( elemntSize.length/2, elemntSize.height, elemntSize.width/2 );
@@ -314,7 +316,9 @@ export default function (group, camera, cubeElements) {
                 mesh.userData.groupUuid = this.group.uuid;
                 mesh.updateMatrix();
                 mesh.matrixAutoUpdate = true;
-                items.push(mesh);
+                const item = new BaseItem({mesh, group});
+
+                items.push(item);
                 var text = this.__createTextLabel();
                 text.setHTML(el.name);
                 text.setParent(mesh);
@@ -325,7 +329,8 @@ export default function (group, camera, cubeElements) {
                 }
                 // this.textlabels.push(text);
                 document.body.appendChild(text.element);
-                out.push(mesh)
+                
+                out.push(item);
             });
         });
         return out;
@@ -362,7 +367,7 @@ export default function (group, camera, cubeElements) {
             const tweenObj = {
                 posY: item.position.y,
                 scaleY: item.scale.y
-            }
+            };
 
             const tweenNewObj ={
                 posY: item.position.y - offset.y/2,
@@ -382,19 +387,19 @@ export default function (group, camera, cubeElements) {
                 if (el !== item && el.userData.layer > item.userData.layer) {
                     const pos = {
                         y: el.position.y
-                    }
+                    };
                     const newPos = {
                         y: el.position.y - offset.y
-                    }
+                    };
                     new TWEEN.Tween(pos)
                     .to(newPos, 1000)
                     .easing(TWEEN.Easing. Quadratic.Out)
                     .onUpdate(() => {
-                        el.position.y = pos.y            
+                        el.position.y = pos.y;       
                     })
                     .start();
                 }
-            })
+            });
         }        
         if (flag ==='-') {
             const tweenObj = {
@@ -420,10 +425,10 @@ export default function (group, camera, cubeElements) {
                 if (el !== item && el.userData.layer > item.userData.layer) {
                     const pos = {
                         y: el.position.y
-                    }
+                    };
                     const newPos = {
                         y: el.position.y + k*offset.y
-                    }
+                    };
                     new TWEEN.Tween(pos)
                     .to(newPos, 1000)
                     .easing(TWEEN.Easing. Quadratic.Out)
@@ -432,14 +437,13 @@ export default function (group, camera, cubeElements) {
                     })
                     .start();
                 }
-            })
+            });
     
         }
-    }
+    };
 
     this.createMesh = async function(size, obj, type) {
         var geometryT = new THREE.BoxGeometry( size.lenght, size.height, size.width );
-        // const loadManager = new THREE.LoadingManager();
         const getTextures = ()=> new Promise((resolve, reject)=>{
             const manager = new THREE.LoadingManager(()=>resolve(textures));
             const loader = new THREE.TextureLoader(manager);

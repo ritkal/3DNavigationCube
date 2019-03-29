@@ -10,7 +10,6 @@ import ObjectControls from '../../libs/ObjectControls';
 import * as TransformControls from 'three-transformcontrols';
 import OrbitControls from 'three-orbitcontrols';
 import { deepStrictEqual } from 'assert';
-import { timingSafeEqual } from 'crypto';
 
 const changeMode = obj => ({ type: 'NAVIGATE', obj });
 function mapDispatchToProps(dispatch) {
@@ -104,9 +103,7 @@ class Diagram extends React.Component {
 
                this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
                this.items.forEach(item => {
-                  item.material.forEach(m => {
-                     m.opacity = 1;
-                 });
+                    item.changeOpacity(1);
                });
                this.columnItems.forEach(item => {
                   item.material.opacity = 1;
@@ -120,12 +117,10 @@ class Diagram extends React.Component {
                 this.cameraAnimate.animateToLayer(this.diagramCenter, 1);
                 let newNavPos = this.currentModule.pos;
                 this.items.forEach(item => {
-                item.material.forEach(m => {
-                    m.opacity = 1;
-                });
+                    item.changeOpacity(1);
                 });
                 this.columnItems.forEach(item => {
-                item.material.opacity = 1;
+                    item.material.opacity = 1;
                 });
                 this.items = [];
                 // for(var k=0; k<this.textLabels.length; k++){
@@ -143,8 +138,8 @@ class Diagram extends React.Component {
             let navPos;
             if (this.currentModule) {
                if (this.currentModule.group.uuid === state.group.toString()) {
-                  this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) &&
-                     (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()) && (item.parent.uuid === state.group));
+                  this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.mesh.userData.layer.toString() === state.layer.toString()) &&
+                     (item.mesh.userData.row.toString() === state.row.toString()) && (item.mesh.userData.column.toString() === state.column.toString()) && (item.mesh.parent.uuid === state.group)).mesh;
                } else {
                   var currentGroup = this.currentModule.group;
                   const group = this.groups.find(item => item.uuid === state.group.toString());
@@ -153,8 +148,8 @@ class Diagram extends React.Component {
                   this.__changePosition(this.currentModule.group, currentNewNavPos);
 
                   this.currentModule = this.modules.find(item => item.group === group);
-                  this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) &&
-                  (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()) && (item.parent.uuid === state.group));
+                  this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.mesh.userData.layer.toString() === state.layer.toString()) &&
+                  (item.mesh.userData.row.toString() === state.row.toString()) && (item.mesh.userData.column.toString() === state.column.toString()) && (item.mesh.parent.uuid === state.group)).mesh;
                      this.mode = 'Group';
                      const newNavPos = {
                         x: 0,
@@ -170,8 +165,8 @@ class Diagram extends React.Component {
             } else {
                const group = this.groups.find(item => item.uuid === state.group.toString());
                this.currentModule = this.modules.find(item => item.group === group);
-               this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) &&
-               (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()) && (item.parent.uuid === state.group));
+               this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.mesh.userData.layer.toString() === state.layer.toString()) &&
+               (item.mesh.userData.row.toString() === state.row.toString()) && (item.mesh.userData.column.toString() === state.column.toString()) && (item.mesh.parent.uuid === state.group)).mesh;
                   this.mode = 'Group';
                   const newNavPos = {
                      x: 0,
@@ -186,10 +181,10 @@ class Diagram extends React.Component {
             this.mode = 'Info';
             this.controls.enabled = false;
             if (!this.INTERSECTEDMOUSEDBL) {
-               this.INTERSECTEDMOUSEDBL = this.items.find(item => (item.userData.layer.toString() === state.layer) && (item.userData.row.toString() === state.row) && (item.userData.column.toString() === state.column));
+               this.INTERSECTEDMOUSEDBL = this.items.find(item => (item.mesh.userData.layer.toString() === state.layer) && (item.mesh.userData.row.toString() === state.row) && (item.mesh.userData.column.toString() === state.column)).mesh;
             }
             if ((this.INTERSECTEDMOUSEDBL.userData.layer.toString() !== state.layer.toString()) || (this.INTERSECTEDMOUSEDBL.userData.row.toString() !== state.row.toString()) || (this.INTERSECTEDMOUSEDBL.userData.column.toString() !== state.column.toString())) {
-               this.INTERSECTEDMOUSEDBL = this.items.find(item => (item.userData.layer.toString() === state.layer.toString()) && (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()));
+               this.INTERSECTEDMOUSEDBL = this.items.find(item => (item.mesh.userData.layer.toString() === state.layer.toString()) && (item.mesh.userData.row.toString() === state.row.toString()) && (item.mesh.userData.column.toString() === state.column.toString())).mesh;
             }
             this.createInfo();
             this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEDBL, 'elDblClick');
@@ -200,8 +195,8 @@ class Diagram extends React.Component {
         let navPos;
         if (this.currentModule) {
             if (this.currentModule.group.uuid === state.group.toString()) {
-               this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) &&
-                  (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()) && (item.userData.groupUuid === state.group) && (item.userData.level.toString() === state.level.toString()));
+               this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.mesh.userData.layer.toString() === state.layer.toString()) &&
+                  (item.mesh.userData.row.toString() === state.row.toString()) && (item.mesh.userData.column.toString() === state.column.toString()) && (item.mesh.userData.groupUuid === state.group) && (item.mesh.userData.level.toString() === state.level.toString())).mesh;
             } else {
                var currentGroup = this.currentModule.group;
                const group = this.groups.find(item => item.uuid === state.group.toString());
@@ -209,8 +204,8 @@ class Diagram extends React.Component {
                const currentNewNavPos = this.currentModule.pos;
                this.__changePosition(this.currentModule, currentNewNavPos);
                this.currentModule = this.modules.find(item => item.group === group);
-               this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) &&
-               (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()) && (item.parent.uuid === state.group));
+               this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.mesh.userData.layer.toString() === state.layer.toString()) &&
+               (item.mesh.userData.row.toString() === state.row.toString()) && (item.mesh.userData.column.toString() === state.column.toString()) && (item.mesh.parent.uuid === state.group)).mesh;
                   this.mode = 'Group';
                   const newNavPos = {
                      x: 0,
@@ -227,8 +222,8 @@ class Diagram extends React.Component {
             this.currentModule = this.modules.find(item => item.group === group);
             if (!this.currentModule) return;
         
-            this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.userData.layer.toString() === state.layer.toString()) &&
-               (item.userData.row.toString() === state.row.toString()) && (item.userData.column.toString() === state.column.toString()) && (item.parent.uuid === state.group));
+            this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.mesh.userData.layer.toString() === state.layer.toString()) &&
+               (item.mesh.userData.row.toString() === state.row.toString()) && (item.mesh.userData.column.toString() === state.column.toString()) && (item.mesh.parent.uuid === state.group)).mesh;
             this.mode = 'Group';
                   const newNavPos = {
                      x: 0,
@@ -253,14 +248,10 @@ class Diagram extends React.Component {
          }
          this.cameraAnimate.animateCameraOnClickElement(this.INTERSECTEDMOUSEUP, 'elClick');
          this.items.forEach(item => {
-            if (item.userData.column === this.INTERSECTEDMOUSEUP.userData.column && item.userData.row === this.INTERSECTEDMOUSEUP.userData.row) {
-                item.material.forEach(m => {
-                    m.opacity = 1;
-                });
+            if (item.mesh.userData.column === this.INTERSECTEDMOUSEUP.userData.column && item.mesh.userData.row === this.INTERSECTEDMOUSEUP.userData.row) {
+                item.changeOpacity(1);
             } else {
-                item.material.forEach(m => {
-                    m.opacity = 0.3;
-                });
+                item.changeOpacity(0.3);
             }
          });
          this.columnItems.forEach(item => {
@@ -290,7 +281,7 @@ class Diagram extends React.Component {
                })
                .start(); 
                this.currentModule = this.modules.find(item => item.group === group);
-               this.INTERSECTEDMOUSEUP = this.currentModule.columnItems.find(item=>(item.userData.layer.toString() === state.layer.toString()) && (item.parent.uuid === state.group));
+               this.INTERSECTEDMOUSEUP = this.currentModule.columnItems.find(item=>(item.userData.layer.toString() === state.layer.toString()) && (item.parent.uuid === state.group)).mesh;
 
                   this.mode = 'Group';
                   const newNavPos = {
@@ -307,7 +298,7 @@ class Diagram extends React.Component {
          } else {
             const group = this.groups.find(item => item.uuid === state.group.toString());
             this.currentModule = this.modules.find(item => item.group === group);
-            this.INTERSECTEDMOUSEUP = this.currentModule.columnItems.find(item=>(item.userData.layer.toString() === state.layer.toString()) && (item.parent.uuid === state.group));
+            this.INTERSECTEDMOUSEUP = this.currentModule.columnItems.find(item=>(item.userData.layer.toString() === state.layer.toString()) && (item.parent.uuid === state.group)).mesh;
             this.mode = 'Group';
                   const newNavPos = {
                      x: 0,
@@ -329,14 +320,10 @@ class Diagram extends React.Component {
             }
         });
         this.items.forEach(item => {
-            if (item.userData.layer === this.INTERSECTEDMOUSEUP.userData.layer) {
-                item.material.forEach(m => {
-                    m.opacity = 1;
-                });
+            if (item.mesh.userData.layer === this.INTERSECTEDMOUSEUP.userData.layer) {
+                item.changeOpacity(1);
             } else {
-                item.material.forEach(m => {
-                    m.opacity = 0.3;
-                });
+                item.changeOpacity(0.3);
             }
         });
      }
@@ -700,14 +687,10 @@ class Diagram extends React.Component {
                         //     this.textLabels[i].element.hidden = true;
                         // }
                         this.items.forEach(item => {
-                            if (item.userData.column === this.INTERSECTEDMOUSEDBL.userData.column && item.userData.row === this.INTERSECTEDMOUSEDBL.userData.row) {
-                                item.material.forEach(m => {
-                                    m.opacity = 1;
-                                });
+                            if (item.mesh.userData.column === this.INTERSECTEDMOUSEDBL.userData.column && item.mesh.userData.row === this.INTERSECTEDMOUSEDBL.userData.row) {
+                                item.changeOpacity(1);
                             } else {
-                                item.material.forEach(m => {
-                                    m.opacity = 0.3;
-                                });
+                                item.changeOpacity(0.3);
                             }
                             this.columnItems.forEach(item => {
                                 item.material.opacity = 1;
@@ -718,12 +701,10 @@ class Diagram extends React.Component {
                 } else {
                     this.INTERSECTEDMOUSEDBL = null;
                     this.items.forEach(item => {
-                        item.material.forEach(m => {
-                            m.opacity = 1;
-                        });
+                        item.changeOpacity(1);
                     });
                     this.columnItems.forEach(item => {
-                        item.material.opacity = 1;
+                        item.mesh.material.opacity = 1;
                     });
                 }
             }
@@ -812,8 +793,8 @@ class Diagram extends React.Component {
     __findExtension(intersetionPos){
         if (this.INTERSECTEDMOUSEUP.userData.extensions)
         return this.INTERSECTEDMOUSEUP.userData.extensions.find(el => 
-            intersetionPos.x < el.userData.area.pos2.x && intersetionPos.x > el.userData.area.pos1.x &&
-             intersetionPos.y < el.userData.area.pos2.z && intersetionPos.y > el.userData.area.pos1.z
+            intersetionPos.x < el.mesh.userData.area.pos2.x && intersetionPos.x > el.mesh.userData.area.pos1.x &&
+             intersetionPos.y < el.mesh.userData.area.pos2.z && intersetionPos.y > el.mesh.userData.area.pos1.z
         );
         return null;
     }
@@ -841,162 +822,75 @@ class Diagram extends React.Component {
                                     const intersetionPos = {                                    
                                         x: intersects[0].uv.x,
                                         y: intersects[0].uv.y                                    
-                                    }
+                                    };
                                     const ext = this.__findExtension(intersetionPos);
                                         if (ext)
-                                        if (!ext.userData.isVisible ) {
+                                        if (!ext.mesh.userData.isVisible ) {
                                             const currentExtension = this.INTERSECTEDMOUSEUP.userData.extensions.find(el => 
-                                                el.userData.isVisible
+                                                el.mesh.userData.isVisible
                                             );
                                             if (currentExtension) {
-                                                currentExtension.userData.isVisible = false;
-                                                if (currentExtension.userData.extensions) {
-                                                    currentExtension.userData.extensions.forEach(el => {
-                                                        if (el.userData.isVisible) {
-                                                            el.userData.isVisible = false;
-                                                            el.userData.isExpanded = false;
-                                                            currentExtension.userData.isExpanded = false;
-                                                            this.currentModule.group.remove(el)
+                                                currentExtension.mesh.userData.isVisible = false;
+                                                if (currentExtension.mesh.userData.extensions) {
+                                                    currentExtension.mesh.userData.extensions.forEach(el => {
+                                                        if (el.mesh.userData.isVisible) {
+                                                            el.mesh.userData.isVisible = false;
+                                                            el.mesh.userData.isExpanded = false;
+                                                            currentExtension.mesh.userData.isExpanded = false;
+                                                            // this.currentModule.group.remove(el.mesh);
+                                                            el.hide();
                                                             this.diagramBuilder.resizeWrapperVertical('-', 1);
                                                             this.diagramBuilder.resizeNavColumn(this.INTERSECTEDMOUSEUP.userData.layer, '-', 1);
                                                             this.items.forEach(item => {
-                                                                if (item.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
-                                                                    if (item.userData.extensions) {
-                                                                        item.userData.extensions.forEach(el => {
-                                                                            if (el.userData.isVisible) {
-                                                                                const newExtPos = {
-                                                                                    y: el.position.y + 799
-                                                                                };
-                                                                                const extPos = {
-                                                                                    y: el.position.y
-                                                                                };
-                                    
-                                                                                new TWEEN.Tween(extPos)
-                                                                                    .to(newExtPos, 1000)
-                                                                                    .easing(TWEEN.Easing. Quadratic.Out)
-                                                                                    .onUpdate(() => {
-                                                                                        el.position.y = extPos.y;
-                                    
-                                                                                    })
-                                                                                    .start();
+                                                                if (item.mesh.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
+                                                                    if (item.mesh.userData.extensions) {
+                                                                        item.mesh.userData.extensions.forEach(el => {
+                                                                            if (el.mesh.userData.isVisible) {
+                                                                                el.relocate(799);
                                                                             } else {
-                                                                                el.position.y+=800;
+                                                                                el.setYPosition(el.getYPosition+800);
                                                                             }
-                                                                        })
+                                                                        });
                                                                     }
-                                                                    const navPos = item.position;
-                                                                    var newNavPos = {
-                                                                        x: navPos.x,
-                                                                        y: navPos.y + this.k * 800,
-                                                                    };
-                                                                    new TWEEN.Tween(navPos)
-                                                                    .to(newNavPos, 1000)
-                                                                    .easing(TWEEN.Easing. Quadratic.Out)
-                                                                    .onUpdate(() => {
-                                                                        item.position.x = navPos.x;
-                                                                        item.position.y = navPos.y;
-                                                                        item.position.z = navPos.z;
-                                                                    })
-                                                                    .start();
+                                                                    item.relocate(this.k * 800);
                                                                 }
                                                             }); 
                                                         }
                                                     });
                                                 }
-                                                const newExtPos = {
-                                                    y: currentExtension.position.y + 799
-                                                };
-                                                const extPos = {
-                                                    y: currentExtension.position.y
-                                                };
-    
-                                                new TWEEN.Tween(extPos)
-                                                    .to(newExtPos, 1000)
-                                                    .easing(TWEEN.Easing. Quadratic.Out)
-                                                    .onUpdate(() => {
-                                                        currentExtension.position.y = extPos.y;
-    
-                                                    })
-                                                    .onComplete(() => {
-                                                        this.currentModule.group.remove(currentExtension);
-                                                        currentExtension.position.y -=799;
-   
-                                                    })
-                                                    .start();
+                                                currentExtension.relocateAndHide(799);
                                             }
-                                            ext.userData.isVisible = true;
+                                            ext.mesh.userData.isVisible = true;
                                             this.k = 1;
                                             if (!this.INTERSECTEDMOUSEUP.userData.isExpanded) {
                                                 this.INTERSECTEDMOUSEUP.userData.isExpanded = !this.INTERSECTEDMOUSEUP.userData.isExpanded;
                                                 this.diagramBuilder.resizeWrapperVertical('+');
                                                 this.diagramBuilder.resizeNavColumn(this.INTERSECTEDMOUSEUP.userData.layer, '+');
                                                 this.items.forEach(item => {
-                                                    if (item.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
-                                                        const navPos = item.position;
-      
-                                                        var newNavPos = {
-                                                            x: navPos.x,
-                                                            y: navPos.y - 800,
-                                                        };
-                                                        new TWEEN.Tween(navPos)
-                                                        .to(newNavPos, 1000)
-                                                        .easing(TWEEN.Easing. Quadratic.Out)
-                                                        .onUpdate(() => {
-                                                            item.position.x = navPos.x;
-                                                            item.position.y = navPos.y;
-                                                            item.position.z = navPos.z;
-                                                        })
-                                                        .start();
-                                                        if (item.userData.extensions) {
-                                                            item.userData.extensions.forEach(el => {
-                                                                if (el.userData.isVisible) {
-                                                                    const newExtPos = {
-                                                                        y: el.position.y - 799
-                                                                    };
-                                                                    const extPos = {
-                                                                        y: el.position.y
-                                                                    };
-                        
-                                                                    new TWEEN.Tween(extPos)
-                                                                        .to(newExtPos, 1000)
-                                                                        .easing(TWEEN.Easing. Quadratic.Out)
-                                                                        .onUpdate(() => {
-                                                                            el.position.y = extPos.y;
-                                                                        })
-                                                                        .start();
-                                                                } else {
-                                                                    // el.position.y-=800;
+                                                    if (item.mesh.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
+                                                        item.relocate(-800);
+                                                        if (item.mesh.userData.extensions) {
+                                                            item.mesh.userData.extensions.forEach(el => {
+                                                                if (el.mesh.userData.isVisible) {
+                                                                    el.relocate(-799);
                                                                 }
-                                                            })
+                                                            });
                                                         }
                                                     }
                                                 });
                                             }
-                                            const newExtPos = {
-                                                y: this.INTERSECTEDMOUSEUP.position.y - 799
-                                            };
-                                            const extPos = {
-                                                y: this.INTERSECTEDMOUSEUP.position.y
-                                            };
-                                            ext.position.y = this.INTERSECTEDMOUSEUP.position.y;
-                                            this.currentModule.group.add(ext);
-
-                                            new TWEEN.Tween(extPos)
-                                            .to(newExtPos, 1000)
-                                            .easing(TWEEN.Easing. Quadratic.Out)
-                                            .onUpdate(() => {
-                                                ext.position.y = extPos.y;
-                                            })
-                                            .start();
+                                            ext.mesh.position.y = this.INTERSECTEDMOUSEUP.position.y;
+                                            ext.show();
+                                            ext.relocate(-799);
                                                 
                                         } else  {
-                                            if (ext.userData.extensions) {
-                                                ext.userData.extensions.forEach(el => {
-                                                    if (el.userData.isVisible) {
-                                                        el.userData.isVisible = false;
-                                                        el.userData.isExpanded = false;
-                                                        ext.userData.isExpanded = false;
-                                                        this.currentModule.group.remove(el)
+                                            if (ext.mesh.userData.extensions) {
+                                                ext.mesh.userData.extensions.forEach(el => {
+                                                    if (el.mesh.userData.isVisible) {
+                                                        el.mesh.userData.isVisible = false;
+                                                        el.mesh.userData.isExpanded = false;
+                                                        ext.mesh.userData.isExpanded = false;
+                                                        el.hide();
                                                         this.k = 2;
                                                         this.diagramBuilder.resizeWrapperVertical('-', 2);
                                                         this.diagramBuilder.resizeNavColumn(this.INTERSECTEDMOUSEUP.userData.layer, '-', this.k);
@@ -1009,69 +903,26 @@ class Diagram extends React.Component {
                                                 this.diagramBuilder.resizeWrapperVertical('-', 1);
                                                 this.diagramBuilder.resizeNavColumn(this.INTERSECTEDMOUSEUP.userData.layer, '-');
                                             }
-                                            ext.userData.isVisible = false;
+                                            ext.mesh.userData.isVisible = false;
 
                                             this.INTERSECTEDMOUSEUP.userData.isExpanded = !this.INTERSECTEDMOUSEUP.userData.isExpanded;
-                                            const newExtPos = {
-                                                y: ext.position.y + 799
-                                            };
-                                            const extPos = {
-                                                y: ext.position.y
-                                            };
-
-                                            new TWEEN.Tween(extPos)
-                                                .to(newExtPos, 1000)
-                                                .easing(TWEEN.Easing. Quadratic.Out)
-                                                .onUpdate(() => {
-                                                    ext.position.y = extPos.y;
-
-                                                })
-                                                .onComplete(() => {
-                                                    this.currentModule.group.remove(ext);
-                                                    ext.position.y -=799;
-                                                })
-                                                .start();
+                                            ext.relocateAndHide(799);
                                             this.items.forEach(item => {
-                                                if (item.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
-                                                    if (item.userData.extensions) {
-                                                        item.userData.extensions.forEach(el => {
-                                                            if (el.userData.isVisible) {
-                                                                const newExtPos = {
-                                                                    y: el.position.y + 799
-                                                                };
-                                                                const extPos = {
-                                                                    y: el.position.y
-                                                                };
-                    
-                                                                new TWEEN.Tween(extPos)
-                                                                    .to(newExtPos, 1000)
-                                                                    .easing(TWEEN.Easing. Quadratic.Out)
-                                                                    .onUpdate(() => {
-                                                                        el.position.y = extPos.y;
-                    
-                                                                    })
-                                                                    .start();
+                                                if (item.mesh.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
+                                                    if (item.mesh.userData.extensions) {
+                                                        item.mesh.userData.extensions.forEach(el => {
+                                                            if (el.mesh.userData.isVisible) {
+                                                                el.relocate(799);
                                                             } else {
-                                                                el.position.y+=800;
+                                                                el.setYPosition(el.getYPosition+800);
                                                             }
-                                                        })
+                                                        });
                                                     }
-                                                    const navPos = item.position;
-                                                    var newNavPos = {
-                                                        x: navPos.x,
-                                                        y: navPos.y + this.k * 800,
-                                                    };
-                                                    new TWEEN.Tween(navPos)
-                                                    .to(newNavPos, 1000)
-                                                    .easing(TWEEN.Easing. Quadratic.Out)
-                                                    .onUpdate(() => {
-                                                        item.position.x = navPos.x;
-                                                        item.position.y = navPos.y;
-                                                        item.position.z = navPos.z;
-                                                    })
-                                                    .start();
+
+                                                    item.relocate(this.k * 800);
                                                 }
                                             });
+                                            this.k = 1;
                                         }
 
                                      this.__change({
@@ -1111,9 +962,7 @@ class Diagram extends React.Component {
                             }
                         } else {
                             this.items.forEach(item => {
-                                item.material.forEach(m => {
-                                    m.opacity = 1;
-                                });
+                                item.changeOpacity(1);
                             });
                             this.columnItems.forEach(item => {
                                 item.material.opacity = 1;
