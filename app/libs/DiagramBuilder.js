@@ -84,7 +84,6 @@ export default function (group, camera, cubeElements) {
                     new THREE.MeshBasicMaterial( { color: colors[el.layer] } ),
                  ];
                 var mesh = new THREE.Mesh( geometry, materials );
-                // console.log(new BaseItem(el))
                 mesh.material.forEach(m => {
                    m.transparent = true;
                    m.opacity = 1;
@@ -97,6 +96,7 @@ export default function (group, camera, cubeElements) {
                 mesh.userData.level = el.level;
                 mesh.userData.row = el.row;
                 mesh.userData.type = el.type;
+                mesh.userData.subLayer = el.subLayer;
                 mesh.userData.isExpandable = el.isExpandable;
                 mesh.userData.isExpanded = false;
                 mesh.userData.groupUuid = this.group.uuid;
@@ -301,6 +301,7 @@ export default function (group, camera, cubeElements) {
                    m.opacity = 1;
                 });
                 mesh.position.x = elemntSize.length * el.area.pos1.x + elemntSize.length/8;
+                // console.log(mesh.position.x);
                 mesh.position.y = - (k + el.layer) * offset.y;
                 mesh.position.z =  -elemntSize.width*el.area.pos1.z + elemntSize.width/4;
                 mesh.userData.layer =  el.layer;

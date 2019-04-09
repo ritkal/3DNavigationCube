@@ -49,6 +49,9 @@ export default function( camera, controls ){
             y: object.position.y + cameraPositionOffsets[type].y,
             z: object.position.z + cameraPositionOffsets[type].z
         };
+
+        console.log(object.uuid);
+
         new TWEEN.Tween(fromControlsTarget)
             .to(toControlsTarget, changeDuration )
             .easing(TWEEN.Easing. Quadratic.Out)

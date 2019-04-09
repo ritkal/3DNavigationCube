@@ -9,7 +9,6 @@ import cameraAnimation from '../../libs/animateCameraService';
 import ObjectControls from '../../libs/ObjectControls';
 import * as TransformControls from 'three-transformcontrols';
 import OrbitControls from 'three-orbitcontrols';
-import { deepStrictEqual } from 'assert';
 
 const changeMode = obj => ({ type: 'NAVIGATE', obj });
 function mapDispatchToProps(dispatch) {
@@ -126,7 +125,6 @@ class Diagram extends React.Component {
                 // for(var k=0; k<this.textLabels.length; k++){
                 //     this.textLabels[k].element.hidden = true;
                 // }
-            
                 this.module = this.currentModule;
                 this.__changePosition( this.module.group, newNavPos);
 
@@ -196,8 +194,8 @@ class Diagram extends React.Component {
         if (this.currentModule) {
             if (this.currentModule.group.uuid === state.group.toString()) {
                this.INTERSECTEDMOUSEUP = this.currentModule.items.find(item=>(item.mesh.userData.layer.toString() === state.layer.toString()) &&
-                  (item.mesh.userData.row.toString() === state.row.toString()) && (item.mesh.userData.column.toString() === state.column.toString()) && (item.mesh.userData.groupUuid === state.group) && (item.mesh.userData.level.toString() === state.level.toString())).mesh;
-            } else {
+                  (item.mesh.userData.row.toString() === state.row.toString()) && (item.mesh.userData.column.toString() === state.column.toString()) && (item.mesh.userData.groupUuid === state.group) && (item.mesh.userData.level.toString() === state.level.toString())&& (item.mesh.userData.subLayer.toString() === state.subLayer.toString())).mesh;
+            } else {  
                var currentGroup = this.currentModule.group;
                const group = this.groups.find(item => item.uuid === state.group.toString());
    
@@ -272,14 +270,14 @@ class Diagram extends React.Component {
                const currentNewNavPos = this.currentModule.pos;
                const currentNavPos = this.currentModule.group.position;
                new TWEEN.Tween(currentNavPos)
-               .to(currentNewNavPos, 1000)
-               .easing(TWEEN.Easing. Quadratic.Out)
-               .onUpdate(() => {
-                  currentGroup.position.x = currentNavPos.x;
-                  currentGroup.position.y = currentNavPos.y;
-                  currentGroup.position.z = currentNavPos.z;
-               })
-               .start(); 
+                .to(currentNewNavPos, 1000)
+                .easing(TWEEN.Easing. Quadratic.Out)
+                .onUpdate(() => {
+                    currentGroup.position.x = currentNavPos.x;
+                    currentGroup.position.y = currentNavPos.y;
+                    currentGroup.position.z = currentNavPos.z;
+                })
+                .start(); 
                this.currentModule = this.modules.find(item => item.group === group);
                this.INTERSECTEDMOUSEUP = this.currentModule.columnItems.find(item=>(item.userData.layer.toString() === state.layer.toString()) && (item.parent.uuid === state.group)).mesh;
 
@@ -293,7 +291,6 @@ class Diagram extends React.Component {
                // this.textLabels = this.currentModule.texts;
                this.columnItems = this.currentModule.columnItems;
                this.__changePosition( group, newNavPos);
-
             }
          } else {
             const group = this.groups.find(item => item.uuid === state.group.toString());
@@ -478,7 +475,8 @@ class Diagram extends React.Component {
             layer: '',
             row: '',
             column: '',
-            level: ''
+            level: '',
+            subLayer: ''
         });
         this.__change({
             mode: 'Group',
@@ -486,28 +484,9 @@ class Diagram extends React.Component {
             layer: '',
             row: '',
             column: '',
-            level: ''
+            level: '',
+            subLayer: ''
         });
-        // controlsElement.attach( meshT );
-        // scene.add( controlsElement );
-
-        // var fullControlledMesh = new THREE.Mesh( geometryT, materialT );
-        // fullControlledMesh.position.x = 2000;
-        // fullControlledMesh.position.y = 300;
-        // fullControlledMesh.position.z = 500;
-        // fullControlledMesh.userData.type = 'fullControlled';
-        // fullControlledMesh.userData.layer = 1;
-        // fullControlledMesh.updateMatrix();
-        // scene.add( fullControlledMesh );
-        // var fullControlledMesh = new THREE.Mesh( geometryT, materialT );
-        // fullControlledMesh.position.x = 1000;
-        // fullControlledMesh.position.y = 300;
-        // fullControlledMesh.position.z = 500;
-        // fullControlledMesh.userData.type = 'fullControlled';
-        // fullControlledMesh.userData.layer = 1;
-        // fullControlledMesh.updateMatrix();
-        // scene.add( fullControlledMesh );
-        // controlsElement.attach( fullControlledMesh );
     }
 
     __animate() {
@@ -525,46 +504,7 @@ class Diagram extends React.Component {
     __addWindowListeners() {
         // Complex control listeners
         window.addEventListener('resize', () => this.__onWindowResize(), false);
-        window.addEventListener('keydown', (event) => {
-            switch (event.keyCode) {
-                case 81: // Q
-                this.controlsElement.setSpace(this.controlsElemenct.space === "local" ? "world" : "local");
-                    break;
-                case 17: // Ctrl
-                this.controlsElement.setTranslationSnap(100);
-                this.controlsElement.setRotationSnap(THREE.Math.degToRad(15));
-                    break;
-                case 87: // W
-                this.controlsElement.setMode("translate");
-                    break;
-                case 69: // E
-                this.controlsElement.setMode("rotate");
-                    break;
-                case 82: // R
-                this.controlsElement.setMode("scale");
-                    break;
-                case 187:
-                case 107: // +, =, num+
-                this.controlsElement.setSize(this.controlsElement.size + 0.1);
-                    break;
-                case 189:
-                case 109: // -, _, num-
-                this.controlsElement.setSize(Math.max(this.controlsElement.size - 0.1, 0.1));
-                    break;
-                case 88: // X
-                this.controlsElement.showX = !this.controlsElement.showX;
-                    break;
-                case 89: // Y
-                this.controlsElement.showY = !this.controlsElement.showY;
-                    break;
-                case 90: // Z
-                this.controlsElement.showZ = !this.controlsElement.showZ;
-                    break;
-                case 32: // Spacebar
-                this.controlsElement.enabled = !this.controlsElement.enabled;
-                    break;
-            }
-        });
+
         window.addEventListener('keyup', (event) => {
             switch (event.keyCode) {
                 case 27: // ESC
@@ -578,6 +518,7 @@ class Diagram extends React.Component {
                                 row: this.INTERSECTEDMOUSEDBL.userData.row,
                                 column: this.INTERSECTEDMOUSEDBL.userData.column,
                                 level: this.INTERSECTEDMOUSEDBL.userData.level,
+                                subLayer: this.INTERSECTEDMOUSEDBL.userData.subLayer
                             });
                             this.INTERSECTEDMOUSEDBL = null;
                             // for(var i=0; i<this.textLabels.length; i++) {
@@ -591,6 +532,7 @@ class Diagram extends React.Component {
                                 row: '',
                                 column: '',
                                 level: '',
+                                subLayer: ''
                             });
                         }
                     }
@@ -607,7 +549,8 @@ class Diagram extends React.Component {
                         layer: '',
                         row: '',
                         column: '',
-                        level: ''
+                        level: '',
+                        subLayer: ''
                     });
 
                     break;
@@ -681,6 +624,7 @@ class Diagram extends React.Component {
                             row: this.INTERSECTEDMOUSEDBL.userData.row,
                             column: this.INTERSECTEDMOUSEDBL.userData.column,
                             level: this.INTERSECTEDMOUSEDBL.userData.level,
+                            subLayer: this.INTERSECTEDMOUSEDBL.userData.subLayer
                         });
 
                         // for(var i=0; i<this.textLabels.length; i++) {
@@ -766,7 +710,8 @@ class Diagram extends React.Component {
                                     layer: '',
                                     row: '',
                                     column: '',
-                                    level: ''
+                                    level: '',
+                                    subLayer: ''
                                 });
                             }
                             this.mode = meta.modes.groupObserver;
@@ -932,6 +877,7 @@ class Diagram extends React.Component {
                                         row: this.INTERSECTEDMOUSEUP.userData.row,
                                         column: this.INTERSECTEDMOUSEUP.userData.column,
                                         level: this.INTERSECTEDMOUSEUP.userData.level,
+                                        subLayer: this.INTERSECTEDMOUSEUP.userData.subLayer || '0'
                                     });
                                 }
                                 if (this.INTERSECTEDMOUSEUP.userData.type === 'navColumnElement') {
@@ -941,7 +887,8 @@ class Diagram extends React.Component {
                                         layer: this.INTERSECTEDMOUSEUP.userData.layer,
                                         row: '',
                                         column: '',
-                                        level: ''
+                                        level: '',
+                                        subLayer: ''
                                     });
                                 } 
                                 if (this.INTERSECTEDMOUSEUP.userData.type === 'wrapper') {
@@ -951,7 +898,8 @@ class Diagram extends React.Component {
                                         layer: '',
                                         row: '',
                                         column: '',
-                                        level: ''
+                                        level: '',
+                                        subLayer: ''
                                     });
                                 }
                                 if (this.INTERSECTEDMOUSEUP.userData.type === 'extension') {
@@ -975,10 +923,6 @@ class Diagram extends React.Component {
             }, this.delay);
     }
 
-    getMode() {
-        return mode;
-    }
-
     async createInfo() {
         var size = {
             lenght: 400,
@@ -998,3 +942,4 @@ class Diagram extends React.Component {
 const DiagramEl = connect(mapStateToProps, mapDispatchToProps)(Diagram);
 
 export default DiagramEl;
+

@@ -5,6 +5,7 @@ const data = [
         level:0,
         row: 0,
         column: 0,
+        subLayer: 0,
         name: 'Label 1',
         isExpandable: true,
         extensions: [{
@@ -14,6 +15,7 @@ const data = [
             row: 0,
             column:0,
             subLayer: 0,
+            parentUuid: '1',
             area: {
                 pos1: {
                     x:0,
@@ -127,6 +129,7 @@ const data = [
         level: 0,
         row: 0,
         column: 0,
+        subLayer: 0,
         name: 'Label 5',
         isExpandable: true,
         extensions: [{
@@ -169,6 +172,7 @@ const data = [
     // },
     {
         type: 'base',
+        subLayer: 0,
         layer: 2,
         level:0,
         row: 0,

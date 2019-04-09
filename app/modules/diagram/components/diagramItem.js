@@ -4,6 +4,7 @@ class BaseItem {
     constructor(options) {
         this.mesh = options.mesh;
         this.group = options.group;
+        // this.startPosition = this.mesh.position;
     }
 
     show() {
