@@ -73,13 +73,13 @@ class BaseItem {
         this.mesh.position = val;
     }
 
-    getXPosition(val){
+    getXPosition(){
         return this.mesh.position.x;
     }
-    getYPosition(val){
+    getYPosition(){
         return this.mesh.position.y;
     }
-    getZPosition(val){
+    getZPosition(){
         return this.mesh.position.z;
     }
 }

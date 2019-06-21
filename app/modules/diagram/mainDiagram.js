@@ -9,7 +9,11 @@ import cameraAnimation from '../../libs/animateCameraService';
 import ObjectControls from '../../libs/ObjectControls';
 import * as TransformControls from 'three-transformcontrols';
 import OrbitControls from 'three-orbitcontrols';
-
+const offset = {
+    x: 400,
+    y: 800,
+    z: 200
+};
 const changeMode = obj => ({ type: 'NAVIGATE', obj });
 function mapDispatchToProps(dispatch) {
     return {
@@ -393,11 +397,7 @@ class Diagram extends React.Component {
         // Build diagram
         this.diagramBuilder = new DiagramBuilder(this.navGroup1, this.camera);
         // this.diagramBuilder.setElemntLength(600);
-        this.diagramBuilder.setOffset({
-            x: 400,
-            y: 800,
-            z: 200
-        });
+        this.diagramBuilder.setOffset(offset);
         let builderOut = await this.diagramBuilder.createCubeElements({
             x: 0,
             y: 500,
@@ -791,19 +791,19 @@ class Diagram extends React.Component {
                                                                     if (item.mesh.userData.extensions) {
                                                                         item.mesh.userData.extensions.forEach(el => {
                                                                             if (el.mesh.userData.isVisible) {
-                                                                                el.relocate(799);
+                                                                                el.relocate(offset.y - 1);
                                                                             } else {
-                                                                                el.setYPosition(el.getYPosition+800);
+                                                                                el.setYPosition(el.getYPosition() + offset.y);
                                                                             }
                                                                         });
                                                                     }
-                                                                    item.relocate(this.k * 800);
+                                                                    item.relocate(this.k * offset.y);
                                                                 }
                                                             }); 
                                                         }
                                                     });
                                                 }
-                                                currentExtension.relocateAndHide(799);
+                                                currentExtension.relocateAndHide(offset.y - 1 );
                                             }
                                             ext.mesh.userData.isVisible = true;
                                             this.k = 1;
@@ -813,11 +813,11 @@ class Diagram extends React.Component {
                                                 this.diagramBuilder.resizeNavColumn(this.INTERSECTEDMOUSEUP.userData.layer, '+');
                                                 this.items.forEach(item => {
                                                     if (item.mesh.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
-                                                        item.relocate(-800);
+                                                        item.relocate(-offset.y);
                                                         if (item.mesh.userData.extensions) {
                                                             item.mesh.userData.extensions.forEach(el => {
                                                                 if (el.mesh.userData.isVisible) {
-                                                                    el.relocate(-799);
+                                                                    el.relocate(-(offset.y - 1) );
                                                                 }
                                                             });
                                                         }
@@ -826,7 +826,7 @@ class Diagram extends React.Component {
                                             }
                                             ext.mesh.position.y = this.INTERSECTEDMOUSEUP.position.y;
                                             ext.show();
-                                            ext.relocate(-799);
+                                            ext.relocate(-(offset.y));
                                                 
                                         } else  {
                                             if (ext.mesh.userData.extensions) {
@@ -851,20 +851,20 @@ class Diagram extends React.Component {
                                             ext.mesh.userData.isVisible = false;
 
                                             this.INTERSECTEDMOUSEUP.userData.isExpanded = !this.INTERSECTEDMOUSEUP.userData.isExpanded;
-                                            ext.relocateAndHide(799);
+                                            ext.relocateAndHide(offset.y - 1);
                                             this.items.forEach(item => {
                                                 if (item.mesh.userData.layer > this.INTERSECTEDMOUSEUP.userData.layer) {
                                                     if (item.mesh.userData.extensions) {
                                                         item.mesh.userData.extensions.forEach(el => {
                                                             if (el.mesh.userData.isVisible) {
-                                                                el.relocate(799);
+                                                                el.relocate(offset.y - 1);
                                                             } else {
-                                                                el.setYPosition(el.getYPosition+800);
+                                                                el.setYPosition(el.getYPosition() + offset.y);
                                                             }
                                                         });
                                                     }
 
-                                                    item.relocate(this.k * 800);
+                                                    item.relocate(this.k * offset.y);
                                                 }
                                             });
                                             this.k = 1;
