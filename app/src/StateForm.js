@@ -23,6 +23,8 @@ class StateFrom extends React.Component {
             layer: '',
             row: '',
             column: '',
+            level: '',
+            subLayer: ''
         };
     
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -108,9 +110,27 @@ class StateFrom extends React.Component {
                 onChange={this.handleInputChange}/>
           </label>
           <br />
-          {/* <Link to="/dashboard"> */}
+          <label>
+            Level:
+            <input 
+                id="level" 
+                type="text" 
+                name="level"
+                value={this.state.level}
+                onChange={this.handleInputChange}/>
+          </label>
+          <br />
+          <label>
+            subLayer:
+            <input 
+                id="subLayer" 
+                type="text" 
+                name="subLayer"
+                value={this.state.subLayer}
+                onChange={this.handleInputChange}/>
+          </label>
+          <br />
             <button type="button" onClick={this.handleButtonClick}>Go</button>
-          {/* </Link> */}
           </form>
         );
       }

@@ -49,6 +49,9 @@ export default function( camera, controls ){
             y: object.position.y + cameraPositionOffsets[type].y,
             z: object.position.z + cameraPositionOffsets[type].z
         };
+
+        console.log(object.uuid);
+
         new TWEEN.Tween(fromControlsTarget)
             .to(toControlsTarget, changeDuration )
             .easing(TWEEN.Easing. Quadratic.Out)
@@ -103,21 +106,5 @@ export default function( camera, controls ){
                camera.position.set(this._object.x, this._object.y, this._object.z);
             })
             .start();
-    };
-
-    this.animateOpacity = function(items, obj) {
-        new TWEEN.Tween(fromCameraPosition)
-        .to(toCameraPosition, changeDuration)
-        .easing(TWEEN.Easing.Quadratic.Out)
-        .onUpdate(function () {
-            items.forEach(item => {
-                if (item === obj) {
-                    item.material.opacity = 1;
-                } else {
-                    item.material.opacity = 0.6;
-                }
-            });
-        })
-        .start();
     };
 }

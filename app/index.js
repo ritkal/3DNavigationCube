@@ -12,6 +12,7 @@ const initState = {
    layer: '0',
    row: '0',
    column: '0',
+   level: '0'
 };
 // reducer 
 function state(state = initState, action) {

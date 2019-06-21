@@ -2,14 +2,20 @@ const data = [
     {
         type: 'base',
         layer: 0,
+        level:0,
         row: 0,
         column: 0,
+        subLayer: 0,
         name: 'Label 1',
         isExpandable: true,
         extensions: [{
             type: 'extension',
             layer: 0,
+            level: 1,
+            row: 0,
+            column:0,
             subLayer: 0,
+            parentUuid: '1',
             area: {
                 pos1: {
                     x:0,
@@ -18,6 +24,82 @@ const data = [
                 pos2: {
                     x:0.5,
                     z:0.5
+                }
+            },
+            isExpandable: true,
+            extensions: [{
+                type: 'extension',
+                layer: 0,
+                row: 0,
+                column: 0,
+                level:2,
+                subLayer: 0,
+                area: {
+                    pos1: {
+                        x:0,
+                        z:0
+                    },
+                    pos2: {
+                        x:0.5,
+                        z:0.5
+                    }
+                },
+                isExpandable: false
+            }]
+        },
+        {
+            type: 'extension',
+            layer: 0,
+            row: 0,
+            column: 0,
+            level:1,
+            subLayer: 1,
+            area: {
+                pos1: {
+                    x:0,
+                    z:0.5
+                },
+                pos2: {
+                    x:0.5,
+                    z:1
+                }
+            },
+            isExpandable: false
+        },
+        {
+            type: 'extension',
+            layer: 0,
+            row: 0,
+            column: 0,
+            level:1,
+            subLayer: 2,
+            area: {
+                pos1: {
+                    x:0.5,
+                    z:0
+                },
+                pos2: {
+                    x:1,
+                    z:0.5
+                }
+            },
+            isExpandable: false
+        },
+        {
+            type: 'extension',
+            layer: 0,
+            row: 0,
+            column: 0,
+            level:1,
+            subLayer: 3,
+            area: {
+                pos1: {
+                    x:0.5,
+                    z:0.5
+                },
+                pos2: {
+                    x:1,
+                    z:1
                 }
             },
             isExpandable: false
@@ -44,10 +126,31 @@ const data = [
     {
         type: 'base',
         layer: 1,
+        level: 0,
         row: 0,
         column: 0,
+        subLayer: 0,
         name: 'Label 5',
-        isExpandable: false
+        isExpandable: true,
+        extensions: [{
+            type: 'extension',
+            layer: 1,
+            row: 0,
+            column: 0,
+            level:1,
+            subLayer: 0,
+            area: {
+                pos1: {
+                    x:0,
+                    z:0
+                },
+                pos2: {
+                    x:0.5,
+                    z:0.5
+                }
+            },
+            isExpandable: false
+        }]
     },
     // {
     //     layer: 1,
@@ -69,7 +172,9 @@ const data = [
     // },
     {
         type: 'base',
+        subLayer: 0,
         layer: 2,
+        level:0,
         row: 0,
         column: 0,
         name: 'Label 9',
