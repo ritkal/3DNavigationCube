@@ -43,7 +43,7 @@
     "file-loader": "^3.0.1",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "rimraf": "^2.6.3",
-    "three": "^0.101.1",
+    "three": "^0.125.0",
     "three-trackballcontrols": "0.0.7",
     "three-transform-controls": "^1.0.4",
     "url-loader": "^1.1.2",
